@@ -1,0 +1,20 @@
+{
+  "name": "freedoc",
+  "version": "1.0.0",
+  "description": "FreeDoc (Free Documents) - static HTML/CSS starter using EJS + SCSS",
+  "main": "build.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "build": "node build.js",
+    "preview": "node preview.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "sass": "^1.79.4"
+  }
+}

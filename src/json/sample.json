@@ -1,0 +1,7 @@
+{
+  "siteName": "FreeDoc",
+  "nav": [
+    { "label": "Trang chủ", "href": "/index.html" },
+    { "label": "Giới thiệu", "href": "/about/index.html" }
+  ]
+}

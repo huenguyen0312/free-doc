@@ -1,0 +1,48 @@
+@use 'variables' as v;
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: v.$font-base;
+  color: v.$color-text;
+  background: v.$color-bg;
+  line-height: 1.7;
+}
+
+a {
+  color: v.$color-primary;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+.content {
+  max-width: v.$max-width;
+  margin: 0 auto;
+  padding: (v.$spacing-unit * 5) (v.$spacing-unit * 3);
+}
+
+.content__block {
+  margin-bottom: (v.$spacing-unit * 5);
+
+  h1,
+  h2 {
+    margin-top: 0;
+  }
+}
+

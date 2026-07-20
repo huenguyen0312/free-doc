@@ -1,0 +1,20 @@
+// Design tokens dùng chung cho toàn bộ dự án
+
+$color-primary: #2f6fed;
+$color-text: #222222;
+$color-text-light: #666666;
+$color-bg: #ffffff;
+$color-bg-alt: #f7f8fa;
+$color-border: #e3e5e8;
+
+// Màu phân loại theo độ tuổi (dùng cho card tài liệu)
+$color-age-mamnon: #f5a623;
+$color-age-mamnon-bg: #fff4e6;
+$color-age-tieuhoc: #2f6fed;
+$color-age-tieuhoc-bg: #eaf4ff;
+
+$font-base: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Segoe UI", Meiryo, Arial, sans-serif;
+
+$max-width: 1080px;
+$max-width-lg: 1280px;
+$spacing-unit: 8px;

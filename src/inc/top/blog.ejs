@@ -1,0 +1,43 @@
+<%
+  const posts = [
+    {
+      title: 'Chuyện của Rùa & Thỏ',
+      desc: 'Các bài viết ngắn dạng truyện tranh/blog sinh động về lòng tốt, sự trung thực.',
+      image: '/assets/images/blog-placeholder.svg',
+      link: '/blogs/index.html',
+    },
+    {
+      title: '"Vì sao lại thế?"',
+      desc: 'Giải đáp các câu hỏi ngây ngô của trẻ (Tại sao trời mưa?, Tại sao lại có cầu vồng?).',
+      image: '/assets/images/blog-placeholder.svg',
+      link: '/visao/index.html',
+    },
+    {
+      title: 'Mẹo hay mỗi ngày',
+      desc: 'Cách gấp máy bay, cách trồng hạt đậu nhỏ.',
+      image: '/assets/images/blog-placeholder.svg',
+      link: '/meovat/index.html',
+    },
+  ];
+%>
+<section class="blog">
+  <div class="blog__inner">
+    <h2 class="blog__title">🎈 "Góc Tò Mò" – Blog &amp; Truyện Kể</h2>
+
+    <div class="blog__row">
+      <% posts.forEach((post) => { %>
+        <article class="blog__card">
+          <a class="blog__card-link" href="<%= post.link %>">
+            <div class="blog__image">
+              <img src="<%= post.image %>" alt="<%= post.title %>">
+            </div>
+            <div class="blog__body">
+              <h3><%= post.title %></h3>
+              <p><%= post.desc %></p>
+            </div>
+          </a>
+        </article>
+      <% }); %>
+    </div>
+  </div>
+</section>

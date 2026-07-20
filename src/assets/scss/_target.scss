@@ -1,0 +1,75 @@
+@use 'variables' as v;
+
+.target {
+  background: v.$color-bg;
+}
+
+.target__inner {
+  max-width: v.$max-width-lg;
+  margin: 0 auto;
+  padding: (v.$spacing-unit * 6) (v.$spacing-unit * 3);
+}
+
+.target__title {
+  text-align: center;
+  font-size: 1.75rem;
+  margin: 0 0 (v.$spacing-unit * 4);
+}
+
+.target__row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: v.$spacing-unit * 3;
+
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 560px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.target__col {
+  height: 100%;
+}
+
+.target__col--text {
+  background: v.$color-bg-alt;
+  border: 1px solid v.$color-border;
+  border-radius: 8px;
+  padding: v.$spacing-unit * 3;
+  display: flex;
+  flex-direction: column;
+
+  h3 {
+    margin: 0 0 (v.$spacing-unit * 2);
+    font-size: 1.05rem;
+  }
+
+  ul {
+    margin: 0;
+    padding-left: v.$spacing-unit * 2.5;
+    color: v.$color-text-light;
+
+    li {
+      margin-bottom: v.$spacing-unit;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+.target__col--image {
+  border-radius: 8px;
+  overflow: hidden;
+  min-height: 220px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}

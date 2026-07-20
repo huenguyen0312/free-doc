@@ -1,0 +1,15 @@
+// Entry point - build.js / server.js chỉ compile file này
+@use 'base';
+@use 'header';
+@use 'footer';
+@use 'keyvisual';
+@use 'target';
+@use 'materials';
+@use 'blog';
+@use 'challenge';
+@use 'story-list';
+@use 'qa-list';
+@use 'tips-list';
+@use 'quiz';
+@use 'memory-page';
+@use 'worksheet-list';

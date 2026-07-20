@@ -1,0 +1,63 @@
+<%
+  const tips = [
+    {
+      title: 'Cách gấp máy bay giấy đơn giản',
+      desc: 'Hướng dẫn từng bước gấp máy bay giấy bay xa, bé có thể tự làm cùng bố mẹ.',
+      image: '/assets/images/tip-paper-plane.svg',
+      link: '#',
+    },
+    {
+      title: 'Cách trồng hạt đậu trong cốc nhựa',
+      desc: 'Trải nghiệm thú vị giúp bé quan sát quá trình hạt nảy mầm mỗi ngày.',
+      image: '/assets/images/tip-bean-sprout.svg',
+      link: '#',
+    },
+    {
+      title: 'Mẹo gấp khăn giấy thành hình thú',
+      desc: 'Biến chiếc khăn giấy đơn giản thành những hình thù ngộ nghĩnh, đáng yêu.',
+      image: '/assets/images/tip-napkin-fold.svg',
+      link: '#',
+    },
+    {
+      title: 'Cách tự buộc dây giày đúng cách',
+      desc: 'Hướng dẫn bé tự lập buộc dây giày gọn gàng, không bị tuột khi chạy nhảy.',
+      image: '/assets/images/tip-shoelace.svg',
+      link: '#',
+    },
+    {
+      title: 'Mẹo dọn dẹp góc học tập gọn gàng',
+      desc: 'Những mẹo nhỏ giúp bé tự sắp xếp sách vở, đồ dùng học tập ngăn nắp.',
+      image: '/assets/images/tip-desk-organize.svg',
+      link: '#',
+    },
+    {
+      title: 'Cách làm bookmark handmade dễ thương',
+      desc: 'Tự tay làm chiếc đánh dấu trang sách xinh xắn từ giấy màu và bìa cứng.',
+      image: '/assets/images/tip-bookmark.svg',
+      link: '#',
+    },
+  ];
+%>
+<section class="tips-list">
+  <div class="tips-list__inner">
+    <h1 class="tips-list__title">Mẹo Hay Mỗi Ngày</h1>
+    <p class="tips-list__desc">Những mẹo vặt cuộc sống nhỏ xinh, dễ làm giúp bé thêm khéo léo và tự lập mỗi ngày.</p>
+
+    <div class="tips-list__row">
+      <% tips.forEach((tip) => { %>
+        <article class="tips-list__card">
+          <a class="tips-list__card-link" href="<%= tip.link %>">
+            <div class="tips-list__image">
+              <img src="<%= tip.image %>" alt="<%= tip.title %>">
+            </div>
+            <div class="tips-list__body">
+              <h3><%= tip.title %></h3>
+              <p><%= tip.desc %></p>
+              <span class="tips-list__read-more">Đọc tiếp →</span>
+            </div>
+          </a>
+        </article>
+      <% }); %>
+    </div>
+  </div>
+</section>

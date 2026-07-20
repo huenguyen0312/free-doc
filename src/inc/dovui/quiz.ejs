@@ -1,0 +1,101 @@
+<%
+  const categories = [
+    {
+      key: 'animals',
+      icon: '🐘',
+      title: 'Thế giới động vật',
+      desc: 'Nhận biết tiếng kêu, đặc điểm',
+      flashcards: [
+        { question: 'Con vật nào kêu "meo meo"?', answer: 'Con mèo 🐱' },
+        { question: 'Con vật nào có chiếc cổ dài nhất?', answer: 'Hươu cao cổ 🦒' },
+        { question: 'Con vật nào được gọi là "chúa sơn lâm"?', answer: 'Sư tử 🦁' },
+      ],
+    },
+    {
+      key: 'plants',
+      icon: '🍎',
+      title: 'Hoa quả & Thực vật',
+      desc: 'Màu sắc, hình dáng',
+      flashcards: [
+        { question: 'Quả gì màu đỏ, hình trái tim, có hạt ở bên ngoài vỏ?', answer: 'Quả dâu tây 🍓' },
+        { question: 'Quả gì màu vàng, cong cong như mặt trăng?', answer: 'Quả chuối 🍌' },
+        { question: 'Củ gì màu cam, thỏ con rất thích ăn?', answer: 'Củ cà rốt 🥕' },
+      ],
+    },
+    {
+      key: 'space',
+      icon: '🚀',
+      title: 'Vũ trụ & Khoa học nhỏ',
+      desc: 'Đố vui khám phá',
+      flashcards: [
+        { question: 'Hành tinh nào gần Mặt Trời nhất?', answer: 'Sao Thuỷ ☄️' },
+        { question: 'Ban ngày có ông Mặt Trời, ban đêm có ông...?', answer: 'Ông Trăng 🌙' },
+        { question: 'Vì sao ban đêm bầu trời có nhiều đốm sáng lấp lánh?', answer: 'Đó là ánh sáng từ các ngôi sao ✨' },
+      ],
+    },
+    {
+      key: 'logic',
+      icon: '🧩',
+      title: 'Đố mẹo thông minh',
+      desc: 'Rèn luyện tư duy logic',
+      flashcards: [
+        { question: 'Cái gì càng lau càng bẩn?', answer: 'Cái bảng viết ✏️' },
+        { question: 'Cái gì có bốn chân mà không biết đi?', answer: 'Cái bàn/cái ghế 🪑' },
+        { question: 'Mùa gì lá vàng rơi rụng, trời se se lạnh?', answer: 'Mùa thu 🍂' },
+      ],
+    },
+    {
+      key: 'fairytale',
+      icon: '🧙‍♂️',
+      title: 'Truyện cổ tích & Nhân vật',
+      desc: 'Những câu đố về nhân vật quen thuộc',
+      flashcards: [
+        { question: 'Ai đã tặng đôi giày thuỷ tinh cho Lọ Lem?', answer: 'Bà tiên đỡ đầu 🧚' },
+        { question: 'Nhân vật nào ngủ suốt 100 năm trong rừng?', answer: 'Công chúa ngủ trong rừng 👸' },
+        { question: 'Chú bé nào có chiếc mũi dài ra mỗi khi nói dối?', answer: 'Pinocchio 🤥' },
+      ],
+    },
+  ];
+%>
+<section class="quiz">
+  <div class="quiz__inner">
+    <h1 class="quiz__title">🎉 Đố Vui Cùng Bé</h1>
+    <p class="quiz__desc">Những câu đố vui nhộn, bổ ích giúp bé vừa chơi vừa học mỗi ngày. Chọn 1 danh mục để bắt đầu!</p>
+
+    <div class="quiz__categories" data-quiz-categories>
+      <% categories.forEach((cat) => { %>
+        <button type="button" class="quiz__category" data-quiz-category="<%= cat.key %>">
+          <span class="quiz__category-icon"><%= cat.icon %></span>
+          <span class="quiz__category-title"><%= cat.title %></span>
+          <span class="quiz__category-desc"><%= cat.desc %></span>
+        </button>
+      <% }); %>
+    </div>
+
+    <div class="quiz__stage" data-quiz-stage>
+      <p class="quiz__stage-empty" data-quiz-empty>👉 Hãy chọn một danh mục ở trên để bắt đầu chơi!</p>
+
+      <div class="quiz__flashcard" data-quiz-flashcard hidden>
+        <p class="quiz__progress" data-quiz-progress></p>
+
+        <button type="button" class="quiz__card" data-quiz-card>
+          <span class="quiz__card-inner" data-quiz-card-inner>
+            <span class="quiz__card-face quiz__card-face--front">
+              <span data-quiz-question></span>
+            </span>
+            <span class="quiz__card-face quiz__card-face--back">
+              <span data-quiz-answer></span>
+            </span>
+          </span>
+        </button>
+
+        <div class="quiz__actions">
+          <button type="button" class="btn" data-quiz-flip>Xem đáp án</button>
+          <button type="button" class="btn" data-quiz-next>Câu tiếp theo →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script type="application/json" id="quiz-data"><%- JSON.stringify(categories) %></script>

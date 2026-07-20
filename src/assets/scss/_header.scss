@@ -1,0 +1,44 @@
+@use 'variables' as v;
+
+.site-header {
+  border-bottom: 1px solid v.$color-border;
+  background: v.$color-bg;
+}
+
+.site-header__inner {
+  max-width: v.$max-width;
+  margin: 0 auto;
+  padding: v.$spacing-unit * 2 v.$spacing-unit * 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.site-header__logo {
+  display: flex;
+  align-items: center;
+  gap: v.$spacing-unit;
+  font-weight: bold;
+  font-size: 1.25rem;
+  color: v.$color-text;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.site-header__nav ul {
+  display: flex;
+  gap: v.$spacing-unit * 3;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.site-header__nav a {
+  color: v.$color-text;
+
+  &:hover {
+    color: v.$color-primary;
+  }
+}

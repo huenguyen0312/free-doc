@@ -1,0 +1,48 @@
+<%
+  const worksheets = [
+    { title: 'Bài tập phân loại', desc: 'Giúp bé rèn kỹ năng phân loại đồ vật theo màu sắc, hình dạng, kích thước.' },
+    { title: 'Luyện tập làm quen về thời gian', desc: 'Làm quen với khái niệm buổi sáng, trưa, chiều, tối và các mốc thời gian đơn giản.' },
+    { title: 'Mê cung: tinh mắt tìm đường', desc: 'Rèn sự tập trung và khả năng quan sát qua các mê cung thú vị.' },
+    { title: 'Tinh mắt tìm bóng', desc: 'Ghép hình với bóng tương ứng để rèn khả năng quan sát.' },
+    { title: 'Tinh mắt tìm điểm khác nhau', desc: 'Tìm ra những điểm khác biệt giữa hai bức tranh giống nhau.' },
+    { title: 'Quy luật cắt dán', desc: 'Luyện tay khéo léo qua các bài tập cắt, dán theo mẫu.' },
+    { title: 'Căn bằng nào trái, phải', desc: 'Nhận biết hướng trái, phải qua các bài tập trực quan sinh động.' },
+    { title: 'Luyện tập so sánh ít nhiều', desc: 'Rèn tư duy so sánh số lượng nhiều - ít giữa các nhóm đồ vật.' },
+    { title: 'Luyện tập so sánh to nhỏ, cao thấp, nặng nhẹ, dài ngắn', desc: 'So sánh các đặc điểm kích thước cơ bản của sự vật xung quanh bé.' },
+    { title: 'Luyện tập làm quen hình học', desc: 'Nhận biết các hình khối cơ bản: tròn, vuông, tam giác, chữ nhật.' },
+    { title: 'Luyện tập tìm vị trí', desc: 'Xác định vị trí trên - dưới, trong - ngoài, trước - sau của đồ vật.' },
+    { title: 'Đếm số trong tranh', desc: 'Đếm số lượng đồ vật xuất hiện trong tranh minh hoạ.' },
+    { title: 'Hoàn thiện dãy số', desc: 'Điền số còn thiếu để hoàn thiện dãy số theo đúng thứ tự.' },
+    { title: 'Học đếm từ 1 đến 10', desc: 'Làm quen và luyện đếm các con số từ 1 đến 10.' },
+    { title: 'Luyện viết các chữ số', desc: 'Tập viết đúng nét các chữ số theo hướng dẫn.' },
+    { title: 'Tìm và tô màu số', desc: 'Tìm đúng chữ số theo yêu cầu và tô màu sinh động.' },
+    { title: 'Các cặp chữ cái dễ gây nhầm lẫn', desc: 'Phân biệt các cặp chữ cái dễ nhầm lẫn như b/d, p/q.' },
+    { title: 'Hoàn thiện bảng chữ cái', desc: 'Điền chữ cái còn thiếu để hoàn thiện bảng chữ cái.' },
+    { title: 'Trò chơi tìm chữ cái', desc: 'Tìm chữ cái theo yêu cầu ẩn trong bảng chữ cái.' },
+    { title: 'Khéo tay, tinh mắt', desc: 'Rèn luyện sự khéo léo đôi tay và khả năng quan sát tinh tế.' },
+    { title: 'Tô màu theo số', desc: 'Tô màu theo đúng số quy định để hoàn thiện bức tranh.' },
+    { title: 'Tô nét', desc: 'Luyện tô theo nét chấm mờ để rèn sự khéo léo của tay.' },
+  ];
+%>
+<section class="worksheet-list">
+  <div class="worksheet-list__inner">
+    <h1 class="worksheet-list__title">Tài Liệu Mầm Non &amp; Tiền Tiểu Học</h1>
+    <p class="worksheet-list__desc">Tuyển tập bài tập, phiếu luyện tập giúp bé mầm non &amp; tiền tiểu học làm quen với chữ, số và tư duy logic.</p>
+
+    <div class="worksheet-list__row">
+      <% worksheets.forEach((sheet) => { %>
+        <article class="worksheet-list__card">
+          <a class="worksheet-list__card-link" href="#">
+            <div class="worksheet-list__image">
+              <img src="/assets/images/worksheet-placeholder.svg" alt="<%= sheet.title %>">
+            </div>
+            <div class="worksheet-list__body">
+              <h3><%= sheet.title %></h3>
+              <p><%= sheet.desc %></p>
+            </div>
+          </a>
+        </article>
+      <% }); %>
+    </div>
+  </div>
+</section>

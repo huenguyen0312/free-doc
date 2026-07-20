@@ -1,0 +1,86 @@
+@use 'variables' as v;
+
+.materials {
+  background: v.$color-bg;
+}
+
+.materials__inner {
+  max-width: v.$max-width;
+  margin: 0 auto;
+  padding: (v.$spacing-unit * 6) (v.$spacing-unit * 3);
+}
+
+.materials__title {
+  text-align: center;
+  font-size: 1.75rem;
+  margin: 0 0 (v.$spacing-unit * 4);
+}
+
+.materials__row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: v.$spacing-unit * 3;
+
+  @media (max-width: 700px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.materials__card {
+  border-radius: 24px;
+  padding: v.$spacing-unit * 4;
+  transition: box-shadow 0.2s, transform 0.2s;
+
+  h3 {
+    margin: 0 0 (v.$spacing-unit * 2.5);
+    font-size: 1.2rem;
+  }
+}
+
+.materials__card-link {
+  display: block;
+  color: inherit;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.materials__card--mamnon {
+  background: v.$color-age-mamnon-bg;
+  border: 2px solid v.$color-age-mamnon;
+
+  h3 {
+    color: v.$color-age-mamnon;
+  }
+
+  &:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+  }
+}
+
+.materials__card--tieuhoc {
+  background: v.$color-age-tieuhoc-bg;
+  border: 2px solid v.$color-age-tieuhoc;
+
+  h3 {
+    color: v.$color-age-tieuhoc;
+  }
+}
+
+.materials__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: v.$spacing-unit;
+}
+
+.materials__item {
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 12px;
+  padding: (v.$spacing-unit * 1.5) (v.$spacing-unit * 2);
+  font-size: 0.95rem;
+}

@@ -1,0 +1,63 @@
+<%
+  const stories = [
+    {
+      title: 'Chuyện của Rùa & Thỏ',
+      desc: 'Bài học về lòng kiên trì và sự khiêm tốn, không chủ quan trước thành công.',
+      image: '/assets/images/story-turtle-rabbit.svg',
+      link: '#',
+    },
+    {
+      title: 'Cô Bé Quàng Khăn Đỏ',
+      desc: 'Nhắc bé luôn cẩn trọng, biết lắng nghe lời dặn dò của người lớn.',
+      image: '/assets/images/story-red-hood.svg',
+      link: '#',
+    },
+    {
+      title: 'Chú Kiến Chăm Chỉ',
+      desc: 'Giá trị của sự chăm chỉ, chuẩn bị trước cho tương lai.',
+      image: '/assets/images/story-ant.svg',
+      link: '#',
+    },
+    {
+      title: 'Ba Chú Heo Con',
+      desc: 'Bài học về sự chuẩn bị kỹ lưỡng và tinh thần trách nhiệm.',
+      image: '/assets/images/story-three-pigs.svg',
+      link: '#',
+    },
+    {
+      title: 'Cây Táo Thần',
+      desc: 'Câu chuyện nhẹ nhàng về lòng biết ơn và sự cho đi.',
+      image: '/assets/images/story-magic-apple.svg',
+      link: '#',
+    },
+    {
+      title: 'Chú Vịt Xấu Xí',
+      desc: 'Giúp bé hiểu và yêu thương giá trị của riêng mình.',
+      image: '/assets/images/story-ugly-duckling.svg',
+      link: '#',
+    },
+  ];
+%>
+<section class="story-list">
+  <div class="story-list__inner">
+    <h1 class="story-list__title">Truyện Kể Cho Bé</h1>
+    <p class="story-list__desc">Tuyển tập những câu truyện ngắn hay, bổ ích, phù hợp để bố mẹ kể cho bé nghe mỗi ngày.</p>
+
+    <div class="story-list__row">
+      <% stories.forEach((story) => { %>
+        <article class="story-list__card">
+          <a class="story-list__card-link" href="<%= story.link %>">
+            <div class="story-list__image">
+              <img src="<%= story.image %>" alt="<%= story.title %>">
+            </div>
+            <div class="story-list__body">
+              <h3><%= story.title %></h3>
+              <p><%= story.desc %></p>
+              <span class="story-list__read-more">Đọc tiếp →</span>
+            </div>
+          </a>
+        </article>
+      <% }); %>
+    </div>
+  </div>
+</section>

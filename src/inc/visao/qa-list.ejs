@@ -1,0 +1,63 @@
+<%
+  const questions = [
+    {
+      title: 'Tại sao trời lại mưa?',
+      desc: 'Giải thích đơn giản về vòng tuần hoàn của nước: bốc hơi, ngưng tụ và rơi xuống thành mưa.',
+      image: '/assets/images/qa-rain.svg',
+      link: '#',
+    },
+    {
+      title: 'Tại sao lại có cầu vồng?',
+      desc: 'Ánh sáng mặt trời khi đi qua các giọt nước trong không khí bị khúc xạ tạo thành 7 sắc màu.',
+      image: '/assets/images/qa-rainbow.svg',
+      link: '#',
+    },
+    {
+      title: 'Tại sao bầu trời có màu xanh?',
+      desc: 'Ánh sáng mặt trời bị tán xạ trong khí quyển, và ánh sáng xanh tán xạ nhiều nhất.',
+      image: '/assets/images/qa-sky.svg',
+      link: '#',
+    },
+    {
+      title: 'Tại sao chim có thể bay được?',
+      desc: 'Nhờ đôi cánh đặc biệt, xương rỗng nhẹ và cơ ngực khoẻ giúp chim bay lượn trên bầu trời.',
+      image: '/assets/images/qa-bird.svg',
+      link: '#',
+    },
+    {
+      title: 'Tại sao lá cây có màu xanh?',
+      desc: 'Nhờ chất diệp lục trong lá hấp thụ ánh sáng và phản chiếu lại màu xanh lục.',
+      image: '/assets/images/qa-leaf.svg',
+      link: '#',
+    },
+    {
+      title: 'Tại sao ban đêm lại có sao?',
+      desc: 'Các ngôi sao luôn toả sáng, nhưng chỉ nhìn rõ vào ban đêm khi bầu trời tối và không có ánh nắng.',
+      image: '/assets/images/qa-stars.svg',
+      link: '#',
+    },
+  ];
+%>
+<section class="qa-list">
+  <div class="qa-list__inner">
+    <h1 class="qa-list__title">1001 Câu Hỏi Vì Sao</h1>
+    <p class="qa-list__desc">Giải đáp những thắc mắc ngây ngô, đáng yêu của bé về thế giới xung quanh.</p>
+
+    <div class="qa-list__row">
+      <% questions.forEach((question) => { %>
+        <article class="qa-list__card">
+          <a class="qa-list__card-link" href="<%= question.link %>">
+            <div class="qa-list__image">
+              <img src="<%= question.image %>" alt="<%= question.title %>">
+            </div>
+            <div class="qa-list__body">
+              <h3><%= question.title %></h3>
+              <p><%= question.desc %></p>
+              <span class="qa-list__read-more">Đọc tiếp →</span>
+            </div>
+          </a>
+        </article>
+      <% }); %>
+    </div>
+  </div>
+</section>
