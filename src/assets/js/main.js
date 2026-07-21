@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initStoryList();
   initQaList();
   initTipsList();
+  initWorksheetGenerator();
 });
 
 function initQuizGame() {
@@ -582,4 +583,331 @@ function initTipsList() {
       default: (a, b) => a.title.localeCompare(b.title, 'vi'),
     },
   });
+}
+
+const WORKSHEET_GRADE_RANGE_DEFAULT = { mamnon: '10', lop1: '20', lop2: '100-no-carry' };
+
+const WORKSHEET_RANGE_LABELS = {
+  10: 'phạm vi 10',
+  20: 'phạm vi 20',
+  '100-no-carry': 'phạm vi 100 - không nhớ',
+  '100-carry': 'phạm vi 100 - có nhớ',
+};
+
+const WORKSHEET_VI_WORD_BANK = {
+  mamnon: ['bé', 'cá', 'gà', 'mèo', 'chó', 'hoa', 'lá', 'quả', 'bàn', 'ghế'],
+  lop1: ['sách', 'bút', 'thước', 'bảng', 'trường', 'lớp', 'bạn bè', 'ông bà', 'cha mẹ', 'anh chị'],
+  lop2: ['chăm chỉ', 'siêng năng', 'đoàn kết', 'yêu thương', 'trung thực', 'dũng cảm', 'lễ phép', 'sạch sẽ', 'ngăn nắp', 'ham học'],
+};
+
+const WORKSHEET_EN_WORD_BANK = {
+  mamnon: [
+    { word: 'cat', meaning: 'con mèo' },
+    { word: 'dog', meaning: 'con chó' },
+    { word: 'sun', meaning: 'mặt trời' },
+    { word: 'red', meaning: 'màu đỏ' },
+    { word: 'big', meaning: 'to lớn' },
+  ],
+  lop1: [
+    { word: 'apple', meaning: 'quả táo' },
+    { word: 'happy', meaning: 'vui vẻ' },
+    { word: 'table', meaning: 'cái bàn' },
+    { word: 'water', meaning: 'nước' },
+    { word: 'green', meaning: 'màu xanh lá' },
+  ],
+  lop2: [
+    { word: 'family', meaning: 'gia đình' },
+    { word: 'school', meaning: 'trường học' },
+    { word: 'friend', meaning: 'bạn bè' },
+    { word: 'garden', meaning: 'khu vườn' },
+    { word: 'yellow', meaning: 'màu vàng' },
+  ],
+};
+
+function worksheetRandInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function worksheetShuffle(list) {
+  const arr = list.slice();
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function worksheetBuildPool(pool, count) {
+  const result = [];
+  while (result.length < count) {
+    result.push(...worksheetShuffle(pool));
+  }
+  return result.slice(0, count);
+}
+
+function worksheetBlankRandomLetter(word) {
+  const letterIndexes = [];
+  for (let i = 0; i < word.length; i++) {
+    if (word[i] !== ' ') letterIndexes.push(i);
+  }
+  const idx = letterIndexes[worksheetRandInt(0, letterIndexes.length - 1)];
+  const chars = word.split('');
+  chars[idx] = '_';
+  return chars.join('');
+}
+
+// "Không nhớ": tổng/hiệu ở hàng đơn vị không vượt quá 9, không cần nhớ/mượn sang hàng chục.
+function worksheetAddNoCarry() {
+  const totalTens = worksheetRandInt(0, 9);
+  const tensA = worksheetRandInt(0, totalTens);
+  const tensB = totalTens - tensA;
+  const unitsA = worksheetRandInt(0, 9);
+  const unitsB = worksheetRandInt(0, 9 - unitsA);
+  return [tensA * 10 + unitsA, tensB * 10 + unitsB];
+}
+
+// "Có nhớ": ép hàng đơn vị cộng lại vượt quá 9, bắt buộc phải nhớ 1 sang hàng chục.
+function worksheetAddCarry() {
+  const totalTens = worksheetRandInt(0, 8);
+  const tensA = worksheetRandInt(0, totalTens);
+  const tensB = totalTens - tensA;
+  const unitsA = worksheetRandInt(1, 9);
+  const unitsB = worksheetRandInt(10 - unitsA, 9);
+  return [tensA * 10 + unitsA, tensB * 10 + unitsB];
+}
+
+function worksheetSubNoBorrow() {
+  const tensA = worksheetRandInt(0, 9);
+  const tensB = worksheetRandInt(0, tensA);
+  const unitsA = worksheetRandInt(0, 9);
+  const unitsB = worksheetRandInt(0, unitsA);
+  return [tensA * 10 + unitsA, tensB * 10 + unitsB];
+}
+
+// Ép hàng đơn vị của số bị trừ nhỏ hơn số trừ -> bắt buộc phải mượn 1 từ hàng chục.
+function worksheetSubBorrow() {
+  const tensA = worksheetRandInt(1, 9);
+  const tensB = worksheetRandInt(0, tensA - 1);
+  const unitsB = worksheetRandInt(1, 9);
+  const unitsA = worksheetRandInt(0, unitsB - 1);
+  return [tensA * 10 + unitsA, tensB * 10 + unitsB];
+}
+
+function worksheetPickOperands(op, range) {
+  if (range === '100-no-carry') return op === 'add' ? worksheetAddNoCarry() : worksheetSubNoBorrow();
+  if (range === '100-carry') return op === 'add' ? worksheetAddCarry() : worksheetSubBorrow();
+
+  const max = Number(range);
+  if (op === 'add') {
+    const a = worksheetRandInt(0, max);
+    const b = worksheetRandInt(0, max - a);
+    return [a, b];
+  }
+  const a = worksheetRandInt(0, max);
+  const b = worksheetRandInt(0, a);
+  return [a, b];
+}
+
+function worksheetGenerateMathItems(count, operation, range) {
+  const items = [];
+
+  for (let i = 0; i < count; i++) {
+    const op = operation === 'mixed' ? (Math.random() < 0.5 ? 'add' : 'sub') : operation;
+    const [a, b] = worksheetPickOperands(op, range);
+    const symbol = op === 'add' ? '+' : '-';
+    items.push(`${a} ${symbol} ${b} = ..........`);
+  }
+
+  return items;
+}
+
+function worksheetGenerateWordItems(count, pool) {
+  return worksheetBuildPool(pool, count).map((word) => `${worksheetBlankRandomLetter(word)}  ................`);
+}
+
+function worksheetGenerateEnglishItems(count, pool) {
+  return worksheetBuildPool(pool, count).map(({ word, meaning }) => `${worksheetBlankRandomLetter(word)} (${meaning})`);
+}
+
+function worksheetBuildPreviewTitle(subject, grade, operation, range) {
+  const gradeLabel = { mamnon: 'Mầm non', lop1: 'Lớp 1', lop2: 'Lớp 2' }[grade];
+
+  if (subject === 'toan') {
+    const opLabel = { add: 'Phép cộng', sub: 'Phép trừ', mixed: 'Cộng trừ hỗn hợp' }[operation];
+    return `${opLabel} (${WORKSHEET_RANGE_LABELS[range]}) - ${gradeLabel}`;
+  }
+
+  if (subject === 'tviet') return `Điền chữ còn thiếu - Tiếng Việt - ${gradeLabel}`;
+  return `Điền chữ còn thiếu - Tiếng Anh - ${gradeLabel}`;
+}
+
+function worksheetGenerateBlockItems(blockEl, state) {
+  const count = Math.max(5, Math.min(40, Number(blockEl.querySelector('[data-gen-count]').value) || 10));
+
+  if (state.subject === 'toan') {
+    const operation = blockEl.querySelector('[data-gen-operation]').value;
+    const range = blockEl.querySelector('[data-gen-range]').value;
+    return worksheetGenerateMathItems(count, operation, range);
+  }
+  if (state.subject === 'tviet') return worksheetGenerateWordItems(count, WORKSHEET_VI_WORD_BANK[state.grade]);
+  return worksheetGenerateEnglishItems(count, WORKSHEET_EN_WORD_BANK[state.grade]);
+}
+
+function initWorksheetGenerator() {
+  const section = document.querySelector('.worksheet-generator');
+  if (!section) return;
+
+  const gradeSelect = section.querySelector('[data-filter-grade]');
+  const subjectButtons = section.querySelectorAll('[data-subject]');
+  const blocksWrap = section.querySelector('[data-generator-blocks]');
+  const printBtn = section.querySelector('[data-gen-print]');
+  const previewSections = section.querySelector('[data-gen-preview-sections]');
+
+  const state = { grade: gradeSelect.value, subject: 'toan' };
+
+  function setActive(buttons, datasetKey, value) {
+    buttons.forEach((btn) => btn.classList.toggle('is-active', btn.dataset[datasetKey] === value));
+  }
+
+  function getBlocks() {
+    return Array.from(blocksWrap.querySelectorAll('[data-generator-block]'));
+  }
+
+  function updateFieldsVisibility() {
+    const isMath = state.subject === 'toan';
+    getBlocks().forEach((blockEl) => {
+      blockEl.querySelector('[data-field-operation]').hidden = !isMath;
+      blockEl.querySelector('[data-field-range]').hidden = !isMath;
+    });
+  }
+
+  // Đánh lại số thứ tự "Bài tập N" + chỉ cho phép xoá khi còn nhiều hơn 1 bài.
+  function updateBlockChrome() {
+    const blocks = getBlocks();
+    blocks.forEach((blockEl, i) => {
+      blockEl.querySelector('[data-block-number]').textContent = String(i + 1);
+      blockEl.querySelector('[data-gen-remove]').hidden = blocks.length <= 1;
+    });
+  }
+
+  function invalidateBlock(blockEl) {
+    blockEl._wsItems = undefined;
+  }
+
+  // Mỗi block giữ cache câu hỏi riêng: chỉ những block bị invalidate mới random lại,
+  // tránh việc sửa 1 bài tập làm xáo trộn số liệu của các bài tập khác đang hiển thị.
+  function renderAll() {
+    previewSections.innerHTML = '';
+
+    getBlocks().forEach((blockEl, index) => {
+      if (!blockEl._wsItems) {
+        blockEl._wsItems = worksheetGenerateBlockItems(blockEl, state);
+      }
+
+      const operation = blockEl.querySelector('[data-gen-operation]').value;
+      const range = blockEl.querySelector('[data-gen-range]').value;
+      const columns = blockEl.querySelector('[data-gen-columns]').value;
+
+      const sectionEl = document.createElement('div');
+      sectionEl.className = 'worksheet-preview__section';
+
+      const titleEl = document.createElement('h3');
+      titleEl.className = 'worksheet-preview__title';
+      const badge = document.createElement('span');
+      badge.textContent = String(index + 1);
+      titleEl.appendChild(badge);
+      titleEl.appendChild(document.createTextNode(worksheetBuildPreviewTitle(state.subject, state.grade, operation, range)));
+      sectionEl.appendChild(titleEl);
+
+      const gridEl = document.createElement('div');
+      gridEl.className = `worksheet-preview__grid worksheet-preview__grid--cols-${columns}`;
+      blockEl._wsItems.forEach((text, i) => {
+        const item = document.createElement('div');
+        item.className = 'worksheet-preview__item';
+        item.textContent = `${i + 1}. ${text}`;
+        gridEl.appendChild(item);
+      });
+      sectionEl.appendChild(gridEl);
+
+      previewSections.appendChild(sectionEl);
+    });
+  }
+
+  function wireBlock(blockEl) {
+    const countInput = blockEl.querySelector('[data-gen-count]');
+    const operationSelect = blockEl.querySelector('[data-gen-operation]');
+    const rangeSelect = blockEl.querySelector('[data-gen-range]');
+    const columnsSelect = blockEl.querySelector('[data-gen-columns]');
+    const regenerateBtn = blockEl.querySelector('[data-gen-regenerate]');
+    const duplicateBtn = blockEl.querySelector('[data-gen-duplicate]');
+    const removeBtn = blockEl.querySelector('[data-gen-remove]');
+
+    [countInput, operationSelect, rangeSelect].forEach((el) => {
+      const onChange = () => {
+        invalidateBlock(blockEl);
+        renderAll();
+      };
+      el.addEventListener('input', onChange);
+      el.addEventListener('change', onChange);
+    });
+
+    columnsSelect.addEventListener('change', renderAll);
+
+    regenerateBtn.addEventListener('click', () => {
+      invalidateBlock(blockEl);
+      renderAll();
+    });
+
+    duplicateBtn.addEventListener('click', () => {
+      const clone = blockEl.cloneNode(true);
+
+      // cloneNode chỉ sao chép attribute mặc định, không phải giá trị người dùng đang chọn
+      // (vd đổi select bằng JS không cập nhật lại attribute "selected") nên phải gán tay.
+      clone.querySelector('[data-gen-count]').value = countInput.value;
+      clone.querySelector('[data-gen-operation]').value = operationSelect.value;
+      clone.querySelector('[data-gen-range]').value = rangeSelect.value;
+      clone.querySelector('[data-gen-columns]').value = columnsSelect.value;
+
+      blockEl.insertAdjacentElement('afterend', clone);
+      wireBlock(clone);
+      updateFieldsVisibility();
+      updateBlockChrome();
+      renderAll();
+    });
+
+    removeBtn.addEventListener('click', () => {
+      if (getBlocks().length <= 1) return;
+      blockEl.remove();
+      updateBlockChrome();
+      renderAll();
+    });
+  }
+
+  gradeSelect.addEventListener('change', () => {
+    state.grade = gradeSelect.value;
+    if (state.subject === 'toan') {
+      getBlocks().forEach((blockEl) => {
+        blockEl.querySelector('[data-gen-range]').value = WORKSHEET_GRADE_RANGE_DEFAULT[state.grade];
+      });
+    }
+    getBlocks().forEach(invalidateBlock);
+    renderAll();
+  });
+
+  subjectButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      state.subject = btn.dataset.subject;
+      setActive(subjectButtons, 'subject', state.subject);
+      updateFieldsVisibility();
+      getBlocks().forEach(invalidateBlock);
+      renderAll();
+    });
+  });
+
+  printBtn.addEventListener('click', () => window.print());
+
+  getBlocks().forEach(wireBlock);
+  updateFieldsVisibility();
+  updateBlockChrome();
+  renderAll();
 }

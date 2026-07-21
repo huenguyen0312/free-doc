@@ -28,7 +28,6 @@
 
 .materials__card {
   border-radius: 24px;
-  padding: v.$spacing-unit * 4;
   transition: box-shadow 0.2s, transform 0.2s;
 
   h3 {
@@ -40,6 +39,8 @@
 .materials__card-link {
   display: block;
   color: inherit;
+  padding: v.$spacing-unit * 4;
+  border-radius: 24px;
 
   &:hover {
     text-decoration: none;

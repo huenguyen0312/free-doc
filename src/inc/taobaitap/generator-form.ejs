@@ -1,0 +1,46 @@
+<section class="worksheet-generator">
+  <div class="worksheet-generator__inner">
+    <h1 class="worksheet-generator__title">Tạo Phiếu Bài Tập</h1>
+    <p class="worksheet-generator__desc">Chọn lớp và môn học, tùy chỉnh số lượng câu hỏi rồi xem trước ngay lập tức bên phải.</p>
+
+    <div class="worksheet-generator__filters">
+      <div class="worksheet-generator__filter-group">
+        <label class="worksheet-generator__filter-label" for="filter-grade">Lớp:</label>
+        <select id="filter-grade" class="worksheet-generator__filter-select" data-filter-grade>
+          <option value="mamnon">Mầm non</option>
+          <option value="lop1">Lớp 1</option>
+          <option value="lop2">Lớp 2</option>
+        </select>
+      </div>
+
+      <div class="worksheet-generator__filter-group">
+        <span class="worksheet-generator__filter-label">Môn:</span>
+        <div class="filter-chips" data-filter-subject>
+          <button type="button" class="filter-chip is-active" data-subject="toan">Toán</button>
+          <button type="button" class="filter-chip" data-subject="tviet">Tiếng Việt</button>
+          <button type="button" class="filter-chip" data-subject="tanh">Tiếng Anh</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="worksheet-generator__split">
+      <div class="worksheet-generator__panel">
+        <div class="worksheet-generator__blocks" data-generator-blocks>
+          <%- include('/inc/taobaitap/generator-form-block', { index: 1 }) %>
+        </div>
+
+        <button type="button" class="worksheet-generator__print" data-gen-print>🖨️ Tải PDF</button>
+      </div>
+
+      <div class="worksheet-generator__preview-wrap">
+        <div class="worksheet-preview" data-gen-preview>
+          <div class="worksheet-preview__header">
+            <span>Họ và tên: .............................</span>
+            <span>Lớp: ......</span>
+          </div>
+          <div class="worksheet-preview__sections" data-gen-preview-sections></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

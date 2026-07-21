@@ -1,0 +1,53 @@
+<%
+  const blockIndex = typeof index !== 'undefined' ? index : 1;
+%>
+<div class="worksheet-generator__block" data-generator-block>
+  <div class="worksheet-generator__block-header">
+    <h4 class="worksheet-generator__block-title">Bài tập <span data-block-number><%= blockIndex %></span></h4>
+    <div class="worksheet-generator__block-tools">
+      <button type="button" class="worksheet-generator__icon-btn" data-gen-duplicate title="Nhân bản bài tập này">⧉</button>
+      <button type="button" class="worksheet-generator__icon-btn worksheet-generator__icon-btn--danger" data-gen-remove title="Xoá bài tập này" hidden>✕</button>
+    </div>
+  </div>
+
+  <div class="worksheet-generator__field">
+    <label>Số lượng phép tính / câu hỏi
+      <input type="number" data-gen-count min="5" max="40" step="5" value="10">
+    </label>
+  </div>
+
+  <div class="worksheet-generator__field" data-field-operation>
+    <label>Dạng phép tính
+      <select data-gen-operation>
+        <option value="add">Phép cộng</option>
+        <option value="sub">Phép trừ</option>
+        <option value="mixed">Cộng trừ hỗn hợp</option>
+      </select>
+    </label>
+  </div>
+
+  <div class="worksheet-generator__field" data-field-range>
+    <label>Phạm vi số
+      <select data-gen-range>
+        <option value="10">Trong phạm vi 10</option>
+        <option value="20">Trong phạm vi 20</option>
+        <option value="100-no-carry">Trong phạm vi 100 - không nhớ</option>
+        <option value="100-carry">Trong phạm vi 100 - có nhớ</option>
+      </select>
+    </label>
+  </div>
+
+  <div class="worksheet-generator__field">
+    <label>Số cột hiển thị
+      <select data-gen-columns>
+        <option value="2">2 cột</option>
+        <option value="3" selected>3 cột</option>
+        <option value="4">4 cột</option>
+      </select>
+    </label>
+  </div>
+
+  <div class="worksheet-generator__actions">
+    <button type="button" class="btn btn--primary worksheet-generator__regenerate" data-gen-regenerate>🔀 Tạo đề mới</button>
+  </div>
+</div>
