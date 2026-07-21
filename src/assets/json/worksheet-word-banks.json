@@ -1,0 +1,30 @@
+{
+  "vi": {
+    "mamnon": ["bé", "cá", "gà", "mèo", "chó", "hoa", "lá", "quả", "bàn", "ghế"],
+    "lop1": ["sách", "bút", "thước", "bảng", "trường", "lớp", "bạn bè", "ông bà", "cha mẹ", "anh chị"],
+    "lop2": ["chăm chỉ", "siêng năng", "đoàn kết", "yêu thương", "trung thực", "dũng cảm", "lễ phép", "sạch sẽ", "ngăn nắp", "ham học"]
+  },
+  "en": {
+    "mamnon": [
+      { "word": "cat", "meaning": "con mèo" },
+      { "word": "dog", "meaning": "con chó" },
+      { "word": "sun", "meaning": "mặt trời" },
+      { "word": "red", "meaning": "màu đỏ" },
+      { "word": "big", "meaning": "to lớn" }
+    ],
+    "lop1": [
+      { "word": "apple", "meaning": "quả táo" },
+      { "word": "happy", "meaning": "vui vẻ" },
+      { "word": "table", "meaning": "cái bàn" },
+      { "word": "water", "meaning": "nước" },
+      { "word": "green", "meaning": "màu xanh lá" }
+    ],
+    "lop2": [
+      { "word": "family", "meaning": "gia đình" },
+      { "word": "school", "meaning": "trường học" },
+      { "word": "friend", "meaning": "bạn bè" },
+      { "word": "garden", "meaning": "khu vườn" },
+      { "word": "yellow", "meaning": "màu vàng" }
+    ]
+  }
+}

@@ -264,7 +264,7 @@
 }
 
 .worksheet-preview__title {
-  text-align: center;
+  text-align: left;
   margin: 0 0 (v.$spacing-unit * 3);
   font-size: 1.15rem;
 
@@ -281,7 +281,7 @@
 
 .worksheet-preview__grid {
   display: grid;
-  gap: v.$spacing-unit * 2;
+  gap: v.$spacing-unit * 1.5 v.$spacing-unit * 0.5;
 
   &--cols-2 {
     grid-template-columns: repeat(2, 1fr);
@@ -303,8 +303,71 @@
 .worksheet-preview__item {
   border: 1px dashed v.$color-border;
   border-radius: 8px;
-  padding: (v.$spacing-unit * 1.5) (v.$spacing-unit * 2);
+  padding: (v.$spacing-unit * 0.5) (v.$spacing-unit * 1);
   font-size: 1rem;
+}
+
+.worksheet-preview__item--tree {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding-top: v.$spacing-unit * 3;
+  padding-bottom: v.$spacing-unit * 1.5;
+}
+
+.worksheet-tree__number {
+  position: absolute;
+  top: v.$spacing-unit * 0.5;
+  left: v.$spacing-unit;
+  font-size: 0.85rem;
+  color: v.$color-text-light;
+}
+
+.worksheet-tree {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.worksheet-tree__box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 40px;
+  padding: 0 v.$spacing-unit;
+  box-sizing: border-box;
+  border: 2px solid v.$color-primary;
+  border-radius: 8px;
+  background: v.$color-bg;
+  color: v.$color-text;
+  font-weight: bold;
+  font-size: 1.05rem;
+}
+
+.worksheet-tree__box--blank {
+  border-style: dashed;
+  border-color: v.$color-border;
+}
+
+.worksheet-tree__lines {
+  width: 90px;
+  max-width: 60%;
+  height: 22px;
+  overflow: visible;
+
+  line {
+    stroke: v.$color-primary;
+    stroke-width: 2;
+  }
+}
+
+.worksheet-tree__parts {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 130px;
 }
 
 @media print {

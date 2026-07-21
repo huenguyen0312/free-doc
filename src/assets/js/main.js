@@ -594,35 +594,22 @@ const WORKSHEET_RANGE_LABELS = {
   '100-carry': 'phạm vi 100 - có nhớ',
 };
 
-const WORKSHEET_VI_WORD_BANK = {
-  mamnon: ['bé', 'cá', 'gà', 'mèo', 'chó', 'hoa', 'lá', 'quả', 'bàn', 'ghế'],
-  lop1: ['sách', 'bút', 'thước', 'bảng', 'trường', 'lớp', 'bạn bè', 'ông bà', 'cha mẹ', 'anh chị'],
-  lop2: ['chăm chỉ', 'siêng năng', 'đoàn kết', 'yêu thương', 'trung thực', 'dũng cảm', 'lễ phép', 'sạch sẽ', 'ngăn nắp', 'ham học'],
-};
+// Dữ liệu từ vựng (Tiếng Việt/Tiếng Anh) được tách sang assets/json/worksheet-word-banks.json
+// để thêm/bớt từ sau này không cần đụng vào code - xem worksheetLoadWordBanks().
+let WORKSHEET_VI_WORD_BANK = {};
+let WORKSHEET_EN_WORD_BANK = {};
 
-const WORKSHEET_EN_WORD_BANK = {
-  mamnon: [
-    { word: 'cat', meaning: 'con mèo' },
-    { word: 'dog', meaning: 'con chó' },
-    { word: 'sun', meaning: 'mặt trời' },
-    { word: 'red', meaning: 'màu đỏ' },
-    { word: 'big', meaning: 'to lớn' },
-  ],
-  lop1: [
-    { word: 'apple', meaning: 'quả táo' },
-    { word: 'happy', meaning: 'vui vẻ' },
-    { word: 'table', meaning: 'cái bàn' },
-    { word: 'water', meaning: 'nước' },
-    { word: 'green', meaning: 'màu xanh lá' },
-  ],
-  lop2: [
-    { word: 'family', meaning: 'gia đình' },
-    { word: 'school', meaning: 'trường học' },
-    { word: 'friend', meaning: 'bạn bè' },
-    { word: 'garden', meaning: 'khu vườn' },
-    { word: 'yellow', meaning: 'màu vàng' },
-  ],
-};
+async function worksheetLoadWordBanks() {
+  try {
+    const res = await fetch('/assets/json/worksheet-word-banks.json');
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const banks = await res.json();
+    WORKSHEET_VI_WORD_BANK = banks.vi || {};
+    WORKSHEET_EN_WORD_BANK = banks.en || {};
+  } catch (err) {
+    console.error('Không tải được dữ liệu từ vựng worksheet-word-banks.json:', err);
+  }
+}
 
 function worksheetRandInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -638,6 +625,8 @@ function worksheetShuffle(list) {
 }
 
 function worksheetBuildPool(pool, count) {
+  if (!pool || !pool.length) return [];
+
   const result = [];
   while (result.length < count) {
     result.push(...worksheetShuffle(pool));
@@ -708,10 +697,31 @@ function worksheetPickOperands(op, range) {
   return [a, b];
 }
 
+// "Tách - gộp": chọn ngẫu nhiên 1 trong 3 ô (số lớn hoặc 1 trong 2 số phần) để trẻ điền vào,
+// hai ô còn lại hiển thị sẵn - giúp luyện cả chiều "tách" (biết tổng, tìm 1 phần) và "gộp" (biết 2 phần, tìm tổng).
+function worksheetGenerateTreeItem(range) {
+  const [left, right] = worksheetPickOperands('add', range);
+  const whole = left + right;
+  const hiddenSlot = ['whole', 'left', 'right'][worksheetRandInt(0, 2)];
+
+  return {
+    tree: {
+      whole: hiddenSlot === 'whole' ? null : whole,
+      left: hiddenSlot === 'left' ? null : left,
+      right: hiddenSlot === 'right' ? null : right,
+    },
+  };
+}
+
 function worksheetGenerateMathItems(count, operation, range) {
   const items = [];
 
   for (let i = 0; i < count; i++) {
+    if (operation === 'split') {
+      items.push(worksheetGenerateTreeItem(range));
+      continue;
+    }
+
     const op = operation === 'mixed' ? (Math.random() < 0.5 ? 'add' : 'sub') : operation;
     const [a, b] = worksheetPickOperands(op, range);
     const symbol = op === 'add' ? '+' : '-';
@@ -729,16 +739,57 @@ function worksheetGenerateEnglishItems(count, pool) {
   return worksheetBuildPool(pool, count).map(({ word, meaning }) => `${worksheetBlankRandomLetter(word)} (${meaning})`);
 }
 
-function worksheetBuildPreviewTitle(subject, grade, operation, range) {
-  const gradeLabel = { mamnon: 'Mầm non', lop1: 'Lớp 1', lop2: 'Lớp 2' }[grade];
+function worksheetBuildTreeBox(value) {
+  const box = document.createElement('span');
+  box.className = 'worksheet-tree__box';
+  if (value === null) {
+    box.classList.add('worksheet-tree__box--blank');
+  } else {
+    box.textContent = String(value);
+  }
+  return box;
+}
 
+function worksheetBuildTreeNode(tree) {
+  const wrap = document.createElement('div');
+  wrap.className = 'worksheet-tree';
+
+  const top = document.createElement('div');
+  top.className = 'worksheet-tree__top';
+  top.appendChild(worksheetBuildTreeBox(tree.whole));
+  wrap.appendChild(top);
+
+  const linesSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  linesSvg.setAttribute('class', 'worksheet-tree__lines');
+  linesSvg.setAttribute('viewBox', '0 0 100 30');
+  linesSvg.setAttribute('preserveAspectRatio', 'none');
+  ['18', '82'].forEach((x2) => {
+    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    line.setAttribute('x1', '50');
+    line.setAttribute('y1', '0');
+    line.setAttribute('x2', x2);
+    line.setAttribute('y2', '30');
+    linesSvg.appendChild(line);
+  });
+  wrap.appendChild(linesSvg);
+
+  const parts = document.createElement('div');
+  parts.className = 'worksheet-tree__parts';
+  parts.appendChild(worksheetBuildTreeBox(tree.left));
+  parts.appendChild(worksheetBuildTreeBox(tree.right));
+  wrap.appendChild(parts);
+
+  return wrap;
+}
+
+function worksheetBuildPreviewTitle(subject, operation, range) {
   if (subject === 'toan') {
-    const opLabel = { add: 'Phép cộng', sub: 'Phép trừ', mixed: 'Cộng trừ hỗn hợp' }[operation];
-    return `${opLabel} (${WORKSHEET_RANGE_LABELS[range]}) - ${gradeLabel}`;
+    const opLabel = { add: 'Phép cộng', sub: 'Phép trừ', mixed: 'Cộng trừ hỗn hợp', split: 'Tách - gộp số' }[operation];
+    return `${opLabel} (${WORKSHEET_RANGE_LABELS[range]})`;
   }
 
-  if (subject === 'tviet') return `Điền chữ còn thiếu - Tiếng Việt - ${gradeLabel}`;
-  return `Điền chữ còn thiếu - Tiếng Anh - ${gradeLabel}`;
+  if (subject === 'tviet') return 'Điền chữ còn thiếu - Tiếng Việt';
+  return 'Điền chữ còn thiếu - Tiếng Anh';
 }
 
 function worksheetGenerateBlockItems(blockEl, state) {
@@ -753,9 +804,11 @@ function worksheetGenerateBlockItems(blockEl, state) {
   return worksheetGenerateEnglishItems(count, WORKSHEET_EN_WORD_BANK[state.grade]);
 }
 
-function initWorksheetGenerator() {
+async function initWorksheetGenerator() {
   const section = document.querySelector('.worksheet-generator');
   if (!section) return;
+
+  await worksheetLoadWordBanks();
 
   const gradeSelect = section.querySelector('[data-filter-grade]');
   const subjectButtons = section.querySelectorAll('[data-subject]');
@@ -816,15 +869,26 @@ function initWorksheetGenerator() {
       const badge = document.createElement('span');
       badge.textContent = String(index + 1);
       titleEl.appendChild(badge);
-      titleEl.appendChild(document.createTextNode(worksheetBuildPreviewTitle(state.subject, state.grade, operation, range)));
+      titleEl.appendChild(document.createTextNode(worksheetBuildPreviewTitle(state.subject, operation, range)));
       sectionEl.appendChild(titleEl);
 
       const gridEl = document.createElement('div');
       gridEl.className = `worksheet-preview__grid worksheet-preview__grid--cols-${columns}`;
-      blockEl._wsItems.forEach((text, i) => {
+      blockEl._wsItems.forEach((entry, i) => {
         const item = document.createElement('div');
         item.className = 'worksheet-preview__item';
-        item.textContent = `${i + 1}. ${text}`;
+
+        if (entry && entry.tree) {
+          item.classList.add('worksheet-preview__item--tree');
+          const number = document.createElement('span');
+          number.className = 'worksheet-tree__number';
+          number.textContent = `${i + 1}.`;
+          item.appendChild(number);
+          item.appendChild(worksheetBuildTreeNode(entry.tree));
+        } else {
+          item.textContent = `${i + 1}. ${entry}`;
+        }
+
         gridEl.appendChild(item);
       });
       sectionEl.appendChild(gridEl);

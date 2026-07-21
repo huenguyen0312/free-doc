@@ -77,7 +77,8 @@ console.log('[SCSS] assets/css/style.css');
 copyDir(path.join(ASSETS_DIR, 'js'), path.join(DIST, 'assets', 'js'));
 copyDir(path.join(ASSETS_DIR, 'images'), path.join(DIST, 'assets', 'images'));
 copyDir(path.join(ASSETS_DIR, 'files'), path.join(DIST, 'assets', 'files'));
-console.log('[CPY] assets/js, assets/images, assets/files');
+copyDir(path.join(ASSETS_DIR, 'json'), path.join(DIST, 'assets', 'json'));
+console.log('[CPY] assets/js, assets/images, assets/files, assets/json');
 
 console.log(`\nBuild complete → dist/`);
 console.log(`  Pages compiled : ${compiled}`);

@@ -49,6 +49,7 @@ app.get('/assets/css/style.css', (req, res) => {
 app.use('/assets/js', express.static(path.join(ASSETS_DIR, 'js')));
 app.use('/assets/images', express.static(path.join(ASSETS_DIR, 'images')));
 app.use('/assets/files', express.static(path.join(ASSETS_DIR, 'files')));
+app.use('/assets/json', express.static(path.join(ASSETS_DIR, 'json')));
 
 app.get('/', (req, res) => res.redirect('/index.html'));
 
