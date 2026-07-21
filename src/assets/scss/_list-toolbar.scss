@@ -1,0 +1,81 @@
+@use 'variables' as v;
+
+// Row action (search + sort + view toggle) dùng chung cho các trang danh sách card
+// (worksheet-list, story-list, qa-list, tips-list, ...)
+.list-toolbar {
+  display: flex;
+  align-items: center;
+  gap: v.$spacing-unit * 2;
+  flex-wrap: wrap;
+  margin-bottom: v.$spacing-unit * 3;
+}
+
+.list-toolbar__view-toggle {
+  display: flex;
+  gap: v.$spacing-unit;
+  flex-shrink: 0;
+
+  button {
+    font: inherit;
+    font-size: 0.85rem;
+    cursor: pointer;
+    padding: (v.$spacing-unit * 0.75) (v.$spacing-unit * 1.5);
+    border: 1px solid v.$color-border;
+    border-radius: 8px;
+    background: v.$color-bg;
+    color: v.$color-text-light;
+
+    &.is-active {
+      background: v.$color-primary;
+      border-color: v.$color-primary;
+      color: v.$color-bg;
+    }
+  }
+}
+
+.list-toolbar__search {
+  flex: 1 1 220px;
+}
+
+.list-toolbar__search-input {
+  width: 100%;
+  font: inherit;
+  font-size: 0.9rem;
+  padding: (v.$spacing-unit * 1) (v.$spacing-unit * 1.5);
+  border: 1px solid v.$color-border;
+  border-radius: 8px;
+  background: v.$color-bg;
+  color: v.$color-text;
+  box-sizing: border-box;
+
+  &:focus {
+    outline: none;
+    border-color: v.$color-primary;
+  }
+}
+
+.list-toolbar__sort {
+  flex-shrink: 0;
+}
+
+.list-toolbar__sort-select {
+  font: inherit;
+  font-size: 0.9rem;
+  padding: (v.$spacing-unit * 1) (v.$spacing-unit * 1.5);
+  border: 1px solid v.$color-border;
+  border-radius: 8px;
+  background: v.$color-bg;
+  color: v.$color-text;
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+    border-color: v.$color-primary;
+  }
+}
+
+.list-empty {
+  color: v.$color-text-light;
+  text-align: center;
+  padding: v.$spacing-unit * 6 0;
+}

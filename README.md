@@ -117,6 +117,16 @@ Danh sách trang mẫu:
 | http://localhost:8080/lathinh/index.html | src/page/lathinh/index.ejs |
 | http://localhost:8080/tailieu/mamnon/index.html | src/page/tailieu/mamnon/index.ejs |
 
+### Chạy nhiều dự án song song (đổi port)
+
+Mặc định `server.js` chạy ở port 8080. Nếu bạn cần chạy song song dự án này với một dự án khác (cùng dùng port 8080), set biến môi trường `PORT` để đổi port:
+
+```bash
+PORT=8090 npm start
+```
+
+Mở trình duyệt: http://localhost:8090
+
 ## Build ra file tĩnh (HTML/CSS/JS thật)
 
 ```bash
@@ -142,6 +152,12 @@ npm run preview
 ```
 
 Mở trình duyệt: http://localhost:8081
+
+Tương tự `server.js`, có thể đổi port bằng biến môi trường `PORT` (ví dụ khi port 8081 đang bị dự án khác dùng):
+
+```bash
+PORT=8091 npm run preview
+```
 
 ## Cách thêm trang mới
 

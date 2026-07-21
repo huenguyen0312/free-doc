@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs');
 
 const DIST = path.join(__dirname, 'dist');
-const PORT = 8081;
+const PORT = process.env.PORT || 8081;
 
 if (!fs.existsSync(DIST)) {
   console.error('Chưa có thư mục dist/. Hãy chạy "npm run build" trước.');

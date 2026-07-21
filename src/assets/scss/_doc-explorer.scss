@@ -1,0 +1,305 @@
+@use 'variables' as v;
+
+// Layout dùng chung cho các trang "sidebar cây danh mục + nội dung tài liệu bên phải"
+// (ví dụ: tailieu/tieuhoc). Trang mới có bố cục tương tự chỉ cần include lại
+// component này với data khác, không cần style riêng.
+
+.doc-explorer {
+  background: v.$color-bg;
+}
+
+.doc-explorer__inner {
+  max-width: v.$max-width-lg;
+  margin: 0 auto;
+  padding: (v.$spacing-unit * 6) (v.$spacing-unit * 3);
+}
+
+.doc-explorer__title {
+  font-size: 2rem;
+  margin: 0 0 (v.$spacing-unit * 1.5);
+}
+
+.doc-explorer__desc {
+  color: v.$color-text-light;
+  margin: 0 0 (v.$spacing-unit * 5);
+}
+
+.doc-explorer__layout {
+  display: flex;
+  align-items: flex-start;
+  gap: v.$spacing-unit * 4;
+
+  @media (max-width: 860px) {
+    flex-direction: column;
+  }
+}
+
+// Sidebar - cây danh mục 3 cấp: group > subgroup > leaf
+.doc-explorer-sidebar {
+  flex: 0 0 280px;
+  width: 280px;
+  background: v.$color-bg-alt;
+  border: 1px solid v.$color-border;
+  border-radius: 12px;
+  padding: v.$spacing-unit * 2;
+  position: sticky;
+  top: 40px;
+  max-height: 100vh;
+  overflow-y: auto;
+
+  @media (max-width: 860px) {
+    width: 100%;
+    flex: 1 1 auto;
+    position: static;
+    max-height: none;
+    overflow-y: visible;
+  }
+}
+
+.doc-explorer-sidebar__group {
+  border-bottom: 1px solid v.$color-border;
+
+  &:last-child {
+    border-bottom: 0;
+  }
+}
+
+.doc-explorer-sidebar__group-toggle,
+.doc-explorer-sidebar__subgroup-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font: inherit;
+  text-align: left;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  color: v.$color-text;
+}
+
+.doc-explorer-sidebar__group-toggle {
+  font-weight: bold;
+  padding: v.$spacing-unit * 1.5 v.$spacing-unit;
+}
+
+.doc-explorer-sidebar__chevron {
+  transition: transform 0.2s;
+  color: v.$color-text-light;
+}
+
+.doc-explorer-sidebar__group.is-open > .doc-explorer-sidebar__group-toggle .doc-explorer-sidebar__chevron,
+.doc-explorer-sidebar__subgroup.is-open > .doc-explorer-sidebar__subgroup-toggle .doc-explorer-sidebar__chevron {
+  transform: rotate(180deg);
+}
+
+.doc-explorer-sidebar__group-body {
+  display: none;
+  padding: 0 0 v.$spacing-unit (v.$spacing-unit * 1.5);
+}
+
+.doc-explorer-sidebar__group.is-open > .doc-explorer-sidebar__group-body {
+  display: block;
+}
+
+.doc-explorer-sidebar__subgroup {
+  margin-bottom: v.$spacing-unit;
+}
+
+.doc-explorer-sidebar__subgroup-toggle {
+  padding: v.$spacing-unit;
+  border-radius: 8px;
+
+  &:hover,
+  &.is-active {
+    background: rgba(v.$color-primary, 0.08);
+    color: v.$color-primary;
+  }
+}
+
+.doc-explorer-sidebar__subgroup-body {
+  display: none;
+  list-style: none;
+  margin: v.$spacing-unit 0 0;
+  padding: 0 0 0 (v.$spacing-unit * 1.5);
+}
+
+.doc-explorer-sidebar__subgroup.is-open > .doc-explorer-sidebar__subgroup-body {
+  display: block;
+}
+
+.doc-explorer-sidebar__leaf {
+  width: 100%;
+  display: block;
+  text-align: left;
+  font: inherit;
+  font-size: 0.9rem;
+  padding: (v.$spacing-unit * 0.75) v.$spacing-unit;
+  margin-bottom: 2px;
+  background: none;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+  color: v.$color-text-light;
+
+  &:hover,
+  &.is-active {
+    background: rgba(v.$color-primary, 0.08);
+    color: v.$color-primary;
+    font-weight: bold;
+  }
+}
+
+// Main content
+.doc-explorer-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.doc-explorer-main__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: v.$spacing-unit * 2;
+  margin-bottom: v.$spacing-unit * 3;
+}
+
+.doc-explorer-main__breadcrumb {
+  color: v.$color-text-light;
+  margin: 0;
+}
+
+.doc-explorer-main__title {
+  font-size: 1.3rem;
+  margin: 0;
+  color: v.$color-primary;
+}
+
+.doc-explorer-main__view-toggle {
+  display: flex;
+  gap: v.$spacing-unit;
+  flex-shrink: 0;
+
+  button {
+    font: inherit;
+    font-size: 0.85rem;
+    cursor: pointer;
+    padding: (v.$spacing-unit * 0.75) (v.$spacing-unit * 1.5);
+    border: 1px solid v.$color-border;
+    border-radius: 8px;
+    background: v.$color-bg;
+    color: v.$color-text-light;
+
+    &.is-active {
+      background: v.$color-primary;
+      border-color: v.$color-primary;
+      color: v.$color-bg;
+    }
+  }
+}
+
+.doc-explorer-main__empty {
+  color: v.$color-text-light;
+  text-align: center;
+  padding: v.$spacing-unit * 6 0;
+}
+
+.doc-explorer-main__group {
+  margin-bottom: v.$spacing-unit * 4;
+}
+
+.doc-explorer-main__group-title {
+  font-size: 1.05rem;
+  margin: 0 0 (v.$spacing-unit * 2);
+  padding-bottom: v.$spacing-unit;
+  border-bottom: 2px solid rgba(v.$color-primary, 0.08);
+  color: v.$color-text;
+}
+
+.doc-explorer-main__cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: v.$spacing-unit * 2.5;
+
+  @media (max-width: 1100px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.doc-explorer-main__docs--list .doc-explorer-main__cards {
+  grid-template-columns: 1fr;
+}
+
+// Doc card - dùng chung cho mọi danh sách tài liệu (grid hoặc list)
+.doc-card {
+  background: v.$color-bg-alt;
+  border: 1px solid v.$color-border;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: box-shadow 0.2s, transform 0.2s;
+
+  &:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+  }
+}
+
+.doc-card__link {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  color: inherit;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.doc-card__image {
+  position: relative;
+  width: 100%;
+  padding-top: 70%;
+
+  img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.doc-card__body {
+  padding: v.$spacing-unit * 2;
+
+  h4 {
+    margin: 0 0 v.$spacing-unit;
+    font-size: 0.95rem;
+  }
+
+  p {
+    margin: 0;
+    color: v.$color-text-light;
+    font-size: 0.85rem;
+  }
+}
+
+.doc-explorer-main__docs--list .doc-card__link {
+  flex-direction: row;
+}
+
+.doc-explorer-main__docs--list .doc-card__image {
+  width: 140px;
+  flex: 0 0 140px;
+  height: 100px;
+  padding-top: 0;
+}
+
+.doc-explorer-main__docs--list .doc-card__body {
+  flex: 1;
+}

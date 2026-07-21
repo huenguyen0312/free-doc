@@ -34,6 +34,25 @@
   }
 }
 
+.qa-list__row--list {
+  grid-template-columns: 1fr;
+
+  .qa-list__card-link {
+    flex-direction: row;
+  }
+
+  .qa-list__image {
+    width: 160px;
+    flex: 0 0 160px;
+    height: 110px;
+    padding-top: 0;
+  }
+
+  .qa-list__body {
+    flex: 1;
+  }
+}
+
 .qa-list__card {
   background: v.$color-bg-alt;
   border: 1px solid v.$color-border;

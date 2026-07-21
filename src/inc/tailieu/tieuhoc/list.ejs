@@ -1,0 +1,105 @@
+<%
+  const GRADE_TITLES = ['Lớp 1', 'Lớp 2', 'Lớp 3', 'Lớp 4', 'Lớp 5'];
+  const SUBJECT_TITLES = ['Toán', 'Tiếng Việt'];
+  const CATEGORY_TITLES = [
+    'Lý thuyết',
+    'Đề ôn tập học kỳ 1',
+    'Đề ôn cuối năm',
+    'Phiếu bài tập hàng ngày',
+    'Bài tập cuối tuần',
+  ];
+  const DOC_TEMPLATES = [
+    { suffix: 'Bài số 1', desc: 'Tài liệu luyện tập cơ bản, phù hợp cho bé mới bắt đầu ôn luyện.' },
+    { suffix: 'Bài số 2', desc: 'Tài liệu nâng cao, giúp bé rèn luyện tư duy và kỹ năng làm bài.' },
+    { suffix: 'Bài số 3', desc: 'Tổng hợp dạng bài thường gặp, có hướng dẫn giải chi tiết.' },
+  ];
+
+  function slugify(str) {
+    return str
+      .toLowerCase()
+      .replace(/đ/g, 'd')
+      .normalize('NFD')
+      .replace(/[̀-ͯ]/g, '')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
+  }
+
+  const grades = GRADE_TITLES.map((gradeTitle) => ({
+    key: slugify(gradeTitle),
+    title: gradeTitle,
+    subjects: SUBJECT_TITLES.map((subjectTitle) => ({
+      key: slugify(subjectTitle),
+      title: subjectTitle,
+      categories: CATEGORY_TITLES.map((categoryTitle) => ({
+        key: slugify(categoryTitle),
+        title: categoryTitle,
+        documents: DOC_TEMPLATES.map((doc) => ({
+          title: `${categoryTitle} - ${doc.suffix}`,
+          desc: doc.desc,
+          image: '/assets/images/worksheet-placeholder.svg',
+          file: '/assets/files/sample02.pdf',
+        })),
+      })),
+    })),
+  }));
+%>
+<section class="doc-explorer">
+  <div class="doc-explorer__inner">
+    <h1 class="doc-explorer__title">Tài Liệu Tiểu Học</h1>
+    <p class="doc-explorer__desc">Tuyển tập lý thuyết, đề ôn tập và phiếu bài tập theo từng khối lớp, từng môn học dành cho học sinh tiểu học (6–10 tuổi).</p>
+
+    <div class="doc-explorer__layout">
+      <nav class="doc-explorer-sidebar" data-doc-explorer-sidebar>
+        <% grades.forEach((grade, gradeIndex) => { %>
+          <div class="doc-explorer-sidebar__group<%= gradeIndex === 0 ? ' is-open' : '' %>" data-group="<%= grade.key %>">
+            <button type="button" class="doc-explorer-sidebar__group-toggle" data-group-toggle>
+              <span><%= grade.title %></span>
+              <span class="doc-explorer-sidebar__chevron" aria-hidden="true">▾</span>
+            </button>
+            <div class="doc-explorer-sidebar__group-body">
+              <% grade.subjects.forEach((subject) => { %>
+                <div class="doc-explorer-sidebar__subgroup" data-subgroup="<%= grade.key %>__<%= subject.key %>">
+                  <button type="button" class="doc-explorer-sidebar__subgroup-toggle" data-subgroup-toggle>
+                    <span><%= subject.title %></span>
+                    <span class="doc-explorer-sidebar__chevron" aria-hidden="true">▾</span>
+                  </button>
+                  <ul class="doc-explorer-sidebar__subgroup-body">
+                    <% subject.categories.forEach((category) => { %>
+                      <li>
+                        <button
+                          type="button"
+                          class="doc-explorer-sidebar__leaf"
+                          data-leaf-select
+                          data-target="<%= grade.key %>__<%= subject.key %>__<%= category.key %>"
+                        ><%= category.title %></button>
+                      </li>
+                    <% }); %>
+                  </ul>
+                </div>
+              <% }); %>
+            </div>
+          </div>
+        <% }); %>
+      </nav>
+
+      <div class="doc-explorer-main" data-doc-explorer-main>
+        <div class="doc-explorer-main__header">
+          <div>
+            <p class="doc-explorer-main__breadcrumb" data-doc-explorer-breadcrumb>👉 Chọn một môn học hoặc mục nhỏ ở bên trái để xem tài liệu</p>
+            <h2 class="doc-explorer-main__title" data-doc-explorer-title hidden></h2>
+          </div>
+          <div class="doc-explorer-main__view-toggle" data-doc-explorer-view-toggle hidden>
+            <button type="button" class="is-active" data-view="grid">⊞ Lưới</button>
+            <button type="button" data-view="list">☰ Danh sách</button>
+          </div>
+        </div>
+
+        <p class="doc-explorer-main__empty" data-doc-explorer-empty>Chưa có tài liệu nào được chọn.</p>
+
+        <div class="doc-explorer-main__docs" data-doc-explorer-docs hidden></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script type="application/json" id="doc-explorer-data"><%- JSON.stringify(grades) %></script>

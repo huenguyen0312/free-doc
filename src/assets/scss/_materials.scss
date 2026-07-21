@@ -67,6 +67,11 @@
   h3 {
     color: v.$color-age-tieuhoc;
   }
+
+  &:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+  }
 }
 
 .materials__list {

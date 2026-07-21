@@ -76,7 +76,8 @@ console.log('[SCSS] assets/css/style.css');
 // 3. Copy JS & images nguyên trạng
 copyDir(path.join(ASSETS_DIR, 'js'), path.join(DIST, 'assets', 'js'));
 copyDir(path.join(ASSETS_DIR, 'images'), path.join(DIST, 'assets', 'images'));
-console.log('[CPY] assets/js, assets/images');
+copyDir(path.join(ASSETS_DIR, 'files'), path.join(DIST, 'assets', 'files'));
+console.log('[CPY] assets/js, assets/images, assets/files');
 
 console.log(`\nBuild complete → dist/`);
 console.log(`  Pages compiled : ${compiled}`);

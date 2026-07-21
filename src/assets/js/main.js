@@ -4,6 +4,12 @@ document.addEventListener('DOMContentLoaded', () => {
   initMemoryGame();
   initFlashcardQuiz();
   initMemoryLevels();
+  initDocExplorer();
+  initDocPreviewPage();
+  initWorksheetList();
+  initStoryList();
+  initQaList();
+  initTipsList();
 });
 
 function initQuizGame() {
@@ -251,4 +257,329 @@ function initMemoryLevels() {
   });
 
   buildLevel(1);
+}
+
+function openDocPreviewPage(doc) {
+  const params = new URLSearchParams({
+    title: doc.title,
+    desc: doc.desc,
+    file: doc.file,
+  });
+  window.open(`/doc-preview/index.html?${params.toString()}`, '_blank');
+}
+
+function createDocCard(doc) {
+  const article = document.createElement('article');
+  article.className = 'doc-card';
+
+  const link = document.createElement('a');
+  link.className = 'doc-card__link';
+  link.href = '#';
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    openDocPreviewPage(doc);
+  });
+
+  const imageWrap = document.createElement('div');
+  imageWrap.className = 'doc-card__image';
+  const img = document.createElement('img');
+  img.src = doc.image;
+  img.alt = doc.title;
+  imageWrap.appendChild(img);
+
+  const body = document.createElement('div');
+  body.className = 'doc-card__body';
+  const h4 = document.createElement('h4');
+  h4.textContent = doc.title;
+  const p = document.createElement('p');
+  p.textContent = doc.desc;
+  body.appendChild(h4);
+  body.appendChild(p);
+
+  link.appendChild(imageWrap);
+  link.appendChild(body);
+  article.appendChild(link);
+  return article;
+}
+
+function renderDocGroups(container, groups) {
+  container.innerHTML = '';
+  groups.forEach((group) => {
+    const groupEl = document.createElement('div');
+    groupEl.className = 'doc-explorer-main__group';
+
+    if (group.heading) {
+      const h3 = document.createElement('h3');
+      h3.className = 'doc-explorer-main__group-title';
+      h3.textContent = group.heading;
+      groupEl.appendChild(h3);
+    }
+
+    const cardsWrap = document.createElement('div');
+    cardsWrap.className = 'doc-explorer-main__cards';
+    group.documents.forEach((doc) => cardsWrap.appendChild(createDocCard(doc)));
+    groupEl.appendChild(cardsWrap);
+
+    container.appendChild(groupEl);
+  });
+}
+
+function initDocExplorer() {
+  const sidebar = document.querySelector('[data-doc-explorer-sidebar]');
+  const dataEl = document.getElementById('doc-explorer-data');
+  if (!sidebar || !dataEl) return;
+
+  const grades = JSON.parse(dataEl.textContent);
+  const subjectIndex = {};
+  const categoryIndex = {};
+
+  grades.forEach((grade) => {
+    grade.subjects.forEach((subject) => {
+      const subjectKey = `${grade.key}__${subject.key}`;
+      subjectIndex[subjectKey] = {
+        breadcrumb: `${grade.title} • ${subject.title}`,
+        groups: subject.categories.map((category) => ({
+          heading: category.title,
+          documents: category.documents,
+        })),
+      };
+
+      subject.categories.forEach((category) => {
+        const categoryKey = `${subjectKey}__${category.key}`;
+        categoryIndex[categoryKey] = {
+          breadcrumb: `${grade.title} • ${subject.title} • ${category.title}`,
+          groups: [{ heading: null, documents: category.documents }],
+        };
+      });
+    });
+  });
+
+  const main = document.querySelector('[data-doc-explorer-main]');
+  const emptyMsg = main.querySelector('[data-doc-explorer-empty]');
+  const titleEl = main.querySelector('[data-doc-explorer-title]');
+  const viewToggle = main.querySelector('[data-doc-explorer-view-toggle]');
+  const docsWrap = main.querySelector('[data-doc-explorer-docs]');
+  const viewButtons = viewToggle.querySelectorAll('[data-view]');
+
+  let viewMode = 'grid';
+
+  function selectEntry(entry, activeEl) {
+    sidebar.querySelectorAll('.is-active').forEach((el) => el.classList.remove('is-active'));
+    if (activeEl) activeEl.classList.add('is-active');
+
+    titleEl.textContent = entry.breadcrumb;
+    titleEl.hidden = false;
+    emptyMsg.hidden = true;
+    viewToggle.hidden = false;
+    docsWrap.hidden = false;
+    docsWrap.className = `doc-explorer-main__docs doc-explorer-main__docs--${viewMode}`;
+    renderDocGroups(docsWrap, entry.groups);
+  }
+
+  function openOnly(el, siblings) {
+    const wasOpen = el.classList.contains('is-open');
+    siblings.forEach((sibling) => sibling.classList.remove('is-open'));
+    if (!wasOpen) el.classList.add('is-open');
+  }
+
+  sidebar.querySelectorAll('[data-group-toggle]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const groupEl = btn.closest('[data-group]');
+      openOnly(groupEl, sidebar.querySelectorAll('[data-group]'));
+    });
+  });
+
+  sidebar.querySelectorAll('[data-subgroup-toggle]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const subgroupEl = btn.closest('[data-subgroup]');
+      openOnly(subgroupEl, sidebar.querySelectorAll('[data-subgroup]'));
+
+      const entry = subjectIndex[subgroupEl.dataset.subgroup];
+      if (entry) selectEntry(entry, btn);
+    });
+  });
+
+  sidebar.querySelectorAll('[data-leaf-select]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const entry = categoryIndex[btn.dataset.target];
+      if (entry) selectEntry(entry, btn);
+    });
+  });
+
+  viewButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      viewMode = btn.dataset.view;
+      viewButtons.forEach((b) => b.classList.toggle('is-active', b === btn));
+      docsWrap.className = `doc-explorer-main__docs doc-explorer-main__docs--${viewMode}`;
+    });
+  });
+}
+
+function initDocPreviewPage() {
+  const titleEl = document.querySelector('[data-doc-preview-page-title]');
+  const pdfFrame = document.querySelector('[data-doc-preview-page-pdf]');
+  const descEl = document.querySelector('[data-doc-preview-page-desc]');
+  if (!titleEl || !pdfFrame || !descEl) return;
+
+  const params = new URLSearchParams(window.location.search);
+  const title = params.get('title') || 'Tài liệu';
+  const desc = params.get('desc') || '';
+  const file = params.get('file') || '';
+
+  document.title = `FreeDoc - ${title}`;
+  titleEl.textContent = title;
+  descEl.textContent = desc;
+  pdfFrame.src = file;
+}
+
+function createListCard(prefix, item, options) {
+  const article = document.createElement('article');
+  article.className = `${prefix}__card`;
+
+  const link = document.createElement('a');
+  link.className = `${prefix}__card-link`;
+  link.href = '#';
+  link.addEventListener('click', (e) => e.preventDefault());
+
+  const imageWrap = document.createElement('div');
+  imageWrap.className = `${prefix}__image`;
+  const img = document.createElement('img');
+  img.src = item.image;
+  img.alt = item.title;
+  imageWrap.appendChild(img);
+
+  const body = document.createElement('div');
+  body.className = `${prefix}__body`;
+  const h3 = document.createElement('h3');
+  h3.textContent = item.title;
+  const p = document.createElement('p');
+  p.textContent = item.desc;
+  body.appendChild(h3);
+  body.appendChild(p);
+
+  if (options && options.readMoreText) {
+    const readMore = document.createElement('span');
+    readMore.className = `${prefix}__read-more`;
+    readMore.textContent = options.readMoreText;
+    body.appendChild(readMore);
+  }
+
+  link.appendChild(imageWrap);
+  link.appendChild(body);
+  article.appendChild(link);
+  return article;
+}
+
+// Toolbar dùng chung (search + sort + grid/list) cho các trang danh sách card
+// có data-* root + <script type="application/json"> chứa item list.
+function initFilterableList(config) {
+  const root = document.querySelector(config.rootSelector);
+  const dataEl = document.getElementById(config.dataElId);
+  if (!root || !dataEl) return;
+
+  const items = JSON.parse(dataEl.textContent);
+  const rowEl = root.querySelector(config.rowSelector);
+  const emptyEl = root.querySelector(config.emptySelector);
+  const searchInput = root.querySelector('[data-list-search]');
+  const sortSelect = root.querySelector('[data-list-sort]');
+  const viewButtons = root.querySelectorAll('[data-view]');
+
+  let viewMode = 'grid';
+
+  function render() {
+    const keyword = searchInput.value.trim().toLowerCase();
+    const sortFn = config.sortFns[sortSelect.value] || config.sortFns.default;
+    const filtered = items
+      .filter((item) => item.title.toLowerCase().includes(keyword))
+      .slice()
+      .sort(sortFn);
+
+    rowEl.innerHTML = '';
+    rowEl.className = `${config.rowBaseClass} ${config.rowBaseClass}--${viewMode}`;
+    filtered.forEach((item) => rowEl.appendChild(config.createCard(item)));
+
+    emptyEl.hidden = filtered.length > 0;
+    rowEl.hidden = filtered.length === 0;
+  }
+
+  searchInput.addEventListener('input', render);
+  sortSelect.addEventListener('change', render);
+
+  viewButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      viewMode = btn.dataset.view;
+      viewButtons.forEach((b) => b.classList.toggle('is-active', b === btn));
+      render();
+    });
+  });
+
+  render();
+}
+
+function initWorksheetList() {
+  initFilterableList({
+    rootSelector: '[data-worksheet-list]',
+    dataElId: 'worksheet-list-data',
+    rowSelector: '[data-worksheet-row]',
+    emptySelector: '[data-worksheet-empty]',
+    rowBaseClass: 'worksheet-list__row',
+    createCard: (item) => createListCard('worksheet-list', item),
+    sortFns: {
+      date_desc: (a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0),
+      views_desc: (a, b) => b.views - a.views,
+      title_asc: (a, b) => a.title.localeCompare(b.title, 'vi'),
+      default: (a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0),
+    },
+  });
+}
+
+function initStoryList() {
+  initFilterableList({
+    rootSelector: '[data-story-list]',
+    dataElId: 'story-list-data',
+    rowSelector: '[data-story-row]',
+    emptySelector: '[data-story-empty]',
+    rowBaseClass: 'story-list__row',
+    createCard: (item) => createListCard('story-list', item, { readMoreText: 'Đọc tiếp →' }),
+    sortFns: {
+      title_asc: (a, b) => a.title.localeCompare(b.title, 'vi'),
+      views_desc: (a, b) => b.views - a.views,
+      likes_desc: (a, b) => b.likes - a.likes,
+      default: (a, b) => a.title.localeCompare(b.title, 'vi'),
+    },
+  });
+}
+
+function initQaList() {
+  initFilterableList({
+    rootSelector: '[data-qa-list]',
+    dataElId: 'qa-list-data',
+    rowSelector: '[data-qa-row]',
+    emptySelector: '[data-qa-empty]',
+    rowBaseClass: 'qa-list__row',
+    createCard: (item) => createListCard('qa-list', item, { readMoreText: 'Đọc tiếp →' }),
+    sortFns: {
+      title_asc: (a, b) => a.title.localeCompare(b.title, 'vi'),
+      views_desc: (a, b) => b.views - a.views,
+      likes_desc: (a, b) => b.likes - a.likes,
+      default: (a, b) => a.title.localeCompare(b.title, 'vi'),
+    },
+  });
+}
+
+function initTipsList() {
+  initFilterableList({
+    rootSelector: '[data-tips-list]',
+    dataElId: 'tips-list-data',
+    rowSelector: '[data-tips-row]',
+    emptySelector: '[data-tips-empty]',
+    rowBaseClass: 'tips-list__row',
+    createCard: (item) => createListCard('tips-list', item, { readMoreText: 'Đọc tiếp →' }),
+    sortFns: {
+      title_asc: (a, b) => a.title.localeCompare(b.title, 'vi'),
+      views_desc: (a, b) => b.views - a.views,
+      likes_desc: (a, b) => b.likes - a.likes,
+      default: (a, b) => a.title.localeCompare(b.title, 'vi'),
+    },
+  });
 }

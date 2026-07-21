@@ -1,5 +1,6 @@
 // Entry point - build.js / server.js chỉ compile file này
 @use 'base';
+@use 'list-toolbar';
 @use 'header';
 @use 'footer';
 @use 'keyvisual';
@@ -13,3 +14,5 @@
 @use 'quiz';
 @use 'memory-page';
 @use 'worksheet-list';
+@use 'doc-explorer';
+@use 'doc-preview-page';

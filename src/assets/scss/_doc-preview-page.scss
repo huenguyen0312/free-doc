@@ -1,0 +1,63 @@
+@use 'variables' as v;
+
+// Page xem trước tài liệu (mở từ doc-card qua tab mới) - dùng chung, không phụ thuộc trang nào cụ thể
+.doc-preview-page {
+  background: v.$color-bg;
+}
+
+.doc-preview-page__inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: (v.$spacing-unit * 5) (v.$spacing-unit * 3);
+}
+
+.doc-preview-page__title {
+  font-size: 1.5rem;
+  margin: 0 0 (v.$spacing-unit * 3);
+  color: v.$color-text;
+}
+
+.doc-preview-page__pdf {
+  display: block;
+  width: 100%;
+  height: 80vh;
+  min-height: 480px;
+  margin: 0 0 (v.$spacing-unit * 3);
+  border: 1px solid v.$color-border;
+  border-radius: 12px;
+  background: v.$color-bg-alt;
+}
+
+.doc-preview-page__desc {
+  margin: 0 0 (v.$spacing-unit * 4);
+  color: v.$color-text-light;
+}
+
+.doc-preview-page__actions {
+  display: flex;
+}
+
+.doc-preview-page__download {
+  padding: (v.$spacing-unit * 1.5) (v.$spacing-unit * 4);
+  border: 0;
+  border-radius: 8px;
+  background: v.$color-primary;
+  color: v.$color-bg;
+  font: inherit;
+  font-weight: bold;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+@media (max-width: 640px) {
+  .doc-preview-page__pdf {
+    height: 65vh;
+  }
+
+  .doc-preview-page__download {
+    width: 100%;
+  }
+}

@@ -37,13 +37,40 @@
       link: '#',
     },
   ];
+
+  // Data demo cho sort: lượt xem / lượt yêu thích xen kẽ theo index
+  questions.forEach((question, i) => {
+    question.views = ((i * 53 + 120) % 850) + 60;
+    question.likes = ((i * 29 + 40) % 300) + 10;
+  });
 %>
-<section class="qa-list">
+<section class="qa-list" data-qa-list>
   <div class="qa-list__inner">
     <h1 class="qa-list__title">1001 Câu Hỏi Vì Sao</h1>
     <p class="qa-list__desc">Giải đáp những thắc mắc ngây ngô, đáng yêu của bé về thế giới xung quanh.</p>
 
-    <div class="qa-list__row">
+    <div class="list-toolbar">
+      <div class="list-toolbar__view-toggle">
+        <button type="button" class="is-active" data-view="grid" aria-label="Hiển thị dạng lưới">⊞ Lưới</button>
+        <button type="button" data-view="list" aria-label="Hiển thị dạng danh sách">☰ Danh sách</button>
+      </div>
+
+      <div class="list-toolbar__search">
+        <input type="text" class="list-toolbar__search-input" data-list-search placeholder="Tìm câu hỏi...">
+      </div>
+
+      <div class="list-toolbar__sort">
+        <select class="list-toolbar__sort-select" data-list-sort>
+          <option value="title_asc">Tên câu hỏi (A-Z)</option>
+          <option value="views_desc">Lượt xem nhiều nhất</option>
+          <option value="likes_desc">Lượt yêu thích nhiều nhất</option>
+        </select>
+      </div>
+    </div>
+
+    <p class="list-empty" data-qa-empty hidden>Không tìm thấy câu hỏi phù hợp.</p>
+
+    <div class="qa-list__row" data-qa-row>
       <% questions.forEach((question) => { %>
         <article class="qa-list__card">
           <a class="qa-list__card-link" href="<%= question.link %>">
@@ -61,3 +88,5 @@
     </div>
   </div>
 </section>
+
+<script type="application/json" id="qa-list-data"><%- JSON.stringify(questions) %></script>

@@ -23,18 +23,49 @@
     { title: 'Tô màu theo số', desc: 'Tô màu theo đúng số quy định để hoàn thiện bức tranh.' },
     { title: 'Tô nét', desc: 'Luyện tô theo nét chấm mờ để rèn sự khéo léo của tay.' },
   ];
+
+  // Data demo cho sort: ngày đăng giảm dần theo index, lượt xem/tải xen kẽ để có thứ tự khác ngày đăng
+  const BASE_DATE = new Date('2026-07-01');
+  worksheets.forEach((sheet, i) => {
+    const d = new Date(BASE_DATE);
+    d.setDate(d.getDate() - i * 3);
+    sheet.image = '/assets/images/worksheet-placeholder.svg';
+    sheet.date = d.toISOString().slice(0, 10);
+    sheet.views = ((i * 53 + 120) % 850) + 60;
+  });
 %>
-<section class="worksheet-list">
+<section class="worksheet-list" data-worksheet-list>
   <div class="worksheet-list__inner">
     <h1 class="worksheet-list__title">Tài Liệu Mầm Non &amp; Tiền Tiểu Học</h1>
     <p class="worksheet-list__desc">Tuyển tập bài tập, phiếu luyện tập giúp bé mầm non &amp; tiền tiểu học làm quen với chữ, số và tư duy logic.</p>
 
-    <div class="worksheet-list__row">
+    <div class="list-toolbar">
+      <div class="list-toolbar__view-toggle">
+        <button type="button" class="is-active" data-view="grid" aria-label="Hiển thị dạng lưới">⊞ Lưới</button>
+        <button type="button" data-view="list" aria-label="Hiển thị dạng danh sách">☰ Danh sách</button>
+      </div>
+
+      <div class="list-toolbar__search">
+        <input type="text" class="list-toolbar__search-input" data-list-search placeholder="Tìm tài liệu...">
+      </div>
+
+      <div class="list-toolbar__sort">
+        <select class="list-toolbar__sort-select" data-list-sort>
+          <option value="date_desc">Mới đăng gần đây</option>
+          <option value="views_desc">Lượt xem / tải nhiều nhất</option>
+          <option value="title_asc">Tên tài liệu (A-Z)</option>
+        </select>
+      </div>
+    </div>
+
+    <p class="list-empty" data-worksheet-empty hidden>Không tìm thấy tài liệu phù hợp.</p>
+
+    <div class="worksheet-list__row" data-worksheet-row>
       <% worksheets.forEach((sheet) => { %>
         <article class="worksheet-list__card">
           <a class="worksheet-list__card-link" href="#">
             <div class="worksheet-list__image">
-              <img src="/assets/images/worksheet-placeholder.svg" alt="<%= sheet.title %>">
+              <img src="<%= sheet.image %>" alt="<%= sheet.title %>">
             </div>
             <div class="worksheet-list__body">
               <h3><%= sheet.title %></h3>
@@ -46,3 +77,5 @@
     </div>
   </div>
 </section>
+
+<script type="application/json" id="worksheet-list-data"><%- JSON.stringify(worksheets) %></script>

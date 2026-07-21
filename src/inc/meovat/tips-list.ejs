@@ -37,13 +37,40 @@
       link: '#',
     },
   ];
+
+  // Data demo cho sort: lượt xem / lượt yêu thích xen kẽ theo index
+  tips.forEach((tip, i) => {
+    tip.views = ((i * 53 + 120) % 850) + 60;
+    tip.likes = ((i * 29 + 40) % 300) + 10;
+  });
 %>
-<section class="tips-list">
+<section class="tips-list" data-tips-list>
   <div class="tips-list__inner">
     <h1 class="tips-list__title">Mẹo Hay Mỗi Ngày</h1>
     <p class="tips-list__desc">Những mẹo vặt cuộc sống nhỏ xinh, dễ làm giúp bé thêm khéo léo và tự lập mỗi ngày.</p>
 
-    <div class="tips-list__row">
+    <div class="list-toolbar">
+      <div class="list-toolbar__view-toggle">
+        <button type="button" class="is-active" data-view="grid" aria-label="Hiển thị dạng lưới">⊞ Lưới</button>
+        <button type="button" data-view="list" aria-label="Hiển thị dạng danh sách">☰ Danh sách</button>
+      </div>
+
+      <div class="list-toolbar__search">
+        <input type="text" class="list-toolbar__search-input" data-list-search placeholder="Tìm mẹo hay...">
+      </div>
+
+      <div class="list-toolbar__sort">
+        <select class="list-toolbar__sort-select" data-list-sort>
+          <option value="title_asc">Tên mẹo (A-Z)</option>
+          <option value="views_desc">Lượt xem nhiều nhất</option>
+          <option value="likes_desc">Lượt yêu thích nhiều nhất</option>
+        </select>
+      </div>
+    </div>
+
+    <p class="list-empty" data-tips-empty hidden>Không tìm thấy mẹo phù hợp.</p>
+
+    <div class="tips-list__row" data-tips-row>
       <% tips.forEach((tip) => { %>
         <article class="tips-list__card">
           <a class="tips-list__card-link" href="<%= tip.link %>">
@@ -61,3 +88,5 @@
     </div>
   </div>
 </section>
+
+<script type="application/json" id="tips-list-data"><%- JSON.stringify(tips) %></script>

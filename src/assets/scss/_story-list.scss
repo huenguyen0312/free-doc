@@ -34,6 +34,25 @@
   }
 }
 
+.story-list__row--list {
+  grid-template-columns: 1fr;
+
+  .story-list__card-link {
+    flex-direction: row;
+  }
+
+  .story-list__image {
+    width: 160px;
+    flex: 0 0 160px;
+    height: 110px;
+    padding-top: 0;
+  }
+
+  .story-list__body {
+    flex: 1;
+  }
+}
+
 .story-list__card {
   background: v.$color-bg-alt;
   border: 1px solid v.$color-border;

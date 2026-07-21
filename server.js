@@ -5,7 +5,7 @@ const path = require('path');
 const fs = require('fs');
 
 const app = express();
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
 const ROOT = __dirname;
 const SRC = path.join(ROOT, 'src');
 const PAGE_DIR = path.join(SRC, 'page');
@@ -48,6 +48,7 @@ app.get('/assets/css/style.css', (req, res) => {
 
 app.use('/assets/js', express.static(path.join(ASSETS_DIR, 'js')));
 app.use('/assets/images', express.static(path.join(ASSETS_DIR, 'images')));
+app.use('/assets/files', express.static(path.join(ASSETS_DIR, 'files')));
 
 app.get('/', (req, res) => res.redirect('/index.html'));
 

@@ -37,13 +37,40 @@
       link: '#',
     },
   ];
+
+  // Data demo cho sort: lượt xem / lượt yêu thích xen kẽ theo index
+  stories.forEach((story, i) => {
+    story.views = ((i * 53 + 120) % 850) + 60;
+    story.likes = ((i * 29 + 40) % 300) + 10;
+  });
 %>
-<section class="story-list">
+<section class="story-list" data-story-list>
   <div class="story-list__inner">
     <h1 class="story-list__title">Truyện Kể Cho Bé</h1>
     <p class="story-list__desc">Tuyển tập những câu truyện ngắn hay, bổ ích, phù hợp để bố mẹ kể cho bé nghe mỗi ngày.</p>
 
-    <div class="story-list__row">
+    <div class="list-toolbar">
+      <div class="list-toolbar__view-toggle">
+        <button type="button" class="is-active" data-view="grid" aria-label="Hiển thị dạng lưới">⊞ Lưới</button>
+        <button type="button" data-view="list" aria-label="Hiển thị dạng danh sách">☰ Danh sách</button>
+      </div>
+
+      <div class="list-toolbar__search">
+        <input type="text" class="list-toolbar__search-input" data-list-search placeholder="Tìm truyện...">
+      </div>
+
+      <div class="list-toolbar__sort">
+        <select class="list-toolbar__sort-select" data-list-sort>
+          <option value="title_asc">Tên truyện (A-Z)</option>
+          <option value="views_desc">Lượt xem nhiều nhất</option>
+          <option value="likes_desc">Lượt yêu thích nhiều nhất</option>
+        </select>
+      </div>
+    </div>
+
+    <p class="list-empty" data-story-empty hidden>Không tìm thấy truyện phù hợp.</p>
+
+    <div class="story-list__row" data-story-row>
       <% stories.forEach((story) => { %>
         <article class="story-list__card">
           <a class="story-list__card-link" href="<%= story.link %>">
@@ -61,3 +88,5 @@
     </div>
   </div>
 </section>
+
+<script type="application/json" id="story-list-data"><%- JSON.stringify(stories) %></script>
