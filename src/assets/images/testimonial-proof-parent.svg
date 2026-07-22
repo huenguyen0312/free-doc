@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 220">
+  <rect width="300" height="220" fill="#fff4e6"/>
+  <rect x="30" y="120" width="240" height="14" fill="#e8d3ad"/>
+  <rect x="60" y="70" width="60" height="50" fill="#f5a623" opacity="0.5"/>
+  <circle cx="150" cy="88" r="26" fill="#ffe0a8"/>
+  <text x="150" y="98" text-anchor="middle" font-size="34">🧒</text>
+  <rect x="120" y="122" width="80" height="50" rx="4" fill="#ffffff" stroke="#e8b56b" stroke-width="2"/>
+  <line x1="130" y1="136" x2="190" y2="136" stroke="#ffdca6" stroke-width="4"/>
+  <line x1="130" y1="150" x2="170" y2="150" stroke="#ffdca6" stroke-width="4"/>
+  <text x="150" y="205" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#a8631a">Bé làm bài tập in từ web</text>
+</svg>

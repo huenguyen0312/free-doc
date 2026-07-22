@@ -1,0 +1,110 @@
+<%
+  const bookAges = [
+    { key: 'all', label: 'Tất cả' },
+    { key: 'mamnon', label: '🌱 Mầm non (2-5t)' },
+    { key: 'lop12', label: '🐣 Lớp 1-2 (6-7t)' },
+    { key: 'lop35', label: '🚀 Lớp 3-5 (8-10t)' },
+  ];
+
+  const books = [
+    {
+      age: 'mamnon',
+      badge: 'Mầm non (2-5t)',
+      title: 'Ehon: Bé Yêu Động Vật',
+      desc: 'Hình ảnh sinh động, giúp bé nhận biết các loài vật quen thuộc qua từng trang lật mở.',
+      image: '/assets/images/book-mamnon-1.svg',
+    },
+    {
+      age: 'mamnon',
+      badge: 'Ehon Nhật Bản',
+      title: 'Thơ Ngắn Cho Bé - Ông Mặt Trời',
+      desc: 'Những vần thơ ngắn, vui nhộn nuôi dưỡng tâm hồn và giúp bé làm quen với ngôn ngữ.',
+      image: '/assets/images/book-mamnon-2.svg',
+    },
+    {
+      age: 'lop12',
+      badge: 'Lớp 1-2 (6-7t)',
+      title: 'Truyện Tranh Giáo Dục - Bé Tập Đọc',
+      desc: 'Chữ to, có phiên âm rõ ràng giúp bé rèn luyện kỹ năng đọc rành mạch mỗi ngày.',
+      image: '/assets/images/book-lop12-1.svg',
+    },
+    {
+      age: 'lop12',
+      badge: 'Toán tư duy',
+      title: 'Khám Phá Khoa Học Quanh Bé',
+      desc: 'Những câu chuyện khoa học đơn giản, kích thích trí tò mò và ham học hỏi.',
+      image: '/assets/images/book-lop12-2.svg',
+    },
+    {
+      age: 'lop35',
+      badge: 'Lớp 3-5 (8-10t)',
+      title: 'Nhà Khoa Học Tí Hòn - Vũ Trụ Bao La',
+      desc: 'Giúp bé hiểu về các hành tinh qua câu chuyện minh hoạ sặc sỡ.',
+      image: '/assets/images/book-lop35-1.svg',
+    },
+    {
+      age: 'lop35',
+      badge: 'Kỹ năng sống',
+      title: 'Bách Khoa Toàn Thư Cho Bé',
+      desc: 'Mở rộng vốn sống, rèn tư duy độc lập và thói quen tự học mỗi ngày.',
+      image: '/assets/images/book-lop35-2.svg',
+    },
+  ];
+%>
+<section class="bookshelf">
+  <div class="bookshelf__inner">
+    <div class="bookshelf__header">
+      <h2 class="bookshelf__title">📚 Tủ Sách Thông Minh</h2>
+      <p class="bookshelf__subtitle">Cùng con kiến tạo thói quen đọc sách mỗi ngày. Những cuốn sách được chọn lọc kỹ lưỡng theo từng giai đoạn phát triển tư duy của bé.</p>
+    </div>
+
+    <div class="bookshelf__tabs" data-book-tabs>
+      <% bookAges.forEach((ageItem, i) => { %>
+        <button type="button" class="bookshelf__tab<%= i === 0 ? ' is-active' : '' %>" data-book-filter="<%= ageItem.key %>"><%= ageItem.label %></button>
+      <% }); %>
+    </div>
+
+    <div class="bookshelf-swiper swiper" data-book-swiper>
+      <div class="swiper-wrapper" data-book-grid>
+        <% books.forEach((book) => { %>
+          <div class="swiper-slide" data-book-age="<%= book.age %>">
+            <article
+              class="bookshelf__card"
+              data-book-preview
+              data-title="<%= book.title %>"
+              data-desc="<%= book.desc %>"
+              data-image="<%= book.image %>"
+              role="button"
+              tabindex="0"
+            >
+              <div class="bookshelf__cover">
+                <img src="<%= book.image %>" alt="<%= book.title %>">
+              </div>
+              <span class="bookshelf__badge"><%= book.badge %></span>
+              <h3 class="bookshelf__card-title"><%= book.title %></h3>
+              <p class="bookshelf__card-desc"><%= book.desc %></p>
+            </article>
+          </div>
+        <% }); %>
+      </div>
+
+      <div class="swiper-pagination" data-book-pagination></div>
+      <button type="button" class="swiper-button-prev" data-book-prev aria-label="Sách trước"></button>
+      <button type="button" class="swiper-button-next" data-book-next aria-label="Sách sau"></button>
+    </div>
+
+    <div class="bookshelf__banner">
+      <span>💡 Gợi ý sách theo tháng - Ưu đãi combo sách + bài tập PDF</span>
+    </div>
+  </div>
+
+  <div class="bookshelf__modal" data-book-modal hidden>
+    <div class="bookshelf__modal-overlay" data-book-modal-close></div>
+    <div class="bookshelf__modal-content">
+      <button type="button" class="bookshelf__modal-close" data-book-modal-close aria-label="Đóng">✕</button>
+      <img class="bookshelf__modal-image" data-book-modal-image src="" alt="">
+      <h3 class="bookshelf__modal-title" data-book-modal-title></h3>
+      <p class="bookshelf__modal-desc" data-book-modal-desc></p>
+    </div>
+  </div>
+</section>

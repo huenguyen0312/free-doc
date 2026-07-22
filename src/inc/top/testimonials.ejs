@@ -1,0 +1,102 @@
+<%
+  const testimonialStats = [
+    { value: '15.000+', label: 'File PDF đã được tải về' },
+    { value: '98%', label: 'Phụ huynh hài lòng với độ tiện lợi' },
+    { value: '4.9/5 ⭐', label: 'Đánh giá từ hơn 1.200 người dùng' },
+  ];
+
+  const testimonialCats = [
+    { key: 'all', label: 'Tất cả' },
+    { key: 'phuhuynh', label: 'Phụ huynh' },
+    { key: 'giaovien', label: 'Giáo viên' },
+    { key: 'gocbe', label: 'Góc các bé 🎨' },
+  ];
+
+  const testimonials = [
+    {
+      category: 'giaovien',
+      name: 'Cô Thu Trang',
+      role: 'Giáo viên Lớp 1 - Trường Tiểu học Nguyễn Du',
+      avatar: '/assets/images/testimonial-avatar-teacher.svg',
+      rating: 5,
+      quote: 'Trước đây mỗi lần tạo đề toán hay bài tập luyện viết cho lớp, tôi mất cả buổi tối để căn chỉnh lề, kẻ ô li trong Word mà in ra vẫn bị lệch. Từ ngày biết trang web, chỉ cần bấm chọn số lượng phép tính là có ngay file PDF chuẩn A4. Đề bài lại xoay ngẫu nhiên nên không sợ học sinh chép bài nhau!',
+      proofImage: '/assets/images/testimonial-proof-teacher.svg',
+      proofCaption: 'Phiếu bài tập đã in ra và chấm điểm',
+    },
+    {
+      category: 'phuhuynh',
+      name: 'Anh Minh Quân',
+      role: 'Phụ huynh bé 5 tuổi - Hà Nội',
+      avatar: '/assets/images/testimonial-avatar-parent.svg',
+      rating: 5,
+      quote: 'Bé nhà mình chuẩn bị vào lớp 1 nên rất cần luyện viết và làm toán phạm vi 10. Đi mua sách ngoài tiệm thì bài tập trùng lặp. Dùng web này mình tự gõ từ cho con đồ chữ, tạo toán cộng trừ mỗi ngày 15 phút. Bé rất thích vì phiếu bài tập có in cả tên của bé ở trên đầu trang!',
+      proofImage: '/assets/images/testimonial-proof-parent.svg',
+      proofCaption: 'Bé ngồi làm bài tập in từ web',
+    },
+    {
+      category: 'gocbe',
+      isKidsCard: true,
+      name: 'Bé Nam (6 tuổi) & Bé Mai (4 tuổi)',
+      role: '🎨 Thành quả của các con',
+      photo: '/assets/images/testimonial-kids-photo.svg',
+      quote: '"Mẹ ơi hôm nay cho con làm bài tập hình con thỏ tiếp đi!"',
+    },
+  ];
+%>
+<section class="testimonials">
+  <div class="testimonials__inner">
+    <div class="testimonials__header">
+      <h2 class="testimonials__title">💬 Góc Chia Sẻ &amp; Cảm Nhận</h2>
+      <p class="testimonials__subtitle">Hơn 10.000+ phụ huynh và giáo viên đã tiết kiệm hàng giờ soạn bài mỗi tuần.</p>
+    </div>
+
+    <div class="testimonials__stats">
+      <% testimonialStats.forEach((stat) => { %>
+        <div class="testimonials__stat">
+          <span class="testimonials__stat-value"><%= stat.value %></span>
+          <span class="testimonials__stat-label"><%= stat.label %></span>
+        </div>
+      <% }); %>
+    </div>
+
+    <div class="testimonials__tabs" data-testimonial-tabs>
+      <% testimonialCats.forEach((cat, i) => { %>
+        <button type="button" class="testimonials__tab<%= i === 0 ? ' is-active' : '' %>" data-testimonial-filter="<%= cat.key %>"><%= cat.label %></button>
+      <% }); %>
+    </div>
+
+    <div class="testimonials__grid" data-testimonial-grid>
+      <% testimonials.forEach((t) => { %>
+        <% if (t.isKidsCard) { %>
+          <article class="testimonials__card testimonials__card--kids" data-testimonial-cat="<%= t.category %>">
+            <div class="testimonials__kids-photo">
+              <img src="<%= t.photo %>" alt="<%= t.name %>">
+            </div>
+            <h3 class="testimonials__name"><%= t.name %></h3>
+            <p class="testimonials__role"><%= t.role %></p>
+            <p class="testimonials__kids-quote">💬 <%= t.quote %></p>
+          </article>
+        <% } else { %>
+          <article class="testimonials__card" data-testimonial-cat="<%= t.category %>">
+            <div class="testimonials__head">
+              <img class="testimonials__avatar" src="<%= t.avatar %>" alt="<%= t.name %>">
+              <div class="testimonials__head-text">
+                <h3 class="testimonials__name"><%= t.name %></h3>
+                <p class="testimonials__role"><%= t.role %></p>
+              </div>
+            </div>
+            <div class="testimonials__rating" aria-label="<%= t.rating %>/5 sao">
+              <%= '⭐'.repeat(t.rating) %>
+            </div>
+            <p class="testimonials__quote">"<%= t.quote %>"</p>
+            <figure class="testimonials__proof">
+              <img src="<%= t.proofImage %>" alt="<%= t.proofCaption %>">
+              <figcaption><%= t.proofCaption %></figcaption>
+            </figure>
+          </article>
+        <% } %>
+      <% }); %>
+    </div>
+
+  </div>
+</section>

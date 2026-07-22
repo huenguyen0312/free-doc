@@ -1,0 +1,208 @@
+@use 'variables' as v;
+
+.testimonials {
+  background: v.$color-bg-alt;
+}
+
+.testimonials__inner {
+  max-width: v.$max-width;
+  margin: 0 auto;
+  padding: (v.$spacing-unit * 6) (v.$spacing-unit * 3);
+}
+
+.testimonials__header {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto (v.$spacing-unit * 4);
+}
+
+.testimonials__title {
+  font-size: 1.75rem;
+  margin: 0 0 (v.$spacing-unit * 2);
+}
+
+.testimonials__subtitle {
+  color: v.$color-text-light;
+  margin: 0;
+}
+
+.testimonials__stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: v.$spacing-unit * 4;
+  margin: 0 0 (v.$spacing-unit * 4);
+}
+
+.testimonials__stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 160px;
+}
+
+.testimonials__stat-value {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: v.$color-primary;
+}
+
+.testimonials__stat-label {
+  color: v.$color-text-light;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.testimonials__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: v.$spacing-unit;
+  margin: 0 0 (v.$spacing-unit * 4);
+}
+
+.testimonials__tab {
+  padding: (v.$spacing-unit * 1) (v.$spacing-unit * 2.5);
+  border: 1px solid v.$color-border;
+  border-radius: 999px;
+  background: v.$color-bg;
+  color: v.$color-text;
+  font-size: 0.9rem;
+  cursor: pointer;
+
+  &:hover {
+    border-color: v.$color-primary;
+    color: v.$color-primary;
+  }
+
+  &.is-active {
+    background: v.$color-primary;
+    border-color: v.$color-primary;
+    color: v.$color-bg;
+  }
+}
+
+.testimonials__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: v.$spacing-unit * 3;
+  margin: 0 0 (v.$spacing-unit * 4);
+
+  @media (max-width: 768px) {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: 85%;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: v.$spacing-unit;
+  }
+}
+
+.testimonials__card {
+  display: flex;
+  flex-direction: column;
+  padding: (v.$spacing-unit * 2.5);
+  background: v.$color-bg;
+  border: 1px solid v.$color-border;
+  border-radius: 12px;
+
+  @media (max-width: 768px) {
+    scroll-snap-align: start;
+  }
+}
+
+.testimonials__head {
+  display: flex;
+  align-items: center;
+  gap: v.$spacing-unit * 1.5;
+  margin: 0 0 (v.$spacing-unit);
+}
+
+.testimonials__avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.testimonials__head-text {
+  min-width: 0;
+}
+
+.testimonials__name {
+  font-size: 1rem;
+  line-height: 1.3;
+  margin: 0;
+}
+
+.testimonials__role {
+  color: v.$color-text-light;
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+.testimonials__rating {
+  font-size: 0.85rem;
+  margin: 0 0 (v.$spacing-unit);
+}
+
+.testimonials__quote {
+  flex: 1 1 auto;
+  color: v.$color-text;
+  font-size: 0.9rem;
+  font-style: italic;
+  line-height: 1.5;
+  margin: 0 0 (v.$spacing-unit * 2);
+}
+
+.testimonials__proof {
+  display: flex;
+  align-items: center;
+  gap: v.$spacing-unit * 1.5;
+  margin: 0;
+  padding-top: v.$spacing-unit * 1.5;
+  border-top: 1px dashed v.$color-border;
+
+  img {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: 8px;
+    flex-shrink: 0;
+  }
+
+  figcaption {
+    color: v.$color-text-light;
+    font-size: 0.78rem;
+    line-height: 1.3;
+  }
+}
+
+.testimonials__card--kids {
+  align-items: center;
+  text-align: center;
+}
+
+.testimonials__kids-photo {
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 0 0 (v.$spacing-unit * 2);
+
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+}
+
+.testimonials__kids-quote {
+  background: v.$color-age-mamnon-bg;
+  color: v.$color-age-mamnon;
+  border-radius: 8px;
+  padding: (v.$spacing-unit * 1.5);
+  font-size: 0.9rem;
+  font-weight: bold;
+  margin: (v.$spacing-unit) 0 0;
+}
+

@@ -1,4 +1,5 @@
 // Entry point - build.js / server.js chỉ compile file này
+@use 'vendor/swiper-bundle.min.css';
 @use 'base';
 @use 'list-toolbar';
 @use 'header';
@@ -9,6 +10,8 @@
 @use 'blog';
 @use 'challenge';
 @use 'generator';
+@use 'bookshelf';
+@use 'testimonials';
 @use 'worksheet-generator';
 @use 'story-list';
 @use 'qa-list';
