@@ -28,19 +28,23 @@
 
 .materials__card {
   border-radius: 24px;
+  padding: v.$spacing-unit * 4;
   transition: box-shadow 0.2s, transform 0.2s;
 
   h3 {
     margin: 0 0 (v.$spacing-unit * 2.5);
     font-size: 1.2rem;
   }
+
+  &:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+  }
 }
 
 .materials__card-link {
   display: block;
   color: inherit;
-  padding: v.$spacing-unit * 4;
-  border-radius: 24px;
 
   &:hover {
     text-decoration: none;
@@ -55,9 +59,9 @@
     color: v.$color-age-mamnon;
   }
 
-  &:hover {
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-    transform: translateY(-2px);
+  .materials__tag:hover {
+    border-color: v.$color-age-mamnon;
+    color: v.$color-age-mamnon;
   }
 }
 
@@ -69,24 +73,49 @@
     color: v.$color-age-tieuhoc;
   }
 
-  &:hover {
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-    transform: translateY(-2px);
+  .materials__tag:hover {
+    border-color: v.$color-age-tieuhoc;
+    color: v.$color-age-tieuhoc;
   }
 }
 
-.materials__list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+.materials__tags {
   display: flex;
-  flex-direction: column;
-  gap: v.$spacing-unit;
+  flex-wrap: wrap;
+  gap: v.$spacing-unit * 1.25;
+  margin-bottom: v.$spacing-unit * 3;
 }
 
-.materials__item {
-  background: rgba(255, 255, 255, 0.7);
-  border-radius: 12px;
-  padding: (v.$spacing-unit * 1.5) (v.$spacing-unit * 2);
-  font-size: 0.95rem;
+.materials__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: v.$spacing-unit * 0.75;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid v.$color-border;
+  border-radius: 999px;
+  padding: (v.$spacing-unit * 1) (v.$spacing-unit * 2.25);
+  font-size: 0.9rem;
+  color: v.$color-text;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+
+  &:hover {
+    text-decoration: none;
+    background: v.$color-bg;
+  }
+}
+
+.materials__tag-icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.materials__card-more {
+  display: inline-block;
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: inherit;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }

@@ -1,0 +1,83 @@
+<%
+  const trendingDocs = [
+    {
+      title: 'Bộ Đề Ôn Vào Lớp 1 - Toán & Tiếng Việt',
+      image: '/assets/images/worksheet-placeholder.svg',
+      pages: 24,
+      downloads: 3520,
+      badge: 'free',
+      link: '/tailieu/tieuhoc/index.html',
+    },
+    {
+      title: 'Tập Tô Chữ Cái Cho Bé Mầm Non',
+      image: '/assets/images/worksheet-placeholder.svg',
+      pages: 18,
+      downloads: 2870,
+      badge: 'free',
+      link: '/tailieu/mamnon/index.html',
+    },
+    {
+      title: 'Trọn Bộ 100 Bài Toán Tư Duy Lớp 2-3',
+      image: '/assets/images/worksheet-placeholder.svg',
+      pages: 32,
+      downloads: 2410,
+      badge: 'premium',
+      link: '/tailieu/tieuhoc/index.html',
+    },
+    {
+      title: 'Từ Vựng Tiếng Anh Qua Hình Ảnh',
+      image: '/assets/images/worksheet-placeholder.svg',
+      pages: 20,
+      downloads: 1980,
+      badge: 'free',
+      link: '/tailieu/tieuhoc/index.html',
+    },
+    {
+      title: 'Bài Tập Đọc Hiểu Nâng Cao Lớp 4-5',
+      image: '/assets/images/worksheet-placeholder.svg',
+      pages: 28,
+      downloads: 1750,
+      badge: 'premium',
+      link: '/tailieu/tieuhoc/index.html',
+    },
+    {
+      title: 'Tranh Tô Màu Chủ Đề Con Vật',
+      image: '/assets/images/worksheet-placeholder.svg',
+      pages: 15,
+      downloads: 1602,
+      badge: 'free',
+      link: '/tailieu/mamnon/index.html',
+    },
+  ];
+
+  const formatDownloads = (n) => n >= 1000 ? `${(n / 1000).toFixed(1).replace('.0', '')}k` : `${n}`;
+%>
+<section class="trending">
+  <div class="trending__inner">
+    <div class="trending__header">
+      <h2 class="trending__title">🔥 Tài Liệu Nổi Bật - Tải Nhiều Nhất Tuần</h2>
+      <p class="trending__subtitle">Xem ngay những tài liệu đang được phụ huynh và các bé tải về nhiều nhất</p>
+    </div>
+
+    <div class="trending__row">
+      <% trendingDocs.forEach((doc) => { %>
+        <article class="trending__card">
+          <a class="trending__card-link" href="<%= doc.link %>">
+            <div class="trending__thumb">
+              <img src="<%= doc.image %>" alt="<%= doc.title %>" loading="lazy">
+              <span class="trending__hot">HOT</span>
+              <span class="trending__badge trending__badge--<%= doc.badge %>"><%= doc.badge === 'premium' ? 'Premium' : 'Free' %></span>
+            </div>
+            <div class="trending__body">
+              <h3 class="trending__card-title"><%= doc.title %></h3>
+              <div class="trending__meta">
+                <span class="trending__meta-item">📄 <%= doc.pages %> trang</span>
+                <span class="trending__meta-item">⬇ <%= formatDownloads(doc.downloads) %> lượt tải</span>
+              </div>
+            </div>
+          </a>
+        </article>
+      <% }); %>
+    </div>
+  </div>
+</section>

@@ -74,6 +74,33 @@
   }
 }
 
+.list-toolbar__active-tag {
+  display: flex;
+  align-items: center;
+  gap: v.$spacing-unit;
+  margin: 0 0 (v.$spacing-unit * 2);
+  padding: (v.$spacing-unit * 1) (v.$spacing-unit * 2);
+  width: fit-content;
+  font-size: 0.9rem;
+  color: v.$color-text;
+  background: v.$color-bg-alt;
+  border-radius: 999px;
+
+  button {
+    font: inherit;
+    line-height: 1;
+    cursor: pointer;
+    border: none;
+    background: none;
+    color: v.$color-text-light;
+    padding: 0;
+
+    &:hover {
+      color: v.$color-text;
+    }
+  }
+}
+
 .list-empty {
   color: v.$color-text-light;
   text-align: center;

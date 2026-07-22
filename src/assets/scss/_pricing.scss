@@ -1,0 +1,111 @@
+@use 'variables' as v;
+
+.pricing {
+  background: v.$color-bg;
+}
+
+.pricing__inner {
+  max-width: v.$max-width;
+  margin: 0 auto;
+  padding: (v.$spacing-unit * 6) (v.$spacing-unit * 3);
+}
+
+.pricing__header {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto (v.$spacing-unit * 4);
+}
+
+.pricing__title {
+  font-size: 1.75rem;
+  margin: 0 0 (v.$spacing-unit * 2);
+}
+
+.pricing__subtitle {
+  color: v.$color-text-light;
+  margin: 0;
+}
+
+.pricing__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: v.$spacing-unit * 3;
+  max-width: 760px;
+  margin: 0 auto;
+
+  @media (max-width: 640px) {
+    grid-template-columns: none;
+  }
+}
+
+.pricing__card {
+  padding: (v.$spacing-unit * 3);
+  background: v.$color-bg;
+  border: 1px solid v.$color-border;
+  border-radius: 12px;
+}
+
+.pricing__card--highlight {
+  position: relative;
+  border-color: v.$color-primary;
+  box-shadow: 0 8px 24px rgba(47, 111, 237, 0.15);
+}
+
+.pricing__badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: v.$color-primary;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: (v.$spacing-unit * 0.5) (v.$spacing-unit * 1.5);
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.pricing__card-title {
+  font-size: 1.1rem;
+  margin: 0 0 (v.$spacing-unit);
+}
+
+.pricing__price {
+  font-size: 1.75rem;
+  font-weight: bold;
+  color: v.$color-primary;
+  margin: 0 0 (v.$spacing-unit * 2);
+
+  span {
+    font-size: 0.9rem;
+    font-weight: normal;
+    color: v.$color-text-light;
+  }
+}
+
+.pricing__features {
+  list-style: none;
+  margin: 0 0 (v.$spacing-unit * 2);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: v.$spacing-unit;
+  font-size: 0.9rem;
+  color: v.$color-text;
+}
+
+.pricing__cta {
+  display: block;
+  text-align: center;
+  padding: (v.$spacing-unit * 1.5) (v.$spacing-unit * 2);
+  border-radius: 8px;
+  background: v.$color-primary;
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 0.2s;
+
+  &:hover {
+    background: #2258c4;
+  }
+}

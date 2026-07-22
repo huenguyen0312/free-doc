@@ -14,6 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initWorksheetGenerator();
   initBookshelf();
   initTestimonials();
+  initFaq();
+  initNewsletter();
 });
 
 function initHeaderSearch() {
@@ -225,6 +227,57 @@ function initTestimonials() {
         card.hidden = filter !== 'all' && card.dataset.testimonialCat !== filter;
       });
     });
+  });
+}
+
+async function initFaq() {
+  const list = document.querySelector('[data-faq-list]');
+  if (!list) return;
+
+  let items;
+  try {
+    const res = await fetch('/assets/json/faq.json');
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    items = await res.json();
+  } catch (err) {
+    console.error('Không tải được dữ liệu FAQ:', err);
+    return;
+  }
+
+  items.forEach((item, i) => {
+    const details = document.createElement('details');
+    details.className = 'faq__item';
+    if (i === 0) details.open = true;
+
+    const summary = document.createElement('summary');
+    summary.className = 'faq__question';
+    summary.textContent = item.question;
+
+    const answer = document.createElement('p');
+    answer.className = 'faq__answer';
+    answer.textContent = item.answer;
+
+    details.appendChild(summary);
+    details.appendChild(answer);
+    list.appendChild(details);
+  });
+}
+
+function initNewsletter() {
+  const form = document.querySelector('[data-newsletter-form]');
+  if (!form) return;
+
+  const successMsg = document.querySelector('[data-newsletter-success]');
+
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    successMsg.hidden = false;
+    form.reset();
   });
 }
 
@@ -465,6 +518,7 @@ function initDocExplorer() {
   const grades = JSON.parse(dataEl.textContent);
   const subjectIndex = {};
   const categoryIndex = {};
+  const subjectByKey = {};
   const allDocuments = [];
 
   grades.forEach((grade) => {
@@ -477,6 +531,12 @@ function initDocExplorer() {
           documents: category.documents,
         })),
       };
+
+      if (!subjectByKey[subject.key]) subjectByKey[subject.key] = { title: subject.title, groups: [] };
+      subjectByKey[subject.key].groups.push({
+        heading: grade.title,
+        documents: subject.categories.flatMap((category) => category.documents),
+      });
 
       subject.categories.forEach((category) => {
         const categoryKey = `${subjectKey}__${category.key}`;
@@ -605,6 +665,19 @@ function initDocExplorer() {
       renderSearch(initialQuery.trim().toLowerCase());
     }
   }
+
+  function selectBySubjectKey(subjectKey) {
+    const subject = subjectByKey[subjectKey];
+    if (!subject) return;
+
+    selectEntry({
+      breadcrumb: `${subject.title} • Tất cả khối lớp`,
+      groups: subject.groups,
+    }, null);
+  }
+
+  const initialSubject = new URLSearchParams(window.location.search).get('mon');
+  if (initialSubject) selectBySubjectKey(initialSubject);
 }
 
 function initDocPreviewPage() {
@@ -675,17 +748,37 @@ function initFilterableList(config) {
   const searchInput = root.querySelector('[data-list-search]');
   const sortSelect = root.querySelector('[data-list-sort]');
   const viewButtons = root.querySelectorAll('[data-view]');
+  const activeTagEl = root.querySelector('[data-list-active-tag]');
+  const activeTagLabelEl = root.querySelector('[data-list-active-tag-label]');
+  const activeTagClearBtn = root.querySelector('[data-list-active-tag-clear]');
 
   let viewMode = 'grid';
+  let activeTag = null;
 
   const queryFromUrl = new URLSearchParams(window.location.search).get('q');
   if (queryFromUrl) searchInput.value = queryFromUrl;
+
+  const tagFromUrl = new URLSearchParams(window.location.search).get('tag');
+  if (tagFromUrl && config.tagLabels && config.tagLabels[tagFromUrl]) {
+    activeTag = tagFromUrl;
+  }
+
+  function updateActiveTagUi() {
+    if (!activeTagEl) return;
+    if (activeTag) {
+      activeTagLabelEl.textContent = config.tagLabels[activeTag];
+      activeTagEl.hidden = false;
+    } else {
+      activeTagEl.hidden = true;
+    }
+  }
 
   function render() {
     const keyword = searchInput.value.trim().toLowerCase();
     const sortFn = config.sortFns[sortSelect.value] || config.sortFns.default;
     const filtered = items
       .filter((item) => item.title.toLowerCase().includes(keyword))
+      .filter((item) => !activeTag || (item.tags && item.tags.includes(activeTag)))
       .slice()
       .sort(sortFn);
 
@@ -695,6 +788,16 @@ function initFilterableList(config) {
 
     emptyEl.hidden = filtered.length > 0;
     rowEl.hidden = filtered.length === 0;
+  }
+
+  updateActiveTagUi();
+
+  if (activeTagClearBtn) {
+    activeTagClearBtn.addEventListener('click', () => {
+      activeTag = null;
+      updateActiveTagUi();
+      render();
+    });
   }
 
   searchInput.addEventListener('input', render);
@@ -719,6 +822,11 @@ function initWorksheetList() {
     emptySelector: '[data-worksheet-empty]',
     rowBaseClass: 'worksheet-list__row',
     createCard: (item) => createListCard('worksheet-list', item),
+    tagLabels: {
+      toan: 'Toán tư duy',
+      'tap-to': 'Tập tô chữ & số',
+      'to-mau': 'Tô màu',
+    },
     sortFns: {
       date_desc: (a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0),
       views_desc: (a, b) => b.views - a.views,

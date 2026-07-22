@@ -5,6 +5,7 @@
 @use 'header';
 @use 'footer';
 @use 'keyvisual';
+@use 'trending';
 @use 'target';
 @use 'materials';
 @use 'blog';
@@ -12,6 +13,9 @@
 @use 'generator';
 @use 'bookshelf';
 @use 'testimonials';
+@use 'pricing';
+@use 'faq';
+@use 'newsletter';
 @use 'worksheet-generator';
 @use 'story-list';
 @use 'qa-list';

@@ -1,0 +1,124 @@
+@use 'variables' as v;
+
+.trending__inner {
+  max-width: v.$max-width;
+  margin: 0 auto;
+  padding: (v.$spacing-unit * 6) (v.$spacing-unit * 3);
+}
+
+.trending__header {
+  text-align: center;
+  margin: 0 0 (v.$spacing-unit * 4);
+}
+
+.trending__title {
+  font-size: 1.75rem;
+  margin: 0 0 (v.$spacing-unit);
+}
+
+.trending__subtitle {
+  margin: 0;
+  color: v.$color-text-light;
+}
+
+.trending__row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: v.$spacing-unit * 3;
+
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.trending__card {
+  background: v.$color-bg;
+  border: 1px solid v.$color-border;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: box-shadow 0.2s, transform 0.2s;
+
+  &:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+  }
+}
+
+.trending__card-link {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  color: inherit;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.trending__thumb {
+  position: relative;
+  width: 100%;
+  padding-top: 70%;
+
+  img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.trending__hot {
+  position: absolute;
+  top: v.$spacing-unit;
+  left: v.$spacing-unit;
+  background: #e8433d;
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.trending__badge {
+  position: absolute;
+  top: v.$spacing-unit;
+  right: v.$spacing-unit;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+
+  &--free {
+    background: #e3f7e9;
+    color: #1e8a4c;
+  }
+
+  &--premium {
+    background: #fff3d6;
+    color: #b8790a;
+  }
+}
+
+.trending__body {
+  padding: v.$spacing-unit * 2.5;
+}
+
+.trending__card-title {
+  margin: 0 0 (v.$spacing-unit * 1.5);
+  font-size: 1.05rem;
+  line-height: 1.4;
+}
+
+.trending__meta {
+  display: flex;
+  gap: v.$spacing-unit * 2;
+  color: v.$color-text-light;
+  font-size: 0.85rem;
+}

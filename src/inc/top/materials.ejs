@@ -1,29 +1,50 @@
+<%
+  const materialGroups = [
+    {
+      key: 'mamnon',
+      title: 'Mầm non & Tiền tiểu học (3–5 tuổi)',
+      href: '/tailieu/mamnon/index.html',
+      tags: [
+        { icon: '🧮', label: 'Toán tư duy', href: '/tailieu/mamnon/index.html?tag=toan' },
+        { icon: '🔤', label: 'Tập tô chữ & số', href: '/tailieu/mamnon/index.html?tag=tap-to' },
+        { icon: '🎨', label: 'Tô màu', href: '/tailieu/mamnon/index.html?tag=to-mau' },
+      ],
+    },
+    {
+      key: 'tieuhoc',
+      title: 'Tiểu học (6–10 tuổi)',
+      href: '/tailieu/tieuhoc/index.html',
+      tags: [
+        { icon: '🧮', label: 'Toán', href: '/tailieu/tieuhoc/index.html?mon=toan' },
+        { icon: '📖', label: 'Tiếng Việt', href: '/tailieu/tieuhoc/index.html?mon=tieng-viet' },
+        { icon: '📄', label: 'File in (PDF)', href: '/tailieu/tieuhoc/index.html' },
+      ],
+    },
+  ];
+%>
 <section class="materials">
   <div class="materials__inner">
     <h2 class="materials__title">📚Tài liệu học tập</h2>
 
     <div class="materials__row">
-      <div class="materials__card materials__card--mamnon">
-        <a class="materials__card-link" href="/tailieu/mamnon/index.html">
-          <h3>Mầm non &amp; Tiền tiểu học (3–5 tuổi)</h3>
-          <ul class="materials__list">
-            <li class="materials__item">🔤 Tập tô chữ &amp; số (File PDF tải về)</li>
-            <li class="materials__item">🧮 Toán tư duy &amp; Đố mẹo</li>
-            <li class="materials__item">🎨 Tranh tô màu theo chủ đề</li>
-          </ul>
-        </a>
-      </div>
+      <% materialGroups.forEach((group) => { %>
+        <div class="materials__card materials__card--<%= group.key %>">
+          <a class="materials__card-link" href="<%= group.href %>">
+            <h3><%= group.title %></h3>
+          </a>
 
-      <div class="materials__card materials__card--tieuhoc">
-        <a class="materials__card-link" href="/tailieu/tieuhoc/index.html">
-          <h3>Tiểu học (6–10 tuổi)</h3>
-          <ul class="materials__list">
-            <li class="materials__item">📖 Đọc hiểu &amp; Tập làm văn hay</li>
-            <li class="materials__item">🇬🇧 Từ vựng Tiếng Anh qua hình ảnh</li>
-            <li class="materials__item">🇬🇧 Ngữ pháp vui &amp; Tiếng Anh giao tiếp</li>
-          </ul>
-        </a>
-      </div>
+          <div class="materials__tags">
+            <% group.tags.forEach((tag) => { %>
+              <a class="materials__tag" href="<%= tag.href %>">
+                <span class="materials__tag-icon" aria-hidden="true"><%= tag.icon %></span>
+                <%= tag.label %>
+              </a>
+            <% }); %>
+          </div>
+
+          <a class="materials__card-more" href="<%= group.href %>">Xem tất cả tài liệu →</a>
+        </div>
+      <% }); %>
     </div>
   </div>
 </section>
