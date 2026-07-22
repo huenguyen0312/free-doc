@@ -1,18 +1,31 @@
 <%
   const blockIndex = typeof index !== 'undefined' ? index : 1;
 %>
-<div class="worksheet-generator__block" data-generator-block>
-  <div class="worksheet-generator__block-header">
+<details class="worksheet-generator__block" data-generator-block open>
+  <summary class="worksheet-generator__block-header">
     <h4 class="worksheet-generator__block-title">Bài tập <span data-block-number><%= blockIndex %></span></h4>
     <div class="worksheet-generator__block-tools">
       <button type="button" class="worksheet-generator__icon-btn" data-gen-duplicate title="Nhân bản bài tập này">⧉</button>
       <button type="button" class="worksheet-generator__icon-btn worksheet-generator__icon-btn--danger" data-gen-remove title="Xoá bài tập này" hidden>✕</button>
+      <span class="worksheet-generator__block-chevron" aria-hidden="true">▾</span>
     </div>
-  </div>
+  </summary>
 
   <div class="worksheet-generator__field">
     <label>Số lượng phép tính / câu hỏi
       <input type="number" data-gen-count min="5" max="40" step="5" value="10">
+    </label>
+  </div>
+
+  <div class="worksheet-generator__field" data-field-vi-type>
+    <label>Loại bài tập
+      <select data-gen-vi-type>
+        <option value="fill-word" selected>Bài tập điền chữ còn thiếu</option>
+        <option value="simple-sentence">Bài tập luyện viết câu đơn</option>
+        <option value="paragraph">Bài tập luyện viết đoạn văn</option>
+        <option value="word-order">Bài tập Sắp xếp từ thành câu</option>
+        <option value="inference-sentence">Bài tập viết câu suy luận</option>
+      </select>
     </label>
   </div>
 
@@ -41,6 +54,7 @@
   <div class="worksheet-generator__field">
     <label>Số cột hiển thị
       <select data-gen-columns>
+        <option value="1">1 cột (toàn trang)</option>
         <option value="2">2 cột</option>
         <option value="3" selected>3 cột</option>
         <option value="4">4 cột</option>
@@ -51,4 +65,4 @@
   <div class="worksheet-generator__actions">
     <button type="button" class="btn btn--primary worksheet-generator__regenerate" data-gen-regenerate>🔀 Tạo đề mới</button>
   </div>
-</div>
+</details>

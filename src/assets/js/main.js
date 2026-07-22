@@ -587,6 +587,10 @@ function initTipsList() {
 
 const WORKSHEET_GRADE_RANGE_DEFAULT = { mamnon: '10', lop1: '20', lop2: '100-no-carry' };
 
+// Các loại bài tập Tiếng Việt cần viết câu/đoạn dài nên hiển thị toàn trang (1 cột)
+// và có thêm phần ô li để bé viết lại ngay dưới đề bài.
+const WORKSHEET_VI_WRITING_TYPES = ['simple-sentence', 'paragraph', 'word-order', 'inference-sentence'];
+
 const WORKSHEET_RANGE_LABELS = {
   10: 'phạm vi 10',
   20: 'phạm vi 20',
@@ -594,20 +598,40 @@ const WORKSHEET_RANGE_LABELS = {
   '100-carry': 'phạm vi 100 - có nhớ',
 };
 
-// Dữ liệu từ vựng (Tiếng Việt/Tiếng Anh) được tách sang assets/json/worksheet-word-banks.json
-// để thêm/bớt từ sau này không cần đụng vào code - xem worksheetLoadWordBanks().
+// Dữ liệu từ vựng (Tiếng Việt/Tiếng Anh) được tách sang assets/json/worksheet-word-banks.json,
+// mỗi loại bài tập Tiếng Việt (câu đơn, đoạn văn, sắp xếp từ, câu suy luận) có 1 file JSON riêng
+// để thêm/bớt dữ liệu sau này không cần đụng vào code - xem worksheetLoadWordBanks().
 let WORKSHEET_VI_WORD_BANK = {};
 let WORKSHEET_EN_WORD_BANK = {};
+let WORKSHEET_VI_SIMPLE_SENTENCE_BANK = {};
+let WORKSHEET_VI_PARAGRAPH_BANK = [];
+let WORKSHEET_VI_WORD_ORDER_BANK = {};
+let WORKSHEET_VI_INFERENCE_BANK = {};
+
+async function worksheetFetchJson(path) {
+  const res = await fetch(path);
+  if (!res.ok) throw new Error(`HTTP ${res.status} - ${path}`);
+  return res.json();
+}
 
 async function worksheetLoadWordBanks() {
   try {
-    const res = await fetch('/assets/json/worksheet-word-banks.json');
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const banks = await res.json();
-    WORKSHEET_VI_WORD_BANK = banks.vi || {};
-    WORKSHEET_EN_WORD_BANK = banks.en || {};
+    const [wordBanks, simpleSentences, paragraphs, wordOrder, inferenceQuestions] = await Promise.all([
+      worksheetFetchJson('/assets/json/worksheet-word-banks.json'),
+      worksheetFetchJson('/assets/json/worksheet-vi-simple-sentences.json'),
+      worksheetFetchJson('/assets/json/worksheet-vi-paragraphs.json'),
+      worksheetFetchJson('/assets/json/worksheet-vi-word-order.json'),
+      worksheetFetchJson('/assets/json/worksheet-vi-inference-questions.json'),
+    ]);
+
+    WORKSHEET_VI_WORD_BANK = wordBanks.vi || {};
+    WORKSHEET_EN_WORD_BANK = wordBanks.en || {};
+    WORKSHEET_VI_SIMPLE_SENTENCE_BANK = simpleSentences;
+    WORKSHEET_VI_PARAGRAPH_BANK = paragraphs;
+    WORKSHEET_VI_WORD_ORDER_BANK = wordOrder;
+    WORKSHEET_VI_INFERENCE_BANK = inferenceQuestions;
   } catch (err) {
-    console.error('Không tải được dữ liệu từ vựng worksheet-word-banks.json:', err);
+    console.error('Không tải được dữ liệu từ vựng/câu mẫu cho worksheet:', err);
   }
 }
 
@@ -735,6 +759,26 @@ function worksheetGenerateWordItems(count, pool) {
   return worksheetBuildPool(pool, count).map((word) => `${worksheetBlankRandomLetter(word)}  ................`);
 }
 
+function worksheetGenerateSimpleSentenceItems(count, pool) {
+  return worksheetBuildPool(pool, count);
+}
+
+function worksheetGenerateParagraphItems(count, pool) {
+  return worksheetBuildPool(pool, count);
+}
+
+// Tách câu thành các từ, xáo trộn và nối lại bằng dấu "/" để bé sắp xếp lại cho đúng thứ tự.
+function worksheetGenerateWordOrderItems(count, pool) {
+  return worksheetBuildPool(pool, count).map((sentence) => {
+    const words = sentence.trim().replace(/[.?!]+$/, '').split(/\s+/).filter(Boolean);
+    return worksheetShuffle(words).join(' / ');
+  });
+}
+
+function worksheetGenerateInferenceItems(count, pool) {
+  return worksheetBuildPool(pool, count);
+}
+
 function worksheetGenerateEnglishItems(count, pool) {
   return worksheetBuildPool(pool, count).map(({ word, meaning }) => `${worksheetBlankRandomLetter(word)} (${meaning})`);
 }
@@ -782,25 +826,71 @@ function worksheetBuildTreeNode(tree) {
   return wrap;
 }
 
-function worksheetBuildPreviewTitle(subject, operation, range) {
+// Ô li tập viết: mỗi dòng là 1 lưới ô vuông 4x4 (mm) để bé viết lại câu ngay dưới đề bài.
+function worksheetBuildWritingLines(lineCount) {
+  const wrap = document.createElement('div');
+  wrap.className = 'worksheet-writing-lines';
+
+  for (let i = 0; i < lineCount; i++) {
+    const row = document.createElement('div');
+    row.className = 'worksheet-writing-lines__row';
+    wrap.appendChild(row);
+  }
+
+  return wrap;
+}
+
+function worksheetBuildPreviewTitle(subject, operation, range, viType) {
   if (subject === 'toan') {
     const opLabel = { add: 'Phép cộng', sub: 'Phép trừ', mixed: 'Cộng trừ hỗn hợp', split: 'Tách - gộp số' }[operation];
     return `${opLabel} (${WORKSHEET_RANGE_LABELS[range]})`;
   }
 
-  if (subject === 'tviet') return 'Điền chữ còn thiếu - Tiếng Việt';
+  if (subject === 'tviet') {
+    if (viType === 'simple-sentence') return 'Luyện viết câu đơn - Tiếng Việt';
+    if (viType === 'paragraph') return 'Luyện viết đoạn văn - Tiếng Việt';
+    if (viType === 'word-order') return 'Sắp xếp từ thành câu - Tiếng Việt';
+    if (viType === 'inference-sentence') return 'Viết câu suy luận - Tiếng Việt';
+    return 'Điền chữ còn thiếu - Tiếng Việt';
+  }
   return 'Điền chữ còn thiếu - Tiếng Anh';
 }
 
-function worksheetGenerateBlockItems(blockEl, state) {
-  const count = Math.max(5, Math.min(40, Number(blockEl.querySelector('[data-gen-count]').value) || 10));
+function worksheetClampCount(blockEl) {
+  return Math.max(5, Math.min(40, Number(blockEl.querySelector('[data-gen-count]').value) || 10));
+}
 
+function worksheetGenerateBlockItems(blockEl, state) {
   if (state.subject === 'toan') {
+    const count = worksheetClampCount(blockEl);
     const operation = blockEl.querySelector('[data-gen-operation]').value;
     const range = blockEl.querySelector('[data-gen-range]').value;
     return worksheetGenerateMathItems(count, operation, range);
   }
-  if (state.subject === 'tviet') return worksheetGenerateWordItems(count, WORKSHEET_VI_WORD_BANK[state.grade]);
+
+  if (state.subject === 'tviet') {
+    const viType = blockEl.querySelector('[data-gen-vi-type]').value;
+
+    // Đoạn văn luôn chỉ có 1 đoạn/block, không phụ thuộc vào "Số lượng câu hỏi" (đã bị disable).
+    if (viType === 'paragraph') {
+      return worksheetGenerateParagraphItems(1, WORKSHEET_VI_PARAGRAPH_BANK);
+    }
+
+    const count = worksheetClampCount(blockEl);
+    if (viType === 'simple-sentence') {
+      return worksheetGenerateSimpleSentenceItems(count, WORKSHEET_VI_SIMPLE_SENTENCE_BANK[state.grade]);
+    }
+    if (viType === 'word-order') {
+      return worksheetGenerateWordOrderItems(count, WORKSHEET_VI_WORD_ORDER_BANK[state.grade]);
+    }
+    if (viType === 'inference-sentence') {
+      return worksheetGenerateInferenceItems(count, WORKSHEET_VI_INFERENCE_BANK[state.grade]);
+    }
+    return worksheetGenerateWordItems(count, WORKSHEET_VI_WORD_BANK[state.grade]);
+  }
+
+  const count = worksheetClampCount(blockEl);
+
   return worksheetGenerateEnglishItems(count, WORKSHEET_EN_WORD_BANK[state.grade]);
 }
 
@@ -828,10 +918,33 @@ async function initWorksheetGenerator() {
 
   function updateFieldsVisibility() {
     const isMath = state.subject === 'toan';
+    const isViet = state.subject === 'tviet';
     getBlocks().forEach((blockEl) => {
       blockEl.querySelector('[data-field-operation]').hidden = !isMath;
       blockEl.querySelector('[data-field-range]').hidden = !isMath;
+      blockEl.querySelector('[data-field-vi-type]').hidden = !isViet;
     });
+  }
+
+  // Reset các trường khác cho phù hợp với loại bài tập Tiếng Việt vừa chọn.
+  function resetBlockFieldsForViType(blockEl, viType) {
+    const columnsSelect = blockEl.querySelector('[data-gen-columns]');
+    const countInput = blockEl.querySelector('[data-gen-count]');
+
+    const isFullPage = WORKSHEET_VI_WRITING_TYPES.includes(viType);
+    columnsSelect.disabled = isFullPage;
+    if (isFullPage) columnsSelect.value = '1';
+
+    // Đoạn văn luôn chỉ có 1 đoạn/block nên khoá "Số lượng câu hỏi" lại; các loại khác
+    // vẫn dùng chung ô đó nên trả về giá trị mặc định khi rời khỏi loại đoạn văn.
+    const isParagraph = viType === 'paragraph';
+    if (isParagraph) {
+      countInput.value = '1';
+      countInput.disabled = true;
+    } else if (countInput.disabled) {
+      countInput.disabled = false;
+      countInput.value = '10';
+    }
   }
 
   // Đánh lại số thứ tự "Bài tập N" + chỉ cho phép xoá khi còn nhiều hơn 1 bài.
@@ -847,6 +960,22 @@ async function initWorksheetGenerator() {
     blockEl._wsItems = undefined;
   }
 
+  // Đổi môn/lớp coi như bắt đầu lại: chỉ giữ 1 bài tập và trả các trường về giá trị mặc định ban đầu.
+  function resetGeneratorDefaults() {
+    const blocks = getBlocks();
+    blocks.slice(1).forEach((blockEl) => blockEl.remove());
+
+    const firstBlock = blocks[0];
+    firstBlock.querySelector('[data-gen-count]').value = 10;
+    firstBlock.querySelector('[data-gen-operation]').value = 'add';
+    firstBlock.querySelector('[data-gen-range]').value = WORKSHEET_GRADE_RANGE_DEFAULT[state.grade];
+    firstBlock.querySelector('[data-gen-columns]').value = '3';
+    firstBlock.querySelector('[data-gen-vi-type]').value = 'fill-word';
+    firstBlock._wsViType = 'fill-word';
+    resetBlockFieldsForViType(firstBlock, 'fill-word');
+    invalidateBlock(firstBlock);
+  }
+
   // Mỗi block giữ cache câu hỏi riêng: chỉ những block bị invalidate mới random lại,
   // tránh việc sửa 1 bài tập làm xáo trộn số liệu của các bài tập khác đang hiển thị.
   function renderAll() {
@@ -860,6 +989,7 @@ async function initWorksheetGenerator() {
       const operation = blockEl.querySelector('[data-gen-operation]').value;
       const range = blockEl.querySelector('[data-gen-range]').value;
       const columns = blockEl.querySelector('[data-gen-columns]').value;
+      const viType = blockEl.querySelector('[data-gen-vi-type]').value;
 
       const sectionEl = document.createElement('div');
       sectionEl.className = 'worksheet-preview__section';
@@ -869,7 +999,7 @@ async function initWorksheetGenerator() {
       const badge = document.createElement('span');
       badge.textContent = String(index + 1);
       titleEl.appendChild(badge);
-      titleEl.appendChild(document.createTextNode(worksheetBuildPreviewTitle(state.subject, operation, range)));
+      titleEl.appendChild(document.createTextNode(worksheetBuildPreviewTitle(state.subject, operation, range, viType)));
       sectionEl.appendChild(titleEl);
 
       const gridEl = document.createElement('div');
@@ -886,7 +1016,15 @@ async function initWorksheetGenerator() {
           item.appendChild(number);
           item.appendChild(worksheetBuildTreeNode(entry.tree));
         } else {
-          item.textContent = `${i + 1}. ${entry}`;
+          const textEl = document.createElement('div');
+          textEl.className = 'worksheet-preview__item-text';
+          textEl.textContent = `${i + 1}. ${entry}`;
+          item.appendChild(textEl);
+
+          if (state.subject === 'tviet' && WORKSHEET_VI_WRITING_TYPES.includes(viType)) {
+            item.classList.add('worksheet-preview__item--writing');
+            item.appendChild(worksheetBuildWritingLines(viType === 'paragraph' ? 10 : 2));
+          }
         }
 
         gridEl.appendChild(item);
@@ -902,6 +1040,7 @@ async function initWorksheetGenerator() {
     const operationSelect = blockEl.querySelector('[data-gen-operation]');
     const rangeSelect = blockEl.querySelector('[data-gen-range]');
     const columnsSelect = blockEl.querySelector('[data-gen-columns]');
+    const viTypeSelect = blockEl.querySelector('[data-gen-vi-type]');
     const regenerateBtn = blockEl.querySelector('[data-gen-regenerate]');
     const duplicateBtn = blockEl.querySelector('[data-gen-duplicate]');
     const removeBtn = blockEl.querySelector('[data-gen-remove]');
@@ -917,12 +1056,29 @@ async function initWorksheetGenerator() {
 
     columnsSelect.addEventListener('change', renderAll);
 
+    blockEl._wsViType = viTypeSelect.value;
+    resetBlockFieldsForViType(blockEl, blockEl._wsViType);
+
+    viTypeSelect.addEventListener('change', () => {
+      const nextViType = viTypeSelect.value;
+      if (nextViType !== blockEl._wsViType) {
+        resetBlockFieldsForViType(blockEl, nextViType);
+        blockEl._wsViType = nextViType;
+      }
+      invalidateBlock(blockEl);
+      renderAll();
+    });
+
     regenerateBtn.addEventListener('click', () => {
       invalidateBlock(blockEl);
       renderAll();
     });
 
-    duplicateBtn.addEventListener('click', () => {
+    duplicateBtn.addEventListener('click', (event) => {
+      // Nút nằm trong <summary>, phải chặn bubbling để không kích hoạt toggle đóng/mở accordion.
+      event.preventDefault();
+      event.stopPropagation();
+
       const clone = blockEl.cloneNode(true);
 
       // cloneNode chỉ sao chép attribute mặc định, không phải giá trị người dùng đang chọn
@@ -931,6 +1087,7 @@ async function initWorksheetGenerator() {
       clone.querySelector('[data-gen-operation]').value = operationSelect.value;
       clone.querySelector('[data-gen-range]').value = rangeSelect.value;
       clone.querySelector('[data-gen-columns]').value = columnsSelect.value;
+      clone.querySelector('[data-gen-vi-type]').value = viTypeSelect.value;
 
       blockEl.insertAdjacentElement('afterend', clone);
       wireBlock(clone);
@@ -939,7 +1096,10 @@ async function initWorksheetGenerator() {
       renderAll();
     });
 
-    removeBtn.addEventListener('click', () => {
+    removeBtn.addEventListener('click', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+
       if (getBlocks().length <= 1) return;
       blockEl.remove();
       updateBlockChrome();
@@ -949,12 +1109,8 @@ async function initWorksheetGenerator() {
 
   gradeSelect.addEventListener('change', () => {
     state.grade = gradeSelect.value;
-    if (state.subject === 'toan') {
-      getBlocks().forEach((blockEl) => {
-        blockEl.querySelector('[data-gen-range]').value = WORKSHEET_GRADE_RANGE_DEFAULT[state.grade];
-      });
-    }
-    getBlocks().forEach(invalidateBlock);
+    resetGeneratorDefaults();
+    updateBlockChrome();
     renderAll();
   });
 
@@ -962,8 +1118,9 @@ async function initWorksheetGenerator() {
     btn.addEventListener('click', () => {
       state.subject = btn.dataset.subject;
       setActive(subjectButtons, 'subject', state.subject);
+      resetGeneratorDefaults();
       updateFieldsVisibility();
-      getBlocks().forEach(invalidateBlock);
+      updateBlockChrome();
       renderAll();
     });
   });

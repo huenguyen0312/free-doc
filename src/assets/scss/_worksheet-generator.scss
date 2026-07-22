@@ -113,13 +113,33 @@
   border-left: 4px solid v.$color-primary;
   border-radius: 12px;
   padding: v.$spacing-unit * 3;
+
+  &[open] .worksheet-generator__block-header {
+    margin-bottom: v.$spacing-unit * 2;
+  }
 }
 
 .worksheet-generator__block-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: v.$spacing-unit * 2;
+  margin-bottom: 0;
+  cursor: pointer;
+  list-style: none;
+
+  &::-webkit-details-marker {
+    display: none;
+  }
+}
+
+.worksheet-generator__block-chevron {
+  display: inline-flex;
+  color: v.$color-text-light;
+  transition: transform 0.15s ease;
+}
+
+.worksheet-generator__block[open] > .worksheet-generator__block-header .worksheet-generator__block-chevron {
+  transform: rotate(180deg);
 }
 
 .worksheet-generator__block-title {
@@ -189,6 +209,11 @@
     &:focus {
       outline: none;
       border-color: v.$color-primary;
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
     }
   }
 }
@@ -283,6 +308,10 @@
   display: grid;
   gap: v.$spacing-unit * 1.5 v.$spacing-unit * 0.5;
 
+  &--cols-1 {
+    grid-template-columns: 1fr;
+  }
+
   &--cols-2 {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -313,6 +342,40 @@
   justify-content: center;
   padding-top: v.$spacing-unit * 3;
   padding-bottom: v.$spacing-unit * 1.5;
+}
+
+// 2 dòng ô li để bé viết lại câu đơn ngay dưới đề bài khi in ra.
+.worksheet-writing-lines {
+  margin-top: v.$spacing-unit * 1.5;
+  display: flex;
+  flex-direction: column;
+}
+
+// 1 dòng ô li lớn - loại 5 ô li: chiều cao = 5 ô vuông nhỏ xếp chồng nhau,
+// viền trên/dưới là 2 đường kẻ đậm (đỉnh + đáy), 4 đường kẻ ngang mảnh bên trong
+// và các đường kẻ dọc cùng khoảng cách với đường kẻ ngang để tạo lưới ô vuông kiểu bàn cờ.
+.worksheet-writing-lines__row {
+  --ws-cell: 2.5mm;
+  --ws-line-bold: #{rgba(#2f6fed, 0.85)};
+  --ws-line-thin: #{rgba(#2f6fed, 0.25)};
+
+  height: calc(var(--ws-cell) * 5);
+  border-bottom: 1px solid var(--ws-line-bold);
+  background-image:
+    repeating-linear-gradient(
+      to bottom,
+      var(--ws-line-thin) 0,
+      var(--ws-line-thin) 1px,
+      transparent 1px,
+      transparent var(--ws-cell)
+    ),
+    repeating-linear-gradient(
+      to right,
+      var(--ws-line-thin) 0,
+      var(--ws-line-thin) 1px,
+      transparent 1px,
+      transparent var(--ws-cell)
+    );
 }
 
 .worksheet-tree__number {
