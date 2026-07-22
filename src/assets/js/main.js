@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   console.log('FreeDoc loaded');
+  initHeaderSearch();
   initQuizGame();
   initMemoryGame();
   initFlashcardQuiz();
@@ -14,6 +15,27 @@ document.addEventListener('DOMContentLoaded', () => {
   initBookshelf();
   initTestimonials();
 });
+
+function initHeaderSearch() {
+  const wrap = document.querySelector('[data-header-search]');
+  if (!wrap) return;
+
+  const toggle = wrap.querySelector('[data-header-search-toggle]');
+  const input = wrap.querySelector('[data-header-search-input]');
+
+  toggle.addEventListener('click', () => {
+    const expanded = wrap.classList.toggle('is-expanded');
+    toggle.setAttribute('aria-expanded', String(expanded));
+    if (expanded) input.focus();
+  });
+
+  document.addEventListener('click', (event) => {
+    if (!wrap.contains(event.target)) {
+      wrap.classList.remove('is-expanded');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+}
 
 function initQuizGame() {
   const game = document.querySelector('[data-quiz-game]');
@@ -443,6 +465,7 @@ function initDocExplorer() {
   const grades = JSON.parse(dataEl.textContent);
   const subjectIndex = {};
   const categoryIndex = {};
+  const allDocuments = [];
 
   grades.forEach((grade) => {
     grade.subjects.forEach((subject) => {
@@ -457,10 +480,15 @@ function initDocExplorer() {
 
       subject.categories.forEach((category) => {
         const categoryKey = `${subjectKey}__${category.key}`;
+        const breadcrumb = `${grade.title} • ${subject.title} • ${category.title}`;
         categoryIndex[categoryKey] = {
-          breadcrumb: `${grade.title} • ${subject.title} • ${category.title}`,
+          breadcrumb,
           groups: [{ heading: null, documents: category.documents }],
         };
+
+        category.documents.forEach((doc) => {
+          allDocuments.push({ ...doc, breadcrumb });
+        });
       });
     });
   });
@@ -471,6 +499,8 @@ function initDocExplorer() {
   const viewToggle = main.querySelector('[data-doc-explorer-view-toggle]');
   const docsWrap = main.querySelector('[data-doc-explorer-docs]');
   const viewButtons = viewToggle.querySelectorAll('[data-view]');
+  const searchInput = document.querySelector('[data-doc-explorer-search]');
+  const defaultEmptyText = emptyMsg.textContent;
 
   let viewMode = 'grid';
 
@@ -524,6 +554,57 @@ function initDocExplorer() {
       docsWrap.className = `doc-explorer-main__docs doc-explorer-main__docs--${viewMode}`;
     });
   });
+
+  function resetToDefault() {
+    sidebar.querySelectorAll('.is-active').forEach((el) => el.classList.remove('is-active'));
+    titleEl.hidden = true;
+    viewToggle.hidden = true;
+    docsWrap.hidden = true;
+    emptyMsg.textContent = defaultEmptyText;
+    emptyMsg.hidden = false;
+  }
+
+  function renderSearch(keyword) {
+    const matches = allDocuments.filter((doc) => doc.title.toLowerCase().includes(keyword));
+
+    if (matches.length === 0) {
+      sidebar.querySelectorAll('.is-active').forEach((el) => el.classList.remove('is-active'));
+      titleEl.hidden = true;
+      viewToggle.hidden = true;
+      docsWrap.hidden = true;
+      emptyMsg.textContent = `Không tìm thấy tài liệu nào khớp với "${keyword}".`;
+      emptyMsg.hidden = false;
+      return;
+    }
+
+    const byBreadcrumb = new Map();
+    matches.forEach((doc) => {
+      if (!byBreadcrumb.has(doc.breadcrumb)) byBreadcrumb.set(doc.breadcrumb, []);
+      byBreadcrumb.get(doc.breadcrumb).push(doc);
+    });
+
+    selectEntry({
+      breadcrumb: `Kết quả tìm kiếm cho "${keyword}" (${matches.length})`,
+      groups: Array.from(byBreadcrumb, ([heading, documents]) => ({ heading, documents })),
+    }, null);
+  }
+
+  if (searchInput) {
+    searchInput.addEventListener('input', () => {
+      const keyword = searchInput.value.trim().toLowerCase();
+      if (keyword) {
+        renderSearch(keyword);
+      } else {
+        resetToDefault();
+      }
+    });
+
+    const initialQuery = new URLSearchParams(window.location.search).get('q');
+    if (initialQuery && initialQuery.trim()) {
+      searchInput.value = initialQuery;
+      renderSearch(initialQuery.trim().toLowerCase());
+    }
+  }
 }
 
 function initDocPreviewPage() {
@@ -596,6 +677,9 @@ function initFilterableList(config) {
   const viewButtons = root.querySelectorAll('[data-view]');
 
   let viewMode = 'grid';
+
+  const queryFromUrl = new URLSearchParams(window.location.search).get('q');
+  if (queryFromUrl) searchInput.value = queryFromUrl;
 
   function render() {
     const keyword = searchInput.value.trim().toLowerCase();

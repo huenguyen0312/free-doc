@@ -50,6 +50,13 @@
 
     <div class="doc-explorer__layout">
       <nav class="doc-explorer-sidebar" data-doc-explorer-sidebar>
+        <div class="doc-explorer-sidebar__search">
+          <svg class="doc-explorer-sidebar__search-icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+            <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/>
+            <line x1="16.2" y1="16.2" x2="21" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <input type="search" class="doc-explorer-sidebar__search-input" data-doc-explorer-search placeholder="Tìm tài liệu theo tên..." aria-label="Tìm tài liệu">
+        </div>
         <% grades.forEach((grade, gradeIndex) => { %>
           <div class="doc-explorer-sidebar__group<%= gradeIndex === 0 ? ' is-open' : '' %>" data-group="<%= grade.key %>">
             <button type="button" class="doc-explorer-sidebar__group-toggle" data-group-toggle>

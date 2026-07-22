@@ -56,6 +56,43 @@
   }
 }
 
+.doc-explorer-sidebar__search {
+  display: flex;
+  align-items: center;
+  gap: v.$spacing-unit;
+  padding: (v.$spacing-unit * 0.75) v.$spacing-unit;
+  margin-bottom: v.$spacing-unit * 1.5;
+  border: 1px solid v.$color-border;
+  border-radius: 8px;
+  background: v.$color-bg;
+
+  &:focus-within {
+    border-color: v.$color-primary;
+  }
+}
+
+.doc-explorer-sidebar__search-icon {
+  flex-shrink: 0;
+  color: v.$color-text-light;
+}
+
+.doc-explorer-sidebar__search-input {
+  width: 100%;
+  font: inherit;
+  font-size: 0.9rem;
+  border: none;
+  background: transparent;
+  color: v.$color-text;
+
+  &:focus {
+    outline: none;
+  }
+
+  &::placeholder {
+    color: v.$color-text-light;
+  }
+}
+
 .doc-explorer-sidebar__group {
   border-bottom: 1px solid v.$color-border;
 
