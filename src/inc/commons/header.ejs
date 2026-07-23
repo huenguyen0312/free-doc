@@ -4,11 +4,61 @@
       <img src="/assets/images/logo.svg" alt="FreeDoc" width="32" height="32">
       <span>FreeDoc</span>
     </a>
+
+    <button type="button" class="site-header__nav-toggle" data-header-nav-toggle aria-label="Mở menu" aria-expanded="false" aria-controls="site-header-nav">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
     <div class="site-header__right">
-      <nav class="site-header__nav">
+      <nav class="site-header__nav" id="site-header-nav" data-header-nav>
         <ul>
           <li><a href="/index.html">Trang chủ</a></li>
-          <li><a href="/about/index.html">Giới thiệu</a></li>
+
+          <li class="site-header__nav-item has-submenu">
+            <button type="button" class="site-header__nav-link" data-submenu-toggle aria-expanded="false">
+              <span>Tài liệu</span>
+              <span class="site-header__nav-chevron" aria-hidden="true">▾</span>
+            </button>
+            <ul class="site-header__submenu">
+              <li><a href="/tailieu/mamnon/index.html">Mầm non &amp; Tiền tiểu học</a></li>
+              <li><a href="/tailieu/tieuhoc/index.html">Tiểu học</a></li>
+            </ul>
+          </li>
+
+          <li class="site-header__nav-item has-submenu">
+            <button type="button" class="site-header__nav-link" data-submenu-toggle aria-expanded="false">
+              <span>Vui học</span>
+              <span class="site-header__nav-chevron" aria-hidden="true">▾</span>
+            </button>
+            <ul class="site-header__submenu">
+              <li><a href="/dovui/index.html">Đố vui cùng bé</a></li>
+              <li><a href="/lathinh/index.html">Lật hình tìm cặp</a></li>
+              <li><a href="/visao/index.html">1001 câu hỏi vì sao</a></li>
+            </ul>
+          </li>
+
+          <li class="site-header__nav-item has-submenu">
+            <button type="button" class="site-header__nav-link" data-submenu-toggle aria-expanded="false">
+              <span>Công cụ</span>
+              <span class="site-header__nav-chevron" aria-hidden="true">▾</span>
+            </button>
+            <ul class="site-header__submenu">
+              <li><a href="/taobaitap/index.html">Tạo bài tập</a></li>
+            </ul>
+          </li>
+
+          <li class="site-header__nav-item has-submenu">
+            <button type="button" class="site-header__nav-link" data-submenu-toggle aria-expanded="false">
+              <span>Blog &amp; Mẹo hay</span>
+              <span class="site-header__nav-chevron" aria-hidden="true">▾</span>
+            </button>
+            <ul class="site-header__submenu">
+              <li><a href="/blogs/index.html">Truyện kể cho bé</a></li>
+              <li><a href="/meovat/index.html">Mẹo hay mỗi ngày</a></li>
+            </ul>
+          </li>
         </ul>
       </nav>
 

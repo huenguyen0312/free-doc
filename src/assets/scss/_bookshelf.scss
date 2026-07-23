@@ -2,7 +2,6 @@
 
 .bookshelf {
   background: v.$color-bg;
-  overflow-x: hidden;
 }
 
 .bookshelf__inner {
@@ -56,43 +55,24 @@
   }
 }
 
-.bookshelf-swiper {
-  // width/margin-left thực tế do JS đo và set inline (setBookshelfSwiperWidth trong main.js)
-  // để cả 2 mép đều bám sát viewport - khi kéo slider, card đi ra tới sát mép trái/phải
-  // trình duyệt thay vì dừng lại ở padding của .bookshelf__inner.
-  padding: 0 (v.$spacing-unit * 2) (v.$spacing-unit * 5) (v.$spacing-unit * 5);
-  margin: 0 0 (v.$spacing-unit * 2);
-  --swiper-navigation-color: #{v.$color-primary};
-  --swiper-navigation-size: 20px;
-  --swiper-pagination-color: #{v.$color-primary};
-  --swiper-pagination-bullet-inactive-color: #{v.$color-border};
-  --swiper-pagination-bullet-inactive-opacity: 1;
+.bookshelf__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: v.$spacing-unit * 3;
+  margin: 0 0 (v.$spacing-unit * 4);
 
-  .swiper-slide {
-    // Width cố định (không dùng flex-grow lấp đầy hàng) để khi .bookshelf-swiper được mở rộng
-    // sát mép phải, phần rộng thêm ra hiện thêm card kế tiếp thay vì phóng to các card sẵn có.
-    width: 80%;
-    height: auto;
-
-    @media (min-width: 480px) {
-      width: 280px;
-    }
+  @media (max-width: 860px) {
+    grid-template-columns: repeat(2, 1fr);
   }
 
-  .swiper-button-prev,
-  .swiper-button-next {
-    width: 40px;
-    height: 40px;
-    margin-top: -20px;
-    background: v.$color-bg;
-    border: 1px solid v.$color-border;
-    border-radius: 50%;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-
-    &.swiper-button-disabled {
-      opacity: 0.35;
-    }
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
   }
+}
+
+.bookshelf__more {
+  display: table;
+  margin: 0 auto (v.$spacing-unit * 4);
 }
 
 .bookshelf__card {

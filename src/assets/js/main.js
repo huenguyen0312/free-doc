@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   console.log('FreeDoc loaded');
+  initHeaderNav();
   initHeaderSearch();
   initQuizGame();
   initMemoryGame();
@@ -16,7 +17,63 @@ document.addEventListener('DOMContentLoaded', () => {
   initTestimonials();
   initFaq();
   initNewsletter();
+  initScrollToTop();
 });
+
+function initHeaderNav() {
+  const nav = document.querySelector('[data-header-nav]');
+  if (!nav) return;
+
+  const navToggle = document.querySelector('[data-header-nav-toggle]');
+  const items = Array.from(nav.querySelectorAll('.site-header__nav-item.has-submenu'));
+
+  const closeAllSubmenus = () => {
+    items.forEach((item) => {
+      item.classList.remove('is-open');
+      item.querySelector('[data-submenu-toggle]').setAttribute('aria-expanded', 'false');
+    });
+  };
+
+  const closeNav = () => {
+    nav.classList.remove('is-open');
+    closeAllSubmenus();
+    if (navToggle) {
+      navToggle.classList.remove('is-active');
+      navToggle.setAttribute('aria-expanded', 'false');
+    }
+  };
+
+  if (navToggle) {
+    navToggle.addEventListener('click', () => {
+      const expanded = nav.classList.toggle('is-open');
+      navToggle.classList.toggle('is-active', expanded);
+      navToggle.setAttribute('aria-expanded', String(expanded));
+      if (!expanded) closeAllSubmenus();
+    });
+  }
+
+  items.forEach((item) => {
+    const toggle = item.querySelector('[data-submenu-toggle]');
+    toggle.addEventListener('click', () => {
+      const wasOpen = item.classList.contains('is-open');
+      closeAllSubmenus();
+      if (!wasOpen) {
+        item.classList.add('is-open');
+        toggle.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+
+  document.addEventListener('click', (event) => {
+    if (!nav.contains(event.target) && !(navToggle && navToggle.contains(event.target))) {
+      closeNav();
+    }
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeNav();
+  });
+}
 
 function initHeaderSearch() {
   const wrap = document.querySelector('[data-header-search]');
@@ -122,70 +179,26 @@ function initMemoryGame() {
   });
 }
 
-// Kéo mép trái của el về sát mép trái viewport (marginLeft âm) và set width bằng đúng
-// window.innerWidth, để cả 2 bên của slider đều bám sát mép trình duyệt - phỏng theo
-// setCardSlidesWidth() của c-card-slides (promotion/tstosab/gold.html) nhưng mở rộng
-// ra cả 2 phía thay vì chỉ bên phải.
-function setBookshelfSwiperWidth(el) {
-  el.style.marginLeft = '';
-  const rect = el.getBoundingClientRect();
-  el.style.marginLeft = `${-rect.left}px`;
-  el.style.width = `${window.innerWidth}px`;
-}
-
 function initBookshelf() {
   const section = document.querySelector('.bookshelf');
   if (!section) return;
 
   const tabs = section.querySelectorAll('[data-book-filter]');
-  const swiperEl = section.querySelector('[data-book-swiper]');
   const wrapperEl = section.querySelector('[data-book-grid]');
-  const allSlides = Array.from(wrapperEl.querySelectorAll('.swiper-slide'));
+  const cards = Array.from(wrapperEl.querySelectorAll('[data-book-preview]'));
   const modal = section.querySelector('[data-book-modal]');
   const modalImage = modal.querySelector('[data-book-modal-image]');
   const modalTitle = modal.querySelector('[data-book-modal-title]');
   const modalDesc = modal.querySelector('[data-book-modal-desc]');
-
-  setBookshelfSwiperWidth(swiperEl);
-
-  // slidesPerView: 'auto' đọc width CSS của từng .swiper-slide (xem _bookshelf.scss) để quyết định
-  // số card hiển thị - màn càng rộng thì càng thấy nhiều card hơn, thay vì phóng to card cố định
-  // để lấp đầy chỗ trống.
-  const swiper = new Swiper(swiperEl, {
-    slidesPerView: 'auto',
-    spaceBetween: 24,
-    grabCursor: true,
-    navigation: {
-      nextEl: swiperEl.querySelector('[data-book-next]'),
-      prevEl: swiperEl.querySelector('[data-book-prev]'),
-    },
-    pagination: {
-      el: swiperEl.querySelector('[data-book-pagination]'),
-      clickable: true,
-    },
-  });
-
-  let resizeTimer;
-  window.addEventListener('resize', () => {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => {
-      setBookshelfSwiperWidth(swiperEl);
-      swiper.update();
-    }, 150);
-  });
 
   tabs.forEach((tab) => {
     tab.addEventListener('click', () => {
       const filter = tab.dataset.bookFilter;
       tabs.forEach((t) => t.classList.toggle('is-active', t === tab));
 
-      wrapperEl.innerHTML = '';
-      allSlides
-        .filter((slide) => filter === 'all' || slide.dataset.bookAge === filter)
-        .forEach((slide) => wrapperEl.appendChild(slide));
-
-      swiper.update();
-      swiper.slideTo(0);
+      cards.forEach((card) => {
+        card.hidden = filter !== 'all' && card.dataset.bookAge !== filter;
+      });
     });
   });
 
@@ -197,7 +210,7 @@ function initBookshelf() {
     modal.hidden = false;
   }
 
-  section.querySelectorAll('[data-book-preview]').forEach((card) => {
+  cards.forEach((card) => {
     card.addEventListener('click', () => openPreview(card));
     card.addEventListener('keydown', (event) => {
       if (event.key === 'Enter' || event.key === ' ') {
@@ -1433,4 +1446,23 @@ async function initWorksheetGenerator() {
   updateFieldsVisibility();
   updateBlockChrome();
   renderAll();
+}
+
+function initScrollToTop() {
+  const btn = document.querySelector('[data-scroll-to-top]');
+  if (!btn) return;
+
+  const keyvisual = document.querySelector('.keyvisual');
+  const threshold = keyvisual ? keyvisual.offsetTop + keyvisual.offsetHeight : window.innerHeight;
+
+  function toggleVisibility() {
+    btn.hidden = window.scrollY < threshold;
+  }
+
+  toggleVisibility();
+  window.addEventListener('scroll', toggleVisibility, { passive: true });
+
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
 }

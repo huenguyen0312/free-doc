@@ -14,3 +14,35 @@
   color: v.$color-text-light;
   font-size: 0.875rem;
 }
+
+.scroll-to-top {
+  position: fixed;
+  right: v.$spacing-unit * 3;
+  bottom: v.$spacing-unit * 3;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background: v.$color-primary;
+  color: v.$color-bg;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: opacity 0.2s, transform 0.2s;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  &[hidden] {
+    display: none;
+  }
+
+  @media (max-width: 700px) {
+    right: v.$spacing-unit * 2;
+    bottom: v.$spacing-unit * 2;
+  }
+}

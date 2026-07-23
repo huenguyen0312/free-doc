@@ -1,4 +1,11 @@
 <%
+  const bookAges = [
+    { key: 'all', label: 'Tất cả' },
+    { key: 'mamnon', label: '🌱 Mầm non (2-5t)' },
+    { key: 'lop12', label: '🐣 Lớp 1-2 (6-7t)' },
+    { key: 'lop35', label: '🚀 Lớp 3-5 (8-10t)' },
+  ];
+
   const books = [
     {
       age: 'mamnon',
@@ -8,11 +15,25 @@
       image: '/assets/images/book-mamnon-1.svg',
     },
     {
+      age: 'mamnon',
+      badge: 'Ehon Nhật Bản',
+      title: 'Thơ Ngắn Cho Bé - Ông Mặt Trời',
+      desc: 'Những vần thơ ngắn, vui nhộn nuôi dưỡng tâm hồn và giúp bé làm quen với ngôn ngữ.',
+      image: '/assets/images/book-mamnon-2.svg',
+    },
+    {
       age: 'lop12',
       badge: 'Lớp 1-2 (6-7t)',
       title: 'Truyện Tranh Giáo Dục - Bé Tập Đọc',
       desc: 'Chữ to, có phiên âm rõ ràng giúp bé rèn luyện kỹ năng đọc rành mạch mỗi ngày.',
       image: '/assets/images/book-lop12-1.svg',
+    },
+    {
+      age: 'lop12',
+      badge: 'Toán tư duy',
+      title: 'Khám Phá Khoa Học Quanh Bé',
+      desc: 'Những câu chuyện khoa học đơn giản, kích thích trí tò mò và ham học hỏi.',
+      image: '/assets/images/book-lop12-2.svg',
     },
     {
       age: 'lop35',
@@ -22,19 +43,25 @@
       image: '/assets/images/book-lop35-1.svg',
     },
     {
-      age: 'lop12',
-      badge: 'Toán tư duy',
-      title: 'Khám Phá Khoa Học Quanh Bé',
-      desc: 'Những câu chuyện khoa học đơn giản, kích thích trí tò mò và ham học hỏi.',
-      image: '/assets/images/book-lop12-2.svg',
+      age: 'lop35',
+      badge: 'Kỹ năng sống',
+      title: 'Bách Khoa Toàn Thư Cho Bé',
+      desc: 'Mở rộng vốn sống, rèn tư duy độc lập và thói quen tự học mỗi ngày.',
+      image: '/assets/images/book-lop35-2.svg',
     },
   ];
 %>
 <section class="bookshelf">
   <div class="bookshelf__inner">
     <div class="bookshelf__header">
-      <h2 class="bookshelf__title">📚 Tủ Sách Thông Minh</h2>
+      <h1 class="bookshelf__title">📚 Tủ Sách Thông Minh</h1>
       <p class="bookshelf__subtitle">Cùng con kiến tạo thói quen đọc sách mỗi ngày. Những cuốn sách được chọn lọc kỹ lưỡng theo từng giai đoạn phát triển tư duy của bé.</p>
+    </div>
+
+    <div class="bookshelf__tabs" data-book-tabs>
+      <% bookAges.forEach((ageItem, i) => { %>
+        <button type="button" class="bookshelf__tab<%= i === 0 ? ' is-active' : '' %>" data-book-filter="<%= ageItem.key %>"><%= ageItem.label %></button>
+      <% }); %>
     </div>
 
     <div class="bookshelf__grid" data-book-grid>
@@ -57,14 +84,6 @@
           <p class="bookshelf__card-desc"><%= book.desc %></p>
         </article>
       <% }); %>
-    </div>
-
-    <div class="bookshelf__more">
-      <a class="btn" href="/sach/index.html">Xem tất cả tủ sách →</a>
-    </div>
-
-    <div class="bookshelf__banner">
-      <span>💡 Gợi ý sách theo tháng - Ưu đãi combo sách + bài tập PDF</span>
     </div>
   </div>
 
