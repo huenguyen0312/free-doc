@@ -5,6 +5,26 @@
   background: v.$color-bg;
 }
 
+.site-header--fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  animation: site-header-slide-down 0.25s ease;
+}
+
+@keyframes site-header-slide-down {
+  from {
+    transform: translateY(-100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
 .site-header__inner {
   max-width: v.$max-width;
   margin: 0 auto;

@@ -17,6 +17,11 @@ body {
   line-height: 1.7;
 }
 
+html.no-scroll,
+html.no-scroll body {
+  overflow: hidden;
+}
+
 a {
   color: v.$color-primary;
   text-decoration: none;
