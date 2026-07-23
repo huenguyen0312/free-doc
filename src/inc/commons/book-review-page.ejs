@@ -1,0 +1,124 @@
+<!-- Trang review sách chi tiết (mở từ card trong section "Tủ Sách Thông Minh" ở trang chủ qua tab mới). Dữ liệu đọc từ book-reviews.json theo ?id=..., render bởi initBookReviewPage() trong main.js. -->
+<article class="book-review" data-book-review>
+  <div class="book-review__top">
+    <nav class="book-review__breadcrumb" data-review-breadcrumb aria-label="Breadcrumb"></nav>
+
+    <h1 class="book-review__title" data-review-title>Đang tải bài viết...</h1>
+    <div class="book-review__meta">
+      <span data-review-author></span>
+      <span data-review-date></span>
+      <span data-review-readtime></span>
+      <span data-review-views></span>
+    </div>
+  </div>
+
+  <div class="book-review__layout">
+    <div class="book-review__main">
+
+      <p class="book-review__intro" data-review-intro></p>
+
+      <div class="book-review__pros-cons">
+        <div class="book-review__pros">
+          <h3>🟢 Ưu điểm</h3>
+          <ul data-review-pros></ul>
+        </div>
+        <div class="book-review__cons">
+          <h3>🔴 Nhược điểm</h3>
+          <ul data-review-cons></ul>
+        </div>
+      </div>
+
+      <div class="book-review__sections" data-review-sections></div>
+
+      <div class="book-review__block">
+        <h2>Đọc thử / Xem trước trang sách</h2>
+        <div class="book-review__gallery" data-review-gallery></div>
+      </div>
+
+      <div class="book-review__block">
+        <h2>Tổng kết & Kết luận</h2>
+        <div class="book-review__verdict">
+          <div class="book-review__verdict-scores" data-review-verdict-scores></div>
+          <div class="book-review__verdict-cols">
+            <div>
+              <h4>👍 Phù hợp với ai</h4>
+              <ul data-review-recommend-for></ul>
+            </div>
+            <div>
+              <h4>👎 Không phù hợp với ai</h4>
+              <ul data-review-not-recommend-for></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="book-review__author-bio" data-review-author-bio>
+        <img data-review-author-bio-avatar src="" alt="">
+        <div>
+          <p class="book-review__author-bio-name" data-review-author-bio-name></p>
+          <p class="book-review__author-bio-title" data-review-author-bio-title></p>
+          <p class="book-review__author-bio-text" data-review-author-bio-text></p>
+        </div>
+      </div>
+
+      <div class="book-review__block">
+        <h2>Bình luận & Thảo luận</h2>
+        <ul class="book-review__comments" data-review-comments></ul>
+
+        <form class="book-review__comment-form" data-review-comment-form>
+          <input type="text" name="name" placeholder="Tên của bạn" required>
+          <textarea name="comment" rows="3" placeholder="Đặt câu hỏi hoặc chia sẻ cảm nhận của bạn về cuốn sách..." required></textarea>
+          <button type="submit" class="btn">Gửi bình luận</button>
+        </form>
+      </div>
+
+      <div class="book-review__block">
+        <h2>Có thể bạn cũng quan tâm</h2>
+        <div class="book-review__related" data-review-related></div>
+      </div>
+    </div>
+
+    <aside class="book-review__aside">
+      <div class="book-review__book-card">
+        <img class="book-review__book-cover" data-review-book-cover src="" alt="">
+        <h3 data-review-book-title></h3>
+        <p class="book-review__book-publisher" data-review-book-publisher></p>
+        <p class="book-review__book-rating" data-review-book-rating></p>
+        <p class="book-review__book-age" data-review-book-age></p>
+      </div>
+
+      <div class="book-review__status-card">
+        <p class="book-review__status-note">📌 Sách đang được đánh giá. Bản in sẽ sớm có mặt trên hệ thống!</p>
+
+        <button type="button" class="book-review__save-btn" data-review-save aria-pressed="false">🔖 Lưu bài viết</button>
+
+        <form class="book-review__notify-form" data-review-notify-form>
+          <div data-review-notify-step="ask">
+            <input type="email" name="email" placeholder="Email nhận thông báo" required>
+            <button type="submit" class="btn">Đăng ký nhận thông báo</button>
+          </div>
+          <p data-review-notify-step="thanks" hidden>✅ Đã đăng ký! Chúng tôi sẽ báo ngay khi có sách.</p>
+        </form>
+      </div>
+
+      <div class="book-review__toc-card">
+        <p class="book-review__toc-title">Mục lục bài viết</p>
+        <ul class="book-review__toc" data-review-toc></ul>
+      </div>
+    </aside>
+  </div>
+</article>
+
+<!-- Modal xem ảnh gallery phóng to, có nút chuyển ảnh -->
+<div class="book-review__modal" data-review-image-modal hidden>
+  <div class="book-review__modal-overlay" data-review-image-modal-close></div>
+  <div class="book-review__modal-content">
+    <button type="button" class="book-review__modal-close" data-review-image-modal-close aria-label="Đóng">✕</button>
+    <img class="book-review__modal-image" data-review-image-modal-img src="" alt="">
+    <div class="book-review__modal-nav">
+      <button type="button" data-review-image-modal-prev>‹ Trước</button>
+      <span data-review-image-modal-count></span>
+      <button type="button" data-review-image-modal-next>Sau ›</button>
+    </div>
+  </div>
+</div>

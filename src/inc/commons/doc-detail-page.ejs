@@ -1,0 +1,163 @@
+<!-- Trang chi tiết tài liệu (mở từ trending-card qua tab mới). Dữ liệu đọc từ documents.json theo ?id=..., render bởi initDocDetailPage() trong main.js. Viewer PDF (pdf.js) được khởi tạo riêng bởi doc-detail-viewer.js. -->
+<section class="doc-detail" data-doc-detail>
+  <div class="doc-detail__top">
+    <nav class="doc-detail__breadcrumb" data-doc-detail-breadcrumb aria-label="Breadcrumb"></nav>
+
+    <div class="doc-detail__heading">
+      <span class="doc-detail__filetype" data-doc-detail-filetype></span>
+      <h1 class="doc-detail__title" data-doc-detail-title>Đang tải tài liệu...</h1>
+      <div class="doc-detail__meta-row">
+        <span class="doc-detail__meta-item" data-doc-detail-grade></span>
+        <span class="doc-detail__meta-item" data-doc-detail-downloads></span>
+        <span class="doc-detail__meta-item" data-doc-detail-rating></span>
+        <span class="doc-detail__meta-item" data-doc-detail-updated></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-detail__layout">
+    <div class="doc-detail__main">
+
+      <!-- Document Preview Viewer (pdf.js) -->
+      <div class="doc-detail__viewer" data-doc-viewer>
+        <div class="doc-detail__viewer-toolbar">
+          <button type="button" class="doc-detail__viewer-btn" data-doc-viewer-zoom-out aria-label="Thu nhỏ">－</button>
+          <button type="button" class="doc-detail__viewer-btn" data-doc-viewer-zoom-in aria-label="Phóng to">＋</button>
+          <span class="doc-detail__viewer-page" data-doc-viewer-page>Trang 1 / 1</span>
+          <button type="button" class="doc-detail__viewer-btn doc-detail__viewer-btn--fullscreen" data-doc-viewer-fullscreen aria-label="Xem toàn màn hình">⛶ Toàn màn hình</button>
+        </div>
+        <div class="doc-detail__viewer-canvas-wrap" data-doc-viewer-canvas-wrap>
+          <canvas class="doc-detail__viewer-canvas" data-doc-viewer-canvas></canvas>
+          <div class="doc-detail__viewer-watermark" data-doc-viewer-watermark hidden>
+            <span class="doc-detail__viewer-watermark-text">FreeDoc — Xem trước</span>
+          </div>
+          <div class="doc-detail__viewer-lock" data-doc-viewer-lock hidden>
+            <p>🔒 Bạn đã xem hết số trang xem trước.</p>
+            <button type="button" class="btn" data-doc-viewer-lock-download>Tải file đầy đủ để xem hết</button>
+          </div>
+        </div>
+        <div class="doc-detail__viewer-nav">
+          <button type="button" class="doc-detail__viewer-btn" data-doc-viewer-prev>‹ Trang trước</button>
+          <button type="button" class="doc-detail__viewer-btn" data-doc-viewer-next>Trang sau ›</button>
+        </div>
+      </div>
+
+      <!-- Description & Highlights -->
+      <div class="doc-detail__block">
+        <h2 class="doc-detail__block-title">Mô tả nội dung</h2>
+        <p class="doc-detail__desc" data-doc-detail-desc></p>
+        <ul class="doc-detail__highlights" data-doc-detail-highlights></ul>
+        <div class="doc-detail__tags" data-doc-detail-tags></div>
+      </div>
+
+      <!-- Thumbnails -->
+      <div class="doc-detail__block">
+        <h2 class="doc-detail__block-title">Xem trước từng trang</h2>
+        <div class="doc-detail__thumbnails" data-doc-detail-thumbnails></div>
+      </div>
+
+      <!-- Related documents -->
+      <div class="doc-detail__block" data-doc-detail-related-block hidden>
+        <h2 class="doc-detail__block-title">Tài liệu liên quan</h2>
+        <div class="doc-detail__related-grid" data-doc-detail-related></div>
+      </div>
+
+      <!-- Reviews -->
+      <div class="doc-detail__block">
+        <h2 class="doc-detail__block-title">Đánh giá & Bình luận</h2>
+        <div class="doc-detail__rating-summary">
+          <span class="doc-detail__rating-score" data-doc-detail-rating-score></span>
+          <span class="doc-detail__rating-count" data-doc-detail-rating-count></span>
+        </div>
+
+        <ul class="doc-detail__reviews" data-doc-detail-reviews></ul>
+
+        <form class="doc-detail__review-form" data-doc-review-form>
+          <h3>Gửi đánh giá của bạn</h3>
+          <div class="doc-detail__review-form-row">
+            <input type="text" name="name" placeholder="Tên của bạn" required>
+            <div class="doc-detail__review-stars" data-doc-review-stars>
+              <button type="button" data-star="1">★</button>
+              <button type="button" data-star="2">★</button>
+              <button type="button" data-star="3">★</button>
+              <button type="button" data-star="4">★</button>
+              <button type="button" data-star="5">★</button>
+            </div>
+          </div>
+          <textarea name="comment" rows="3" placeholder="Chia sẻ trải nghiệm của bạn sau khi tải/in tài liệu..." required></textarea>
+          <label class="doc-detail__review-photo">
+            📷 Đính kèm ảnh sản phẩm thực tế (không bắt buộc)
+            <input type="file" name="photo" accept="image/*">
+          </label>
+          <button type="submit" class="btn">Gửi đánh giá</button>
+        </form>
+      </div>
+    </div>
+
+    <aside class="doc-detail__aside">
+      <div class="doc-detail__action-card">
+        <span class="doc-detail__price" data-doc-detail-price></span>
+
+        <button type="button" class="doc-detail__download-btn" data-doc-detail-download>⬇ Tải file ngay</button>
+        <a class="doc-detail__generator-btn" href="/index.html#generator">🎲 Tạo bài tập tương tự</a>
+
+        <div class="doc-detail__secondary-actions">
+          <button type="button" class="doc-detail__secondary-btn" data-doc-detail-save aria-pressed="false">🔖 Lưu vào tủ sách</button>
+          <button type="button" class="doc-detail__secondary-btn" data-doc-detail-print>🖨️ In trực tiếp</button>
+          <div class="doc-detail__share" data-doc-detail-share>
+            <button type="button" class="doc-detail__secondary-btn" data-doc-detail-share-toggle>🔗 Chia sẻ</button>
+            <div class="doc-detail__share-menu" data-doc-detail-share-menu hidden>
+              <button type="button" data-doc-detail-share-copy>Copy link</button>
+              <a data-doc-detail-share-fb target="_blank" rel="noopener">Facebook</a>
+              <a data-doc-detail-share-zalo target="_blank" rel="noopener">Zalo</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="doc-detail__meta-list" data-doc-detail-meta-list></div>
+
+      <div class="doc-detail__author" data-doc-detail-author>
+        <img class="doc-detail__author-avatar" data-doc-detail-author-avatar src="" alt="">
+        <div class="doc-detail__author-body">
+          <span class="doc-detail__author-name" data-doc-detail-author-name></span>
+          <a class="doc-detail__author-link" data-doc-detail-author-link href="#"></a>
+        </div>
+      </div>
+
+      <div class="doc-detail__upsell" data-doc-detail-upsell hidden>
+        <p data-doc-detail-upsell-text></p>
+        <a class="btn" href="#" data-doc-detail-upsell-cta>Tải trọn bộ</a>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- Modal xem ảnh thumbnail phóng to -->
+<div class="doc-detail__modal" data-doc-image-modal hidden>
+  <div class="doc-detail__modal-overlay" data-doc-image-modal-close></div>
+  <div class="doc-detail__modal-content">
+    <button type="button" class="doc-detail__modal-close" data-doc-image-modal-close aria-label="Đóng">✕</button>
+    <img class="doc-detail__modal-image" data-doc-image-modal-img src="" alt="">
+  </div>
+</div>
+
+<!-- Modal hiện sau khi bấm Tải file: mời để lại email nhận tài liệu tuần tiếp theo (demo phía client, chưa nối backend gửi email thật) -->
+<div class="doc-detail__modal" data-doc-download-modal hidden>
+  <div class="doc-detail__modal-overlay" data-doc-download-modal-close></div>
+  <div class="doc-detail__modal-content doc-detail__modal-content--download">
+    <button type="button" class="doc-detail__modal-close" data-doc-download-modal-close aria-label="Đóng">✕</button>
+    <div data-doc-download-modal-step="ask">
+      <p class="doc-detail__modal-title">🎉 Tài liệu đang được tải xuống!</p>
+      <p>Bạn có muốn nhận phiếu bài tập tuần tiếp theo qua Email không?</p>
+      <form data-doc-download-email-form>
+        <input type="email" name="email" placeholder="Email của bạn" required>
+        <button type="submit" class="btn">Nhận ngay</button>
+      </form>
+    </div>
+    <div data-doc-download-modal-step="thanks" hidden>
+      <p class="doc-detail__modal-title">✅ Cảm ơn bạn!</p>
+      <p>Chúng tôi sẽ gửi tài liệu tuần tiếp theo tới email của bạn sớm nhất.</p>
+    </div>
+  </div>
+</div>

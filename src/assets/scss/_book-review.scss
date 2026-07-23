@@ -1,0 +1,560 @@
+@use 'variables' as v;
+
+// Trang review sách chi tiết (mở từ card "Tủ Sách Thông Minh" qua tab mới)
+
+.book-review__top {
+  max-width: v.$max-width-lg;
+  margin: 0 auto;
+  padding: (v.$spacing-unit * 3) (v.$spacing-unit * 3) 0;
+}
+
+.book-review__breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  gap: v.$spacing-unit;
+  font-size: 0.85rem;
+  color: v.$color-text-light;
+  margin: 0 0 (v.$spacing-unit * 2);
+
+  a {
+    color: v.$color-text-light;
+  }
+
+  span:last-child {
+    color: v.$color-text;
+  }
+}
+
+.book-review__title {
+  font-size: 1.6rem;
+  line-height: 1.4;
+  margin: 0 0 (v.$spacing-unit * 1.5);
+  color: v.$color-text;
+}
+
+.book-review__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: v.$spacing-unit * 2.5;
+  color: v.$color-text-light;
+  font-size: 0.9rem;
+  margin: 0 0 (v.$spacing-unit * 3);
+}
+
+.book-review__layout {
+  max-width: v.$max-width-lg;
+  margin: 0 auto;
+  padding: 0 (v.$spacing-unit * 3) (v.$spacing-unit * 6);
+  display: grid;
+  grid-template-columns: minmax(0, 70%) minmax(0, 1fr);
+  gap: v.$spacing-unit * 4;
+  align-items: start;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.book-review__main {
+  min-width: 0;
+}
+
+.book-review__intro {
+  font-size: 1.05rem;
+  margin: 0 0 (v.$spacing-unit * 3);
+}
+
+.book-review__pros-cons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: v.$spacing-unit * 2;
+  margin: 0 0 (v.$spacing-unit * 5);
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
+
+  h3 {
+    margin: 0 0 (v.$spacing-unit);
+    font-size: 1rem;
+  }
+
+  ul {
+    margin: 0;
+    padding-left: v.$spacing-unit * 2.5;
+  }
+
+  li {
+    margin-bottom: (v.$spacing-unit * 0.75);
+  }
+}
+
+.book-review__pros {
+  background: v.$color-age-tieuhoc-bg;
+  border-radius: 10px;
+  padding: v.$spacing-unit * 2;
+}
+
+.book-review__cons {
+  background: #fdf1f0;
+  border-radius: 10px;
+  padding: v.$spacing-unit * 2;
+}
+
+.book-review__section {
+  margin: 0 0 (v.$spacing-unit * 5);
+  scroll-margin-top: v.$spacing-unit * 3;
+
+  h2 {
+    font-size: 1.25rem;
+    margin: 0 0 (v.$spacing-unit * 2);
+  }
+
+  p {
+    margin: 0 0 (v.$spacing-unit * 2);
+  }
+}
+
+.book-review__section-images {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: v.$spacing-unit * 1.5;
+
+  img {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid v.$color-border;
+  }
+}
+
+.book-review__block {
+  margin: 0 0 (v.$spacing-unit * 5);
+
+  h2 {
+    font-size: 1.25rem;
+    margin: 0 0 (v.$spacing-unit * 2);
+  }
+}
+
+// --- Gallery ---
+
+.book-review__gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: v.$spacing-unit * 1.5;
+}
+
+.book-review__thumbnail {
+  border: 1px solid v.$color-border;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  padding: 0;
+  background: none;
+
+  img {
+    width: 100%;
+    display: block;
+  }
+
+  &:hover {
+    border-color: v.$color-primary;
+  }
+}
+
+// --- Verdict ---
+
+.book-review__verdict {
+  border: 1px solid v.$color-border;
+  border-radius: 12px;
+  padding: v.$spacing-unit * 3;
+}
+
+.book-review__verdict-scores {
+  margin: 0 0 (v.$spacing-unit * 3);
+}
+
+.book-review__score-row {
+  display: flex;
+  justify-content: space-between;
+  padding: (v.$spacing-unit * 0.75) 0;
+  border-bottom: 1px solid v.$color-border;
+  font-weight: 700;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.book-review__verdict-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: v.$spacing-unit * 3;
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
+
+  h4 {
+    margin: 0 0 (v.$spacing-unit);
+    font-size: 0.95rem;
+  }
+
+  ul {
+    margin: 0;
+    padding-left: v.$spacing-unit * 2.5;
+  }
+
+  li {
+    margin-bottom: (v.$spacing-unit * 0.75);
+  }
+}
+
+// --- Author bio ---
+
+.book-review__author-bio {
+  display: flex;
+  gap: v.$spacing-unit * 2;
+  border: 1px solid v.$color-border;
+  border-radius: 12px;
+  padding: v.$spacing-unit * 3;
+  margin: 0 0 (v.$spacing-unit * 5);
+
+  img {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+}
+
+.book-review__author-bio-name {
+  font-weight: 700;
+  margin: 0;
+}
+
+.book-review__author-bio-title {
+  color: v.$color-text-light;
+  font-size: 0.85rem;
+  margin: (v.$spacing-unit * 0.25) 0 (v.$spacing-unit);
+}
+
+.book-review__author-bio-text {
+  margin: 0;
+}
+
+// --- Comments ---
+
+.book-review__comments {
+  list-style: none;
+  margin: 0 0 (v.$spacing-unit * 3);
+  padding: 0;
+}
+
+.book-review__comment {
+  display: flex;
+  gap: v.$spacing-unit * 1.5;
+  padding: (v.$spacing-unit * 2) 0;
+  border-bottom: 1px solid v.$color-border;
+
+  img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+}
+
+.book-review__comment-name {
+  font-weight: 700;
+  margin-right: v.$spacing-unit;
+}
+
+.book-review__comment-date {
+  color: v.$color-text-light;
+  font-size: 0.8rem;
+}
+
+.book-review__comment-text {
+  margin: (v.$spacing-unit * 0.5) 0 0;
+}
+
+.book-review__comment-form {
+  display: flex;
+  flex-direction: column;
+  gap: v.$spacing-unit * 1.5;
+
+  input,
+  textarea {
+    padding: (v.$spacing-unit * 1.25) (v.$spacing-unit * 1.5);
+    border: 1px solid v.$color-border;
+    border-radius: 8px;
+    font: inherit;
+  }
+
+  button {
+    align-self: flex-start;
+  }
+}
+
+// --- Related ---
+
+.book-review__related {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: v.$spacing-unit * 2;
+
+  @media (max-width: 700px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.book-review__related-card {
+  border: 1px solid v.$color-border;
+  border-radius: 10px;
+  overflow: hidden;
+  color: inherit;
+  display: block;
+
+  &:hover {
+    text-decoration: none;
+    border-color: v.$color-primary;
+  }
+
+  h3 {
+    padding: v.$spacing-unit * 1.5;
+    font-size: 0.9rem;
+    margin: 0;
+    line-height: 1.4;
+  }
+}
+
+.book-review__related-thumb {
+  width: 100%;
+  padding-top: 60%;
+  position: relative;
+  display: block;
+
+  img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+// --- Sidebar ---
+
+.book-review__aside {
+  position: sticky;
+  top: v.$spacing-unit * 3;
+  display: flex;
+  flex-direction: column;
+  gap: v.$spacing-unit * 3;
+
+  @media (max-width: 900px) {
+    position: static;
+  }
+}
+
+.book-review__book-card,
+.book-review__status-card,
+.book-review__toc-card {
+  border: 1px solid v.$color-border;
+  border-radius: 12px;
+  padding: v.$spacing-unit * 3;
+}
+
+.book-review__book-cover {
+  width: 100%;
+  border-radius: 8px;
+  margin: 0 0 (v.$spacing-unit * 2);
+}
+
+.book-review__book-card h3 {
+  margin: 0 0 (v.$spacing-unit);
+  font-size: 1.05rem;
+}
+
+.book-review__book-publisher {
+  color: v.$color-text-light;
+  margin: 0 0 (v.$spacing-unit);
+}
+
+.book-review__book-rating {
+  font-weight: 700;
+  color: v.$color-primary;
+  margin: 0 0 (v.$spacing-unit);
+}
+
+.book-review__book-age {
+  font-size: 0.85rem;
+  color: v.$color-text-light;
+  margin: 0;
+}
+
+.book-review__status-note {
+  background: v.$color-bg-alt;
+  border-radius: 8px;
+  padding: v.$spacing-unit * 1.5;
+  font-size: 0.85rem;
+  margin: 0 0 (v.$spacing-unit * 2);
+}
+
+.book-review__save-btn {
+  display: block;
+  width: 100%;
+  padding: v.$spacing-unit * 1.5;
+  border: 1px solid v.$color-primary;
+  border-radius: 8px;
+  background: v.$color-bg;
+  color: v.$color-primary;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  margin: 0 0 (v.$spacing-unit * 2);
+
+  &:hover {
+    background: v.$color-primary;
+    color: v.$color-bg;
+  }
+
+  &[aria-pressed='true'] {
+    background: v.$color-age-tieuhoc-bg;
+    color: v.$color-primary;
+  }
+}
+
+.book-review__notify-form {
+  input {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: (v.$spacing-unit * 1.25) (v.$spacing-unit * 1.5);
+    border: 1px solid v.$color-border;
+    border-radius: 8px;
+    font: inherit;
+    margin: 0 0 (v.$spacing-unit * 1.5);
+  }
+
+  button {
+    width: 100%;
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.85rem;
+  }
+}
+
+.book-review__toc-title {
+  font-weight: 700;
+  margin: 0 0 (v.$spacing-unit * 1.5);
+}
+
+.book-review__toc {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: v.$spacing-unit;
+
+  a {
+    display: block;
+    color: v.$color-text-light;
+    font-size: 0.9rem;
+    padding: (v.$spacing-unit * 0.5) 0 (v.$spacing-unit * 0.5) (v.$spacing-unit * 1.5);
+    border-left: 2px solid v.$color-border;
+
+    &:hover {
+      color: v.$color-primary;
+      text-decoration: none;
+    }
+
+    &.is-active {
+      color: v.$color-primary;
+      border-left-color: v.$color-primary;
+      font-weight: 700;
+    }
+  }
+}
+
+// --- Modal (gallery) ---
+
+.book-review__modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: none;
+
+  &:not([hidden]) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.book-review__modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.book-review__modal-content {
+  position: relative;
+  width: 90%;
+  max-width: 640px;
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: v.$spacing-unit * 3;
+  background: v.$color-bg;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.book-review__modal-close {
+  position: absolute;
+  top: v.$spacing-unit;
+  right: v.$spacing-unit;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 50%;
+  background: v.$color-bg-alt;
+  cursor: pointer;
+}
+
+.book-review__modal-image {
+  width: 100%;
+  border-radius: 8px;
+  margin: 0 0 (v.$spacing-unit * 2);
+}
+
+.book-review__modal-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: v.$spacing-unit * 3;
+
+  button {
+    border: 1px solid v.$color-border;
+    background: v.$color-bg;
+    border-radius: 6px;
+    padding: (v.$spacing-unit * 0.75) (v.$spacing-unit * 1.5);
+    cursor: pointer;
+
+    &:hover {
+      border-color: v.$color-primary;
+      color: v.$color-primary;
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .book-review__save-btn,
+  .book-review__notify-form button {
+    padding: v.$spacing-unit * 2;
+  }
+}

@@ -23,18 +23,19 @@
     },
     {
       age: 'lop12',
-      badge: 'Toán tư duy',
-      title: 'Khám Phá Khoa Học Quanh Bé',
-      desc: 'Những câu chuyện khoa học đơn giản, kích thích trí tò mò và ham học hỏi.',
-      image: '/assets/images/book-lop12-2.svg',
+      badge: 'Lớp 1-2 (6-7t)',
+      title: 'Luyện Viết Chữ Đẹp Theo Dòng Ô Li (Tập 1)',
+      desc: 'Ô li chuẩn 2x2mm, giấy chống lóa OE 80gsm - đọc review chi tiết trước khi chọn mua cho bé.',
+      image: '/assets/images/book-lop12-1.svg',
     },
   ];
+  const reviewLink = '/sach/review/index.html?id=luyen-viet-chu-dep-o-li';
 %>
 <section class="bookshelf">
   <div class="bookshelf__inner">
     <div class="bookshelf__header">
-      <h2 class="bookshelf__title">📚 Tủ Sách Thông Minh</h2>
-      <p class="bookshelf__subtitle">Cùng con kiến tạo thói quen đọc sách mỗi ngày. Những cuốn sách được chọn lọc kỹ lưỡng theo từng giai đoạn phát triển tư duy của bé.</p>
+      <h2 class="bookshelf__title">📚 Tủ Sách Hay Cho Bé</h2>
+      <p class="bookshelf__subtitle">Tổng hợp những cuốn sách được tuyển chọn kỹ lưỡng cùng các bài review chi tiết, giúp bố mẹ dễ dàng chọn đúng cuốn sách đồng hành cùng con trong từng giai đoạn phát triển.</p>
     </div>
 
     <div class="bookshelf__grid" data-book-grid>
@@ -43,9 +44,7 @@
           class="bookshelf__card"
           data-book-preview
           data-book-age="<%= book.age %>"
-          data-title="<%= book.title %>"
-          data-desc="<%= book.desc %>"
-          data-image="<%= book.image %>"
+          data-review-link="<%= reviewLink %>"
           role="button"
           tabindex="0"
         >
@@ -65,16 +64,6 @@
 
     <div class="bookshelf__banner">
       <span>💡 Gợi ý sách theo tháng - Ưu đãi combo sách + bài tập PDF</span>
-    </div>
-  </div>
-
-  <div class="bookshelf__modal" data-book-modal hidden>
-    <div class="bookshelf__modal-overlay" data-book-modal-close></div>
-    <div class="bookshelf__modal-content">
-      <button type="button" class="bookshelf__modal-close" data-book-modal-close aria-label="Đóng">✕</button>
-      <img class="bookshelf__modal-image" data-book-modal-image src="" alt="">
-      <h3 class="bookshelf__modal-title" data-book-modal-title></h3>
-      <p class="bookshelf__modal-desc" data-book-modal-desc></p>
     </div>
   </div>
 </section>

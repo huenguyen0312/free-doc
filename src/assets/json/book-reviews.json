@@ -1,0 +1,124 @@
+[
+  {
+    "id": "luyen-viet-chu-dep-o-li",
+    "articleTitle": "[Review Chi Tiết] Sách \"Luyện Viết Chữ Đẹp Theo Dòng Ô Li\" Có Thực Sự Tốt Cho Bé Lớp 1?",
+    "breadcrumb": [
+      { "label": "Trang chủ", "href": "/index.html" },
+      { "label": "Góc Review Sách", "href": "/sach/index.html" },
+      { "label": "Sách Tiền Tiểu Học", "href": "/sach/index.html" },
+      { "label": "Luyện Viết Chữ Đẹp Theo Dòng Ô Li", "href": "" }
+    ],
+    "reviewer": {
+      "name": "BTV Minh Anh",
+      "date": "20/10/2025",
+      "readTime": "5 phút đọc",
+      "views": 3240
+    },
+    "book": {
+      "title": "Luyện Viết Chữ Đẹp Theo Dòng Ô Li (Tập 1)",
+      "publisher": "NXB Giáo Dục",
+      "coverImage": "/assets/images/book-lop12-1.svg",
+      "rating": 4.8,
+      "targetAge": "Trẻ 5-7 tuổi, Tiền tiểu học"
+    },
+    "intro": "Rất nhiều phụ huynh băn khoăn làm sao để con không bị mỏi tay khi mới tập viết, hay chọn nhầm sách có dòng kẻ không chuẩn khiến bé viết sai cỡ chữ ngay từ đầu. Trong bài review này, chúng tôi sẽ cùng bạn \"mổ xẻ\" cuốn Luyện Viết Chữ Đẹp Theo Dòng Ô Li - một trong những cuốn được các giáo viên lớp 1 giới thiệu nhiều nhất hiện nay - để xem cuốn sách có thực sự đáng để bé đồng hành suốt năm học đầu tiên hay không.",
+    "pros": [
+      "Thiết kế ô li chuẩn 2x2mm đúng quy định Bộ Giáo dục",
+      "Chất giấy chống lóa OE 80gsm, không lem mực khi viết bút mực",
+      "Có hình minh hoạ sinh động, bé không bị nhàm chán"
+    ],
+    "cons": [
+      "Bìa mềm dễ cong mép nếu bé không giữ cẩn thận",
+      "Một số bé viết nhanh có thể cần thêm sách luyện tập bổ sung"
+    ],
+    "sections": [
+      {
+        "id": "thiet-ke-chat-luong",
+        "heading": "Thiết kế & Chất lượng in ấn",
+        "paragraphs": [
+          "Điểm cộng đầu tiên nằm ở chất giấy: giấy OE định lượng 80gsm giúp chống lóa mắt và hạn chế lem mực khi bé dùng bút mực ở học kỳ 2. Khoảng cách dòng ô li được kẻ chuẩn 2x2mm, đúng với quy định luyện chữ của Bộ Giáo dục, giúp bé hình thành thói quen viết đúng cỡ chữ ngay từ những nét đầu tiên.",
+          "Mực in rõ nét, không bị nhoè ở các trang mẫu chữ, và phần viền trang có canh lề rộng rãi để giáo viên/phụ huynh dễ dàng ghi chú nhận xét."
+        ],
+        "images": [
+          "/assets/images/worksheet-placeholder.svg",
+          "/assets/images/worksheet-placeholder.svg"
+        ]
+      },
+      {
+        "id": "lo-trinh-phuong-phap",
+        "heading": "Lộ trình & Phương pháp bài học",
+        "paragraphs": [
+          "Sách dẫn dắt bé đi từ những nét cơ bản (nét thẳng, nét cong, nét móc) trước khi ghép thành chữ cái hoàn chỉnh - đúng theo trình tự tư duy vận động tinh của trẻ 5-7 tuổi. Mỗi bài học được chia thành 3 bước rõ ràng: quan sát mẫu, tô theo nét chấm mờ, và tự viết không cần mẫu.",
+          "Điểm sáng trong phương pháp là sách xen kẽ các chữ cái có độ khó tăng dần, thay vì dạy theo thứ tự bảng chữ cái cứng nhắc, giúp bé không bị nản ở những chữ khó ngay từ đầu."
+        ]
+      },
+      {
+        "id": "trai-nghiem-thuc-te",
+        "heading": "Trải nghiệm thực tế từ trẻ",
+        "paragraphs": [
+          "Theo chia sẻ của một giáo viên lớp 1 trực tiếp hướng dẫn, phần lớn học sinh chỉ mất khoảng 2 tuần để làm quen với format của sách và có thể tự hoàn thành bài tập mà không cần cầm tay chỉ dẫn liên tục. Các bé đặc biệt thích phần hình minh hoạ nhỏ ở góc trang, tạo cảm giác \"vừa học vừa chơi\" thay vì áp lực luyện chữ khô khan."
+        ]
+      }
+    ],
+    "samplePreviewImages": [
+      "/assets/images/worksheet-placeholder.svg",
+      "/assets/images/worksheet-placeholder.svg",
+      "/assets/images/worksheet-placeholder.svg",
+      "/assets/images/worksheet-placeholder.svg",
+      "/assets/images/worksheet-placeholder.svg"
+    ],
+    "verdict": {
+      "scores": {
+        "content": 9,
+        "design": 9.5,
+        "easeOfLearning": 8.5
+      },
+      "recommendFor": [
+        "Bé chuẩn bị vào lớp 1 cần làm quen dòng ô li chuẩn",
+        "Phụ huynh muốn đồng hành cùng con luyện chữ tại nhà",
+        "Giáo viên cần giáo trình bổ trợ cho lớp luyện viết"
+      ],
+      "notRecommendFor": [
+        "Bé đã viết chữ tốt, cần sách nâng cao hơn (thư pháp, chữ nghiêng)",
+        "Gia đình cần sách có kèm bút tập viết đi kèm trong hộp"
+      ]
+    },
+    "authorBio": {
+      "name": "Cô Minh Hương",
+      "title": "10 năm kinh nghiệm giáo dục tiểu học",
+      "avatar": "/assets/images/testimonial-avatar-teacher.svg",
+      "bio": "Cô Minh Hương hiện là giáo viên chủ nhiệm lớp 1 tại một trường tiểu học công lập, có nhiều năm kinh nghiệm hướng dẫn học sinh luyện viết chữ đẹp và tư vấn chọn sách cho phụ huynh."
+    },
+    "comments": [
+      {
+        "name": "Chị Phương Linh",
+        "avatar": "/assets/images/testimonial-avatar-parent.svg",
+        "date": "21/10/2025",
+        "comment": "Cảm ơn bài review chi tiết, mình đang phân vân giữa mấy cuốn luyện chữ thì đọc được bài này rất hữu ích."
+      },
+      {
+        "name": "Thầy Quang Huy",
+        "avatar": "/assets/images/testimonial-avatar-teacher.svg",
+        "date": "22/10/2025",
+        "comment": "Đồng ý với nhận xét về chất giấy, lớp mình dùng cuốn này 2 năm nay phụ huynh phản hồi khá tốt."
+      }
+    ],
+    "relatedReviews": [
+      {
+        "title": "Ehon: Bé Yêu Động Vật - Có đáng mua cho bé mầm non?",
+        "image": "/assets/images/book-mamnon-1.svg",
+        "href": "/sach/index.html"
+      },
+      {
+        "title": "Bách Khoa Toàn Thư Cho Bé - Review chi tiết",
+        "image": "/assets/images/book-lop35-2.svg",
+        "href": "/sach/index.html"
+      },
+      {
+        "title": "Khám Phá Khoa Học Quanh Bé - Có phù hợp lớp 1-2?",
+        "image": "/assets/images/book-lop12-2.svg",
+        "href": "/sach/index.html"
+      }
+    ]
+  }
+]

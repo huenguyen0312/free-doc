@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initMemoryLevels();
   initDocExplorer();
   initDocPreviewPage();
+  initDocDetailPage();
+  initBookReviewPage();
   initWorksheetList();
   initStoryList();
   initQaList();
@@ -186,9 +188,6 @@ function initBookshelf() {
   const wrapperEl = section.querySelector('[data-book-grid]');
   const cards = Array.from(wrapperEl.querySelectorAll('[data-book-preview]'));
   const modal = section.querySelector('[data-book-modal]');
-  const modalImage = modal.querySelector('[data-book-modal-image]');
-  const modalTitle = modal.querySelector('[data-book-modal-title]');
-  const modalDesc = modal.querySelector('[data-book-modal-desc]');
 
   tabs.forEach((tab) => {
     tab.addEventListener('click', () => {
@@ -202,26 +201,37 @@ function initBookshelf() {
   });
 
   function openPreview(card) {
-    modalImage.src = card.dataset.image;
-    modalImage.alt = card.dataset.title;
-    modalTitle.textContent = card.dataset.title;
-    modalDesc.textContent = card.dataset.desc;
+    if (!modal) return;
+    modal.querySelector('[data-book-modal-image]').src = card.dataset.image;
+    modal.querySelector('[data-book-modal-image]').alt = card.dataset.title;
+    modal.querySelector('[data-book-modal-title]').textContent = card.dataset.title;
+    modal.querySelector('[data-book-modal-desc]').textContent = card.dataset.desc;
     modal.hidden = false;
   }
 
+  function activateCard(card) {
+    if (card.dataset.reviewLink) {
+      window.open(card.dataset.reviewLink, '_blank');
+    } else {
+      openPreview(card);
+    }
+  }
+
   cards.forEach((card) => {
-    card.addEventListener('click', () => openPreview(card));
+    card.addEventListener('click', () => activateCard(card));
     card.addEventListener('keydown', (event) => {
       if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
-        openPreview(card);
+        activateCard(card);
       }
     });
   });
 
-  modal.querySelectorAll('[data-book-modal-close]').forEach((el) => {
-    el.addEventListener('click', () => { modal.hidden = true; });
-  });
+  if (modal) {
+    modal.querySelectorAll('[data-book-modal-close]').forEach((el) => {
+      el.addEventListener('click', () => { modal.hidden = true; });
+    });
+  }
 }
 
 async function initFaq() {
@@ -689,6 +699,596 @@ function initDocPreviewPage() {
   titleEl.textContent = title;
   descEl.textContent = desc;
   pdfFrame.src = file;
+}
+
+function formatDocDetailNumber(n) {
+  return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+function renderBreadcrumbNav(container, items) {
+  container.innerHTML = '';
+  items.forEach((item, i) => {
+    if (i > 0) container.appendChild(document.createTextNode(' › '));
+    const isLast = i === items.length - 1;
+    if (item.href && !isLast) {
+      const a = document.createElement('a');
+      a.href = item.href;
+      a.textContent = item.label;
+      container.appendChild(a);
+    } else {
+      const span = document.createElement('span');
+      span.textContent = item.label;
+      container.appendChild(span);
+    }
+  });
+}
+
+function createDocDetailRelatedCard(doc) {
+  const a = document.createElement('a');
+  a.className = 'doc-detail__related-card';
+  a.href = `/tai-lieu/chi-tiet/index.html?id=${encodeURIComponent(doc.id)}`;
+
+  const thumb = document.createElement('span');
+  thumb.className = 'doc-detail__related-thumb';
+  const img = document.createElement('img');
+  img.src = doc.thumbnails[0];
+  img.alt = doc.title;
+  img.loading = 'lazy';
+  thumb.appendChild(img);
+
+  const title = document.createElement('h3');
+  title.className = 'doc-detail__related-title';
+  title.textContent = doc.title;
+
+  a.appendChild(thumb);
+  a.appendChild(title);
+  return a;
+}
+
+function createDocDetailReviewItem(review) {
+  const li = document.createElement('li');
+  li.className = 'doc-detail__review';
+
+  const avatar = document.createElement('img');
+  avatar.src = review.avatar || '/assets/images/testimonial-avatar-parent.svg';
+  avatar.alt = review.name;
+
+  const body = document.createElement('div');
+
+  const name = document.createElement('span');
+  name.className = 'doc-detail__review-name';
+  name.textContent = review.name;
+
+  const date = document.createElement('span');
+  date.className = 'doc-detail__review-date';
+  date.textContent = review.date;
+
+  const stars = document.createElement('span');
+  stars.className = 'doc-detail__review-stars-static';
+  stars.textContent = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
+
+  const comment = document.createElement('p');
+  comment.className = 'doc-detail__review-comment';
+  comment.textContent = review.comment;
+
+  body.appendChild(name);
+  body.appendChild(date);
+  body.appendChild(stars);
+  body.appendChild(comment);
+
+  li.appendChild(avatar);
+  li.appendChild(body);
+  return li;
+}
+
+function initDocDetailPage() {
+  const root = document.querySelector('[data-doc-detail]');
+  if (!root) return;
+
+  const id = new URLSearchParams(window.location.search).get('id');
+
+  fetch('/assets/json/documents.json')
+    .then((res) => res.json())
+    .then((docs) => {
+      const doc = docs.find((d) => d.id === id) || docs[0];
+      if (!doc) return;
+      renderDocDetail(doc, docs);
+    });
+}
+
+function renderDocDetail(doc, allDocs) {
+  document.title = `FreeDoc - ${doc.title}`;
+
+  renderBreadcrumbNav(document.querySelector('[data-doc-detail-breadcrumb]'), doc.breadcrumb);
+
+  document.querySelector('[data-doc-detail-filetype]').textContent = `File ${doc.fileType}`;
+  document.querySelector('[data-doc-detail-title]').textContent = doc.title;
+  document.querySelector('[data-doc-detail-grade]').textContent = `${doc.grade} • ${doc.subject}`;
+  document.querySelector('[data-doc-detail-downloads]').textContent = `⬇ ${formatDocDetailNumber(doc.downloads)} lượt tải`;
+  document.querySelector('[data-doc-detail-rating]').textContent = `⭐ ${doc.rating}/5 (${doc.ratingCount} đánh giá)`;
+  document.querySelector('[data-doc-detail-updated]').textContent = `Cập nhật: ${doc.updatedDate}`;
+
+  // Mô tả & highlights
+  document.querySelector('[data-doc-detail-desc]').textContent = doc.description;
+
+  const highlightsEl = document.querySelector('[data-doc-detail-highlights]');
+  doc.highlights.forEach((text) => {
+    const li = document.createElement('li');
+    li.textContent = text;
+    highlightsEl.appendChild(li);
+  });
+
+  const tagsEl = document.querySelector('[data-doc-detail-tags]');
+  (doc.curriculumTags || []).forEach((tag) => {
+    const span = document.createElement('span');
+    span.className = 'doc-detail__tag';
+    span.textContent = tag;
+    tagsEl.appendChild(span);
+  });
+
+  // Thumbnails + modal xem ảnh phóng to
+  const thumbsEl = document.querySelector('[data-doc-detail-thumbnails]');
+  const imageModal = document.querySelector('[data-doc-image-modal]');
+  const imageModalImg = document.querySelector('[data-doc-image-modal-img]');
+
+  doc.thumbnails.forEach((src) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'doc-detail__thumbnail';
+    const img = document.createElement('img');
+    img.src = src;
+    img.alt = doc.title;
+    img.loading = 'lazy';
+    btn.appendChild(img);
+    btn.addEventListener('click', () => {
+      imageModalImg.src = src;
+      imageModal.hidden = false;
+    });
+    thumbsEl.appendChild(btn);
+  });
+
+  document.querySelectorAll('[data-doc-image-modal-close]').forEach((el) => {
+    el.addEventListener('click', () => { imageModal.hidden = true; });
+  });
+
+  // Tài liệu liên quan
+  const relatedIds = doc.relatedIds || [];
+  const relatedDocs = relatedIds
+    .map((relId) => allDocs.find((d) => d.id === relId))
+    .filter(Boolean);
+
+  if (relatedDocs.length) {
+    document.querySelector('[data-doc-detail-related-block]').hidden = false;
+    const relatedEl = document.querySelector('[data-doc-detail-related]');
+    relatedDocs.forEach((relDoc) => relatedEl.appendChild(createDocDetailRelatedCard(relDoc)));
+  }
+
+  // Đánh giá
+  document.querySelector('[data-doc-detail-rating-score]').textContent = `⭐ ${doc.rating}/5`;
+  document.querySelector('[data-doc-detail-rating-count]').textContent = `(${doc.ratingCount} đánh giá)`;
+
+  const reviewsEl = document.querySelector('[data-doc-detail-reviews]');
+  (doc.reviews || []).forEach((review) => reviewsEl.appendChild(createDocDetailReviewItem(review)));
+
+  const reviewForm = document.querySelector('[data-doc-review-form]');
+  const starButtons = reviewForm.querySelectorAll('[data-doc-review-stars] button');
+  let selectedStars = 0;
+
+  starButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      selectedStars = Number(btn.dataset.star);
+      starButtons.forEach((b) => b.classList.toggle('is-active', Number(b.dataset.star) <= selectedStars));
+    });
+  });
+
+  reviewForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = reviewForm.elements.name.value.trim();
+    const comment = reviewForm.elements.comment.value.trim();
+    if (!name || !comment) return;
+
+    reviewsEl.prepend(createDocDetailReviewItem({
+      name,
+      rating: selectedStars || 5,
+      date: 'Vừa xong',
+      comment,
+      avatar: '/assets/images/testimonial-avatar-parent.svg',
+    }));
+
+    reviewForm.reset();
+    selectedStars = 0;
+    starButtons.forEach((b) => b.classList.remove('is-active'));
+  });
+
+  // Action card
+  document.querySelector('[data-doc-detail-price]').textContent = doc.price;
+
+  function triggerDownload() {
+    const a = document.createElement('a');
+    a.href = doc.file;
+    a.download = '';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    const downloadModal = document.querySelector('[data-doc-download-modal]');
+    downloadModal.hidden = false;
+  }
+
+  document.querySelectorAll('[data-doc-detail-download], [data-doc-viewer-lock-download]').forEach((btn) => {
+    btn.addEventListener('click', triggerDownload);
+  });
+
+  document.querySelectorAll('[data-doc-download-modal-close]').forEach((el) => {
+    el.addEventListener('click', () => {
+      document.querySelector('[data-doc-download-modal]').hidden = true;
+    });
+  });
+
+  const downloadEmailForm = document.querySelector('[data-doc-download-email-form]');
+  downloadEmailForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    document.querySelector('[data-doc-download-modal-step="ask"]').hidden = true;
+    document.querySelector('[data-doc-download-modal-step="thanks"]').hidden = false;
+  });
+
+  // Lưu vào tủ sách
+  const saveBtn = document.querySelector('[data-doc-detail-save]');
+  const favorites = JSON.parse(localStorage.getItem('freedoc_favorites') || '[]');
+  const isSaved = () => favorites.includes(doc.id);
+  const renderSaveState = () => {
+    saveBtn.setAttribute('aria-pressed', String(isSaved()));
+    saveBtn.textContent = isSaved() ? '✅ Đã lưu vào tủ sách' : '🔖 Lưu vào tủ sách';
+  };
+  renderSaveState();
+  saveBtn.addEventListener('click', () => {
+    const idx = favorites.indexOf(doc.id);
+    if (idx === -1) favorites.push(doc.id); else favorites.splice(idx, 1);
+    localStorage.setItem('freedoc_favorites', JSON.stringify(favorites));
+    renderSaveState();
+  });
+
+  // In trực tiếp: mở PDF trong iframe ẩn rồi gọi lệnh in của trình duyệt
+  document.querySelector('[data-doc-detail-print]').addEventListener('click', () => {
+    const printFrame = document.createElement('iframe');
+    printFrame.style.display = 'none';
+    printFrame.src = doc.file;
+    printFrame.addEventListener('load', () => {
+      printFrame.contentWindow.print();
+    });
+    document.body.appendChild(printFrame);
+  });
+
+  // Chia sẻ
+  const shareToggle = document.querySelector('[data-doc-detail-share-toggle]');
+  const shareMenu = document.querySelector('[data-doc-detail-share-menu]');
+  shareToggle.addEventListener('click', () => { shareMenu.hidden = !shareMenu.hidden; });
+  document.addEventListener('click', (e) => {
+    if (!shareMenu.hidden && !e.target.closest('[data-doc-detail-share]')) shareMenu.hidden = true;
+  });
+
+  const pageUrl = window.location.href;
+  document.querySelector('[data-doc-detail-share-copy]').addEventListener('click', (e) => {
+    navigator.clipboard.writeText(pageUrl).then(() => {
+      e.target.textContent = 'Đã copy!';
+      setTimeout(() => { e.target.textContent = 'Copy link'; }, 1500);
+    });
+  });
+  document.querySelector('[data-doc-detail-share-fb]').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`;
+  document.querySelector('[data-doc-detail-share-zalo]').href = `https://zalo.me/share?u=${encodeURIComponent(pageUrl)}&d=${encodeURIComponent(doc.title)}`;
+
+  // Thông số kỹ thuật
+  const metaListEl = document.querySelector('[data-doc-detail-meta-list]');
+  const metaFields = [
+    ['📄 Định dạng', doc.format],
+    ['📏 Dung lượng', doc.fileSize],
+    ['📑 Số trang', `${doc.pageCount} trang`],
+    ['🖨️ Khổ in chuẩn', doc.printSize],
+    ['✅ Có đáp án', doc.hasAnswerKey ? 'Có' : 'Không'],
+  ];
+  metaFields.forEach(([label, value]) => {
+    const row = document.createElement('div');
+    row.className = 'doc-detail__meta-list-item';
+    const l = document.createElement('span');
+    l.textContent = label;
+    const v = document.createElement('span');
+    v.textContent = value;
+    row.appendChild(l);
+    row.appendChild(v);
+    metaListEl.appendChild(row);
+  });
+
+  // Tác giả
+  document.querySelector('[data-doc-detail-author-avatar]').src = doc.author.avatar;
+  document.querySelector('[data-doc-detail-author-name]').textContent = doc.author.name;
+  const authorLink = document.querySelector('[data-doc-detail-author-link]');
+  authorLink.textContent = `Xem thêm ${doc.author.docCount} tài liệu của tác giả này →`;
+  authorLink.href = `/tailieu/tieuhoc/index.html?q=${encodeURIComponent(doc.author.name)}`;
+
+  // Up-sell bộ tài liệu lớn
+  if (doc.seriesInfo) {
+    document.querySelector('[data-doc-detail-upsell]').hidden = false;
+    document.querySelector('[data-doc-detail-upsell-text]').textContent =
+      `Tài liệu này nằm trong "${doc.seriesInfo.name}" (${doc.seriesInfo.totalCount} tuần).`;
+    document.querySelector('[data-doc-detail-upsell-cta]').href =
+      `/tailieu/tieuhoc/index.html?q=${encodeURIComponent(doc.seriesInfo.name)}`;
+  }
+}
+
+function createBookReviewComment(comment) {
+  const li = document.createElement('li');
+  li.className = 'book-review__comment';
+
+  const avatar = document.createElement('img');
+  avatar.src = comment.avatar || '/assets/images/testimonial-avatar-parent.svg';
+  avatar.alt = comment.name;
+
+  const body = document.createElement('div');
+
+  const name = document.createElement('span');
+  name.className = 'book-review__comment-name';
+  name.textContent = comment.name;
+
+  const date = document.createElement('span');
+  date.className = 'book-review__comment-date';
+  date.textContent = comment.date;
+
+  const text = document.createElement('p');
+  text.className = 'book-review__comment-text';
+  text.textContent = comment.comment;
+
+  body.appendChild(name);
+  body.appendChild(date);
+  body.appendChild(text);
+
+  li.appendChild(avatar);
+  li.appendChild(body);
+  return li;
+}
+
+function createBookReviewRelatedCard(item) {
+  const a = document.createElement('a');
+  a.className = 'book-review__related-card';
+  a.href = item.href;
+
+  const thumb = document.createElement('span');
+  thumb.className = 'book-review__related-thumb';
+  const img = document.createElement('img');
+  img.src = item.image;
+  img.alt = item.title;
+  img.loading = 'lazy';
+  thumb.appendChild(img);
+
+  const title = document.createElement('h3');
+  title.textContent = item.title;
+
+  a.appendChild(thumb);
+  a.appendChild(title);
+  return a;
+}
+
+function initBookReviewPage() {
+  const root = document.querySelector('[data-book-review]');
+  if (!root) return;
+
+  const id = new URLSearchParams(window.location.search).get('id');
+
+  fetch('/assets/json/book-reviews.json')
+    .then((res) => res.json())
+    .then((reviews) => {
+      const review = reviews.find((r) => r.id === id) || reviews[0];
+      if (!review) return;
+      renderBookReview(review);
+    });
+}
+
+function renderBookReview(review) {
+  document.title = `FreeDoc - ${review.book.title}`;
+
+  renderBreadcrumbNav(document.querySelector('[data-review-breadcrumb]'), review.breadcrumb);
+
+  document.querySelector('[data-review-title]').textContent = review.articleTitle;
+  document.querySelector('[data-review-author]').textContent = `✍️ ${review.reviewer.name}`;
+  document.querySelector('[data-review-date]').textContent = review.reviewer.date;
+  document.querySelector('[data-review-readtime]').textContent = `⏱ ${review.reviewer.readTime}`;
+  document.querySelector('[data-review-views]').textContent = `👁 ${formatDocDetailNumber(review.reviewer.views)} lượt xem`;
+
+  document.querySelector('[data-review-intro]').textContent = review.intro;
+
+  const prosEl = document.querySelector('[data-review-pros]');
+  review.pros.forEach((text) => {
+    const li = document.createElement('li');
+    li.textContent = text;
+    prosEl.appendChild(li);
+  });
+
+  const consEl = document.querySelector('[data-review-cons]');
+  review.cons.forEach((text) => {
+    const li = document.createElement('li');
+    li.textContent = text;
+    consEl.appendChild(li);
+  });
+
+  // Các section H2 + mục lục (TOC)
+  const sectionsEl = document.querySelector('[data-review-sections]');
+  const tocEl = document.querySelector('[data-review-toc]');
+
+  review.sections.forEach((section) => {
+    const sectionEl = document.createElement('div');
+    sectionEl.className = 'book-review__section';
+    sectionEl.id = section.id;
+
+    const h2 = document.createElement('h2');
+    h2.textContent = section.heading;
+    sectionEl.appendChild(h2);
+
+    section.paragraphs.forEach((text) => {
+      const p = document.createElement('p');
+      p.textContent = text;
+      sectionEl.appendChild(p);
+    });
+
+    if (section.images && section.images.length) {
+      const imagesEl = document.createElement('div');
+      imagesEl.className = 'book-review__section-images';
+      section.images.forEach((src) => {
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = section.heading;
+        img.loading = 'lazy';
+        imagesEl.appendChild(img);
+      });
+      sectionEl.appendChild(imagesEl);
+    }
+
+    sectionsEl.appendChild(sectionEl);
+
+    const tocItem = document.createElement('li');
+    const tocLink = document.createElement('a');
+    tocLink.href = `#${section.id}`;
+    tocLink.textContent = section.heading;
+    tocItem.appendChild(tocLink);
+    tocEl.appendChild(tocItem);
+  });
+
+  // Scroll-spy: highlight mục lục theo section đang đọc
+  const tocLinks = Array.from(tocEl.querySelectorAll('a'));
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      tocLinks.forEach((link) => {
+        link.classList.toggle('is-active', link.getAttribute('href') === `#${entry.target.id}`);
+      });
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  sectionsEl.querySelectorAll('.book-review__section').forEach((el) => observer.observe(el));
+
+  // Gallery xem trước trang sách + modal có nút chuyển ảnh
+  const galleryEl = document.querySelector('[data-review-gallery]');
+  const imageModal = document.querySelector('[data-review-image-modal]');
+  const imageModalImg = document.querySelector('[data-review-image-modal-img]');
+  const imageModalCount = document.querySelector('[data-review-image-modal-count]');
+  const images = review.samplePreviewImages;
+  let galleryIndex = 0;
+
+  function showGalleryImage(index) {
+    galleryIndex = (index + images.length) % images.length;
+    imageModalImg.src = images[galleryIndex];
+    imageModalCount.textContent = `${galleryIndex + 1} / ${images.length}`;
+  }
+
+  images.forEach((src, index) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'book-review__thumbnail';
+    const img = document.createElement('img');
+    img.src = src;
+    img.alt = review.book.title;
+    img.loading = 'lazy';
+    btn.appendChild(img);
+    btn.addEventListener('click', () => {
+      showGalleryImage(index);
+      imageModal.hidden = false;
+    });
+    galleryEl.appendChild(btn);
+  });
+
+  document.querySelector('[data-review-image-modal-prev]').addEventListener('click', () => showGalleryImage(galleryIndex - 1));
+  document.querySelector('[data-review-image-modal-next]').addEventListener('click', () => showGalleryImage(galleryIndex + 1));
+  document.querySelectorAll('[data-review-image-modal-close]').forEach((el) => {
+    el.addEventListener('click', () => { imageModal.hidden = true; });
+  });
+
+  // Tổng kết / điểm số
+  const scoresEl = document.querySelector('[data-review-verdict-scores]');
+  const scoreLabels = { content: 'Nội dung', design: 'Thiết kế/In ấn', easeOfLearning: 'Tính dễ học' };
+  Object.entries(review.verdict.scores).forEach(([key, value]) => {
+    const row = document.createElement('div');
+    row.className = 'book-review__score-row';
+    const label = document.createElement('span');
+    label.textContent = scoreLabels[key] || key;
+    const score = document.createElement('span');
+    score.textContent = `${value}/10`;
+    row.appendChild(label);
+    row.appendChild(score);
+    scoresEl.appendChild(row);
+  });
+
+  const recommendEl = document.querySelector('[data-review-recommend-for]');
+  review.verdict.recommendFor.forEach((text) => {
+    const li = document.createElement('li');
+    li.textContent = text;
+    recommendEl.appendChild(li);
+  });
+
+  const notRecommendEl = document.querySelector('[data-review-not-recommend-for]');
+  review.verdict.notRecommendFor.forEach((text) => {
+    const li = document.createElement('li');
+    li.textContent = text;
+    notRecommendEl.appendChild(li);
+  });
+
+  // Tác giả bài review
+  document.querySelector('[data-review-author-bio-avatar]').src = review.authorBio.avatar;
+  document.querySelector('[data-review-author-bio-name]').textContent = review.authorBio.name;
+  document.querySelector('[data-review-author-bio-title]').textContent = review.authorBio.title;
+  document.querySelector('[data-review-author-bio-text]').textContent = review.authorBio.bio;
+
+  // Bình luận
+  const commentsEl = document.querySelector('[data-review-comments]');
+  review.comments.forEach((comment) => commentsEl.appendChild(createBookReviewComment(comment)));
+
+  const commentForm = document.querySelector('[data-review-comment-form]');
+  commentForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = commentForm.elements.name.value.trim();
+    const comment = commentForm.elements.comment.value.trim();
+    if (!name || !comment) return;
+
+    commentsEl.appendChild(createBookReviewComment({
+      name,
+      comment,
+      date: 'Vừa xong',
+      avatar: '/assets/images/testimonial-avatar-parent.svg',
+    }));
+    commentForm.reset();
+  });
+
+  // Bài viết liên quan
+  const relatedEl = document.querySelector('[data-review-related]');
+  review.relatedReviews.forEach((item) => relatedEl.appendChild(createBookReviewRelatedCard(item)));
+
+  // Sidebar: card thông tin sách
+  document.querySelector('[data-review-book-cover]').src = review.book.coverImage;
+  document.querySelector('[data-review-book-title]').textContent = review.book.title;
+  document.querySelector('[data-review-book-publisher]').textContent = review.book.publisher;
+  document.querySelector('[data-review-book-rating]').textContent = `⭐ ${review.book.rating}/5 (Điểm review của biên tập viên)`;
+  document.querySelector('[data-review-book-age]').textContent = review.book.targetAge;
+
+  // Lưu bài viết (localStorage, tái dùng kiểu favorite của trang chi tiết tài liệu)
+  const saveBtn = document.querySelector('[data-review-save]');
+  const savedReviews = JSON.parse(localStorage.getItem('freedoc_saved_reviews') || '[]');
+  const isSaved = () => savedReviews.includes(review.id);
+  const renderSaveState = () => {
+    saveBtn.setAttribute('aria-pressed', String(isSaved()));
+    saveBtn.textContent = isSaved() ? '✅ Đã lưu bài viết' : '🔖 Lưu bài viết';
+  };
+  renderSaveState();
+  saveBtn.addEventListener('click', () => {
+    const idx = savedReviews.indexOf(review.id);
+    if (idx === -1) savedReviews.push(review.id); else savedReviews.splice(idx, 1);
+    localStorage.setItem('freedoc_saved_reviews', JSON.stringify(savedReviews));
+    renderSaveState();
+  });
+
+  // Đăng ký nhận thông báo (demo phía client, chưa nối backend gửi email thật)
+  const notifyForm = document.querySelector('[data-review-notify-form]');
+  notifyForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    notifyForm.querySelector('[data-review-notify-step="ask"]').hidden = true;
+    notifyForm.querySelector('[data-review-notify-step="thanks"]').hidden = false;
+  });
 }
 
 function createListCard(prefix, item, options) {

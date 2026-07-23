@@ -1,0 +1,307 @@
+[
+  {
+    "id": "toan-lop2-tuan15",
+    "title": "Phiếu BTVN Toán Lớp 2 - Tuần 15 (Có đáp án)",
+    "fileType": "PDF",
+    "grade": "Lớp 2",
+    "subject": "Môn Toán",
+    "breadcrumb": [
+      { "label": "Trang chủ", "href": "/index.html" },
+      { "label": "Tiểu học", "href": "/tailieu/tieuhoc/index.html" },
+      { "label": "Lớp 2", "href": "/tailieu/tieuhoc/index.html?q=l%E1%BB%9Bp%202" },
+      { "label": "Môn Toán", "href": "/tailieu/tieuhoc/index.html?mon=toan" },
+      { "label": "Phiếu bài tập Ôn tập Tuần 15", "href": "" }
+    ],
+    "badge": "free",
+    "price": "Miễn phí",
+    "downloads": 1250,
+    "rating": 4.9,
+    "ratingCount": 28,
+    "updatedDate": "15/10/2025",
+    "description": "Phiếu bài tập giúp bé Lớp 2 ôn luyện các dạng toán trọng tâm của tuần 15: bảng nhân, phép cộng có nhớ và bài toán có lời văn cơ bản. File có kèm đáp án chi tiết để phụ huynh dễ dàng kiểm tra kết quả cùng con.",
+    "highlights": [
+      "Dạng bài: Bảng nhân 2, 5; Phép cộng có nhớ phạm vi 100",
+      "Cấu trúc: 2 trang lý thuyết & bài tập + 1 trang Đáp án chi tiết",
+      "Chuẩn chương trình: Phù hợp bộ sách Kết nối tri thức / Cánh diều / Chân trời sáng tạo"
+    ],
+    "curriculumTags": ["Kết nối tri thức", "Cánh diều", "Chân trời sáng tạo"],
+    "thumbnails": [
+      "/assets/images/worksheet-placeholder.svg",
+      "/assets/images/worksheet-placeholder.svg",
+      "/assets/images/worksheet-placeholder.svg"
+    ],
+    "file": "/assets/files/sample02.pdf",
+    "fileSize": "2.4 MB",
+    "pageCount": 18,
+    "format": "PDF",
+    "printSize": "A4 (Trắng đen / Màu)",
+    "hasAnswerKey": true,
+    "previewPageLimit": 2,
+    "author": {
+      "name": "Cô Minh Hương - GV Tiểu học",
+      "avatar": "/assets/images/testimonial-avatar-teacher.svg",
+      "docCount": 45
+    },
+    "relatedIds": ["toan-lop2-tuan16", "tiengviet-lop2-tuan15", "toan-tuduy-lop2-3"],
+    "seriesInfo": {
+      "name": "Bộ 35 tuần bài tập Toán Lớp 2",
+      "totalCount": 35
+    },
+    "reviews": [
+      {
+        "name": "Chị Thu Trang",
+        "avatar": "/assets/images/testimonial-avatar-parent.svg",
+        "rating": 5,
+        "date": "12/10/2025",
+        "comment": "File rất chi tiết, con mình làm xong là hiểu ngay dạng bài. Có đáp án nên mình kiểm tra rất nhanh."
+      },
+      {
+        "name": "Thầy Đức Anh",
+        "avatar": "/assets/images/testimonial-avatar-teacher.svg",
+        "rating": 5,
+        "date": "10/10/2025",
+        "comment": "In A4 rõ nét, dùng để phát cho cả lớp ôn tập cuối tuần rất tiện."
+      },
+      {
+        "name": "Chị Ngọc Mai",
+        "avatar": "/assets/images/testimonial-avatar-parent.svg",
+        "rating": 4,
+        "date": "08/10/2025",
+        "comment": "Nội dung bám sát chương trình, chỉ mong có thêm vài bài nâng cao."
+      }
+    ]
+  },
+  {
+    "id": "toan-lop2-tuan16",
+    "title": "Phiếu bài tập Toán Lớp 2 - Tuần 16",
+    "fileType": "PDF",
+    "grade": "Lớp 2",
+    "subject": "Môn Toán",
+    "breadcrumb": [
+      { "label": "Trang chủ", "href": "/index.html" },
+      { "label": "Tiểu học", "href": "/tailieu/tieuhoc/index.html" },
+      { "label": "Lớp 2", "href": "/tailieu/tieuhoc/index.html?q=l%E1%BB%9Bp%202" },
+      { "label": "Môn Toán", "href": "/tailieu/tieuhoc/index.html?mon=toan" },
+      { "label": "Phiếu bài tập Toán Lớp 2 - Tuần 16", "href": "" }
+    ],
+    "badge": "free",
+    "price": "Miễn phí",
+    "downloads": 980,
+    "rating": 4.8,
+    "ratingCount": 19,
+    "updatedDate": "22/10/2025",
+    "description": "Tiếp nối tuần 15, phiếu bài tập tuần 16 tập trung vào phép trừ có nhớ và bài toán đo lường đơn giản, giúp bé củng cố kiến thức theo lộ trình 35 tuần.",
+    "highlights": [
+      "Dạng bài: Phép trừ có nhớ phạm vi 100; Đo độ dài đơn vị cm/m",
+      "Cấu trúc: 2 trang bài tập + 1 trang Đáp án chi tiết",
+      "Chuẩn chương trình: Phù hợp bộ sách Kết nối tri thức / Cánh diều / Chân trời sáng tạo"
+    ],
+    "curriculumTags": ["Kết nối tri thức", "Cánh diều", "Chân trời sáng tạo"],
+    "thumbnails": [
+      "/assets/images/worksheet-placeholder.svg",
+      "/assets/images/worksheet-placeholder.svg",
+      "/assets/images/worksheet-placeholder.svg"
+    ],
+    "file": "/assets/files/sample02.pdf",
+    "fileSize": "2.1 MB",
+    "pageCount": 18,
+    "format": "PDF",
+    "printSize": "A4 (Trắng đen / Màu)",
+    "hasAnswerKey": true,
+    "previewPageLimit": 2,
+    "author": {
+      "name": "Cô Minh Hương - GV Tiểu học",
+      "avatar": "/assets/images/testimonial-avatar-teacher.svg",
+      "docCount": 45
+    },
+    "relatedIds": ["toan-lop2-tuan15", "tiengviet-lop2-tuan15"],
+    "reviews": []
+  },
+  {
+    "id": "tiengviet-lop2-tuan15",
+    "title": "Phiếu bài tập Tiếng Việt Lớp 2 - Tuần 15",
+    "fileType": "PDF",
+    "grade": "Lớp 2",
+    "subject": "Môn Tiếng Việt",
+    "breadcrumb": [
+      { "label": "Trang chủ", "href": "/index.html" },
+      { "label": "Tiểu học", "href": "/tailieu/tieuhoc/index.html" },
+      { "label": "Lớp 2", "href": "/tailieu/tieuhoc/index.html?q=l%E1%BB%9Bp%202" },
+      { "label": "Môn Tiếng Việt", "href": "/tailieu/tieuhoc/index.html?mon=tieng-viet" },
+      { "label": "Phiếu bài tập Tiếng Việt Lớp 2 - Tuần 15", "href": "" }
+    ],
+    "badge": "free",
+    "price": "Miễn phí",
+    "downloads": 860,
+    "rating": 4.7,
+    "ratingCount": 15,
+    "updatedDate": "15/10/2025",
+    "description": "Ôn tập chính tả, từ vựng và luyện viết câu ngắn cho học sinh Lớp 2, đồng bộ tiến độ với tuần 15 môn Toán.",
+    "highlights": [
+      "Dạng bài: Chính tả nghe-viết; Đặt câu với từ cho sẵn",
+      "Cấu trúc: 2 trang bài tập + 1 trang Đáp án gợi ý",
+      "Chuẩn chương trình: Phù hợp bộ sách Kết nối tri thức / Cánh diều"
+    ],
+    "curriculumTags": ["Kết nối tri thức", "Cánh diều"],
+    "thumbnails": [
+      "/assets/images/worksheet-placeholder.svg",
+      "/assets/images/worksheet-placeholder.svg"
+    ],
+    "file": "/assets/files/sample02.pdf",
+    "fileSize": "1.8 MB",
+    "pageCount": 18,
+    "format": "PDF",
+    "printSize": "A4 (Trắng đen / Màu)",
+    "hasAnswerKey": true,
+    "previewPageLimit": 2,
+    "author": {
+      "name": "Cô Minh Hương - GV Tiểu học",
+      "avatar": "/assets/images/testimonial-avatar-teacher.svg",
+      "docCount": 45
+    },
+    "relatedIds": ["toan-lop2-tuan15", "toan-lop2-tuan16"],
+    "reviews": []
+  },
+  {
+    "id": "toan-tuduy-lop2-3",
+    "title": "[File PDF] Trọn Bộ 100 Bài Toán Tư Duy Lớp 2-3",
+    "fileType": "PDF",
+    "grade": "Lớp 2-3",
+    "subject": "Toán tư duy",
+    "breadcrumb": [
+      { "label": "Trang chủ", "href": "/index.html" },
+      { "label": "Tiểu học", "href": "/tailieu/tieuhoc/index.html" },
+      { "label": "Lớp 2-3", "href": "/tailieu/tieuhoc/index.html?q=l%E1%BB%9Bp%202-3" },
+      { "label": "Toán tư duy", "href": "/tailieu/tieuhoc/index.html?mon=toan-tu-duy" },
+      { "label": "Trọn Bộ 100 Bài Toán Tư Duy Lớp 2-3", "href": "" }
+    ],
+    "badge": "premium",
+    "price": "20.000đ",
+    "downloads": 2410,
+    "rating": 4.9,
+    "ratingCount": 52,
+    "updatedDate": "05/10/2025",
+    "description": "Bộ sưu tập 100 bài toán tư duy được biên soạn theo mức độ tăng dần, giúp bé Lớp 2-3 rèn luyện khả năng suy luận logic ngoài chương trình sách giáo khoa.",
+    "highlights": [
+      "Dạng bài: Toán logic, tìm quy luật, đố vui hình học",
+      "Cấu trúc: 30 trang bài tập theo 5 chủ đề + 5 trang Đáp án chi tiết",
+      "Phù hợp: Ôn thi HSG và luyện tư duy tại nhà"
+    ],
+    "curriculumTags": ["Toán tư duy", "Ôn thi HSG"],
+    "thumbnails": [
+      "/assets/images/worksheet-placeholder.svg",
+      "/assets/images/worksheet-placeholder.svg",
+      "/assets/images/worksheet-placeholder.svg"
+    ],
+    "file": "/assets/files/sample02.pdf",
+    "fileSize": "6.7 MB",
+    "pageCount": 18,
+    "format": "PDF",
+    "printSize": "A4 (Màu)",
+    "hasAnswerKey": true,
+    "previewPageLimit": 3,
+    "author": {
+      "name": "Thầy Đức Anh - GV Toán tư duy",
+      "avatar": "/assets/images/testimonial-avatar-teacher.svg",
+      "docCount": 22
+    },
+    "relatedIds": ["toan-lop2-tuan15", "toan-lop2-tuan16"],
+    "reviews": [
+      {
+        "name": "Anh Quốc Bảo",
+        "avatar": "/assets/images/testimonial-avatar-parent.svg",
+        "rating": 5,
+        "date": "01/10/2025",
+        "comment": "Bộ đề rất hay, độ khó tăng dần hợp lý cho con luyện mỗi ngày."
+      }
+    ]
+  },
+  {
+    "id": "to-chu-cai-mamnon",
+    "title": "Tập Tô Chữ Cái Cho Bé Mầm Non",
+    "fileType": "PDF",
+    "grade": "Mầm non",
+    "subject": "Làm quen chữ viết",
+    "breadcrumb": [
+      { "label": "Trang chủ", "href": "/index.html" },
+      { "label": "Mầm non", "href": "/tailieu/mamnon/index.html" },
+      { "label": "Làm quen chữ viết", "href": "/tailieu/mamnon/index.html?mon=chu-viet" },
+      { "label": "Tập Tô Chữ Cái Cho Bé Mầm Non", "href": "" }
+    ],
+    "badge": "free",
+    "price": "Miễn phí",
+    "downloads": 2870,
+    "rating": 4.8,
+    "ratingCount": 33,
+    "updatedDate": "18/10/2025",
+    "description": "Bộ phiếu tô chữ cái in hoa và in thường theo nét cơ bản, giúp bé Mầm non làm quen mặt chữ và luyện cầm bút đúng cách trước khi vào lớp 1.",
+    "highlights": [
+      "Dạng bài: Tô chữ in hoa, in thường theo nét chấm mờ",
+      "Cấu trúc: 18 trang, mỗi trang 1 chữ cái kèm hình minh hoạ",
+      "Phù hợp: Chuẩn bị hành trang vào lớp 1"
+    ],
+    "curriculumTags": ["Mầm non", "Tiền tiểu học"],
+    "thumbnails": [
+      "/assets/images/worksheet-placeholder.svg",
+      "/assets/images/worksheet-placeholder.svg"
+    ],
+    "file": "/assets/files/sample02.pdf",
+    "fileSize": "3.2 MB",
+    "pageCount": 18,
+    "format": "PDF",
+    "printSize": "A4 (Trắng đen)",
+    "hasAnswerKey": false,
+    "previewPageLimit": 2,
+    "author": {
+      "name": "Cô Thanh Huyền - GV Mầm non",
+      "avatar": "/assets/images/testimonial-avatar-teacher.svg",
+      "docCount": 30
+    },
+    "relatedIds": ["to-mau-con-vat"],
+    "reviews": []
+  },
+  {
+    "id": "to-mau-con-vat",
+    "title": "Tranh Tô Màu Chủ Đề Con Vật",
+    "fileType": "PDF",
+    "grade": "Mầm non",
+    "subject": "Tô màu - Mỹ thuật",
+    "breadcrumb": [
+      { "label": "Trang chủ", "href": "/index.html" },
+      { "label": "Mầm non", "href": "/tailieu/mamnon/index.html" },
+      { "label": "Tô màu - Mỹ thuật", "href": "/tailieu/mamnon/index.html?mon=to-mau" },
+      { "label": "Tranh Tô Màu Chủ Đề Con Vật", "href": "" }
+    ],
+    "badge": "free",
+    "price": "Miễn phí",
+    "downloads": 1602,
+    "rating": 4.6,
+    "ratingCount": 11,
+    "updatedDate": "20/10/2025",
+    "description": "Tuyển tập tranh tô màu các con vật quen thuộc, kích thích khả năng sáng tạo và nhận biết màu sắc cho bé Mầm non.",
+    "highlights": [
+      "Chủ đề: Con vật nuôi trong nhà và động vật hoang dã",
+      "Cấu trúc: 15 trang tranh khổ lớn, nét viền rõ ràng dễ tô",
+      "Phù hợp: In màu hoặc trắng đen đều đẹp"
+    ],
+    "curriculumTags": ["Mầm non", "Mỹ thuật"],
+    "thumbnails": [
+      "/assets/images/worksheet-placeholder.svg",
+      "/assets/images/worksheet-placeholder.svg"
+    ],
+    "file": "/assets/files/sample02.pdf",
+    "fileSize": "4.1 MB",
+    "pageCount": 18,
+    "format": "PDF",
+    "printSize": "A4 (Trắng đen / Màu)",
+    "hasAnswerKey": false,
+    "previewPageLimit": 2,
+    "author": {
+      "name": "Cô Thanh Huyền - GV Mầm non",
+      "avatar": "/assets/images/testimonial-avatar-teacher.svg",
+      "docCount": 30
+    },
+    "relatedIds": ["to-chu-cai-mamnon"],
+    "reviews": []
+  }
+]
