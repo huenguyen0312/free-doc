@@ -53,35 +53,6 @@
   text-align: center;
 }
 
-.testimonials__tabs {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: v.$spacing-unit;
-  margin: 0 0 (v.$spacing-unit * 4);
-}
-
-.testimonials__tab {
-  padding: (v.$spacing-unit * 1) (v.$spacing-unit * 2.5);
-  border: 1px solid v.$color-border;
-  border-radius: 999px;
-  background: v.$color-bg;
-  color: v.$color-text;
-  font-size: 0.9rem;
-  cursor: pointer;
-
-  &:hover {
-    border-color: v.$color-primary;
-    color: v.$color-primary;
-  }
-
-  &.is-active {
-    background: v.$color-primary;
-    border-color: v.$color-primary;
-    color: v.$color-bg;
-  }
-}
-
 .testimonials__grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

@@ -14,7 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initTipsList();
   initWorksheetGenerator();
   initBookshelf();
-  initTestimonials();
   initFaq();
   initNewsletter();
   initScrollToTop();
@@ -222,24 +221,6 @@ function initBookshelf() {
 
   modal.querySelectorAll('[data-book-modal-close]').forEach((el) => {
     el.addEventListener('click', () => { modal.hidden = true; });
-  });
-}
-
-function initTestimonials() {
-  const section = document.querySelector('.testimonials');
-  if (!section) return;
-
-  const tabs = section.querySelectorAll('[data-testimonial-filter]');
-  const cards = section.querySelectorAll('[data-testimonial-cat]');
-
-  tabs.forEach((tab) => {
-    tab.addEventListener('click', () => {
-      const filter = tab.dataset.testimonialFilter;
-      tabs.forEach((t) => t.classList.toggle('is-active', t === tab));
-      cards.forEach((card) => {
-        card.hidden = filter !== 'all' && card.dataset.testimonialCat !== filter;
-      });
-    });
   });
 }
 

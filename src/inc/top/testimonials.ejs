@@ -5,16 +5,8 @@
     { value: '4.9/5 ⭐', label: 'Đánh giá từ hơn 1.200 người dùng' },
   ];
 
-  const testimonialCats = [
-    { key: 'all', label: 'Tất cả' },
-    { key: 'phuhuynh', label: 'Phụ huynh' },
-    { key: 'giaovien', label: 'Giáo viên' },
-    { key: 'gocbe', label: 'Góc các bé 🎨' },
-  ];
-
   const testimonials = [
     {
-      category: 'giaovien',
       name: 'Cô Thu Trang',
       role: 'Giáo viên Lớp 1 - Trường Tiểu học Nguyễn Du',
       avatar: '/assets/images/testimonial-avatar-teacher.svg',
@@ -24,7 +16,6 @@
       proofCaption: 'Phiếu bài tập đã in ra và chấm điểm',
     },
     {
-      category: 'phuhuynh',
       name: 'Anh Minh Quân',
       role: 'Phụ huynh bé 5 tuổi - Hà Nội',
       avatar: '/assets/images/testimonial-avatar-parent.svg',
@@ -34,7 +25,6 @@
       proofCaption: 'Bé ngồi làm bài tập in từ web',
     },
     {
-      category: 'gocbe',
       isKidsCard: true,
       name: 'Bé Nam (6 tuổi) & Bé Mai (4 tuổi)',
       role: '🎨 Thành quả của các con',
@@ -59,16 +49,10 @@
       <% }); %>
     </div>
 
-    <div class="testimonials__tabs" data-testimonial-tabs>
-      <% testimonialCats.forEach((cat, i) => { %>
-        <button type="button" class="testimonials__tab<%= i === 0 ? ' is-active' : '' %>" data-testimonial-filter="<%= cat.key %>"><%= cat.label %></button>
-      <% }); %>
-    </div>
-
     <div class="testimonials__grid" data-testimonial-grid>
       <% testimonials.forEach((t) => { %>
         <% if (t.isKidsCard) { %>
-          <article class="testimonials__card testimonials__card--kids" data-testimonial-cat="<%= t.category %>">
+          <article class="testimonials__card testimonials__card--kids">
             <div class="testimonials__kids-photo">
               <img src="<%= t.photo %>" alt="<%= t.name %>">
             </div>
@@ -77,7 +61,7 @@
             <p class="testimonials__kids-quote">💬 <%= t.quote %></p>
           </article>
         <% } else { %>
-          <article class="testimonials__card" data-testimonial-cat="<%= t.category %>">
+          <article class="testimonials__card">
             <div class="testimonials__head">
               <img class="testimonials__avatar" src="<%= t.avatar %>" alt="<%= t.name %>">
               <div class="testimonials__head-text">
