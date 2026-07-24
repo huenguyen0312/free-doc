@@ -65,5 +65,20 @@
     <div class="bookshelf__banner">
       <span>💡 Gợi ý sách theo tháng - Ưu đãi combo sách + bài tập PDF</span>
     </div>
+
+    <div class="bookshelf__login-cta">
+      <button type="button" class="bookshelf__login-cta-btn" data-login-modal-open>🔒 Đăng nhập để lưu danh sách sách yêu thích</button>
+    </div>
+
   </div>
 </section>
+
+<div class="bookshelf__login-modal" data-login-modal hidden>
+  <div class="bookshelf__login-modal-overlay" data-login-modal-close></div>
+  <div class="bookshelf__login-modal-content">
+    <button type="button" class="bookshelf__login-modal-close" data-login-modal-close aria-label="Đóng">✕</button>
+    <h3 class="bookshelf__login-modal-title">Đăng nhập</h3>
+    <!-- Nội dung form đăng nhập sẽ được thiết kế và bổ sung sau -->
+    <form class="bookshelf__login-modal-form" data-login-modal-form></form>
+  </div>
+</div>

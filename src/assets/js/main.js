@@ -16,9 +16,12 @@ document.addEventListener('DOMContentLoaded', () => {
   initTipsList();
   initWorksheetGenerator();
   initBookshelf();
+  initBookshelfLogin();
   initFaq();
   initNewsletter();
+  initTestimonialsSignup();
   initScrollToTop();
+  initSocialFixedButtons();
   initStickyHeader();
 });
 
@@ -26,8 +29,17 @@ function initStickyHeader() {
   const header = document.querySelector('.site-header');
   if (!header) return;
 
+  const inner = header.querySelector('.site-header__inner');
   let headerHeight = header.offsetHeight;
+  let innerHeight = inner ? inner.offsetHeight : headerHeight;
   let isFixed = false;
+
+  function updateHeaderHeightVar() {
+    const current = isFixed ? innerHeight : headerHeight;
+    document.documentElement.style.setProperty('--site-header-height', `${current}px`);
+  }
+
+  updateHeaderHeightVar();
 
   function toggleFixed() {
     const shouldFix = window.scrollY > headerHeight;
@@ -35,14 +47,17 @@ function initStickyHeader() {
 
     isFixed = shouldFix;
     header.classList.toggle('site-header--fixed', isFixed);
-    document.body.style.paddingTop = isFixed ? `${headerHeight}px` : '';
+    document.body.style.paddingTop = isFixed ? `${innerHeight}px` : '';
+    updateHeaderHeightVar();
   }
 
   window.addEventListener('resize', () => {
     header.classList.remove('site-header--fixed');
     document.body.style.paddingTop = '';
     headerHeight = header.offsetHeight;
+    innerHeight = inner ? inner.offsetHeight : headerHeight;
     isFixed = false;
+    updateHeaderHeightVar();
     toggleFixed();
   });
 
@@ -318,6 +333,44 @@ function initNewsletter() {
 
     successMsg.hidden = false;
     form.reset();
+  });
+}
+
+function initBookshelfLogin() {
+  const modal = document.querySelector('[data-login-modal]');
+  if (!modal) return;
+
+  document.querySelectorAll('[data-login-modal-open]').forEach((btn) => {
+    btn.addEventListener('click', () => { modal.hidden = false; });
+  });
+
+  modal.querySelectorAll('[data-login-modal-close]').forEach((el) => {
+    el.addEventListener('click', () => { modal.hidden = true; });
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && !modal.hidden) {
+      modal.hidden = true;
+    }
+  });
+}
+
+function initTestimonialsSignup() {
+  const modal = document.querySelector('[data-signup-modal]');
+  if (!modal) return;
+
+  document.querySelectorAll('[data-signup-modal-open]').forEach((btn) => {
+    btn.addEventListener('click', () => { modal.hidden = false; });
+  });
+
+  modal.querySelectorAll('[data-signup-modal-close]').forEach((el) => {
+    el.addEventListener('click', () => { modal.hidden = true; });
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && !modal.hidden) {
+      modal.hidden = true;
+    }
   });
 }
 
@@ -2082,4 +2135,24 @@ function initScrollToTop() {
   btn.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
+}
+
+function initSocialFixedButtons() {
+  const container = document.querySelector('[data-social-fixed-buttons]');
+  if (!container) return;
+
+  setTimeout(() => {
+    container.hidden = false;
+    requestAnimationFrame(() => container.classList.add('is-visible'));
+  }, 1500);
+
+  const scrollTopBtn = document.querySelector('[data-scroll-to-top]');
+  if (!scrollTopBtn) return;
+
+  function syncPushState() {
+    container.classList.toggle('is-pushed', !scrollTopBtn.hidden);
+  }
+
+  syncPushState();
+  window.addEventListener('scroll', syncPushState, { passive: true });
 }

@@ -1,4 +1,13 @@
 <header class="site-header">
+  <div class="site-header__topbar">
+    <div class="site-header__topbar-inner">
+      <div class="site-header__auth">
+        <button type="button" class="site-header__auth-btn site-header__auth-btn--login" data-login-modal-open>Đăng nhập</button>
+        <button type="button" class="site-header__auth-btn site-header__auth-btn--register" data-signup-modal-open>Đăng ký</button>
+      </div>
+    </div>
+  </div>
+
   <div class="site-header__inner">
     <a class="site-header__logo" href="/index.html">
       <img src="/assets/images/logo.svg" alt="FreeDoc" width="32" height="32">
@@ -60,6 +69,11 @@
             </ul>
           </li>
         </ul>
+
+        <div class="site-header__auth site-header__auth--nav">
+          <button type="button" class="site-header__auth-btn site-header__auth-btn--login" data-login-modal-open>Đăng nhập</button>
+          <button type="button" class="site-header__auth-btn site-header__auth-btn--register" data-signup-modal-open>Đăng ký</button>
+        </div>
       </nav>
 
       <div class="site-header__search" data-header-search>

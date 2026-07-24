@@ -146,6 +146,75 @@
   font-weight: bold;
 }
 
+.bookshelf__login-cta {
+  text-align: center;
+  margin: (v.$spacing-unit * 3) 0 0;
+}
+
+.bookshelf__login-cta-btn {
+  padding: (v.$spacing-unit * 1.25) (v.$spacing-unit * 2.5);
+  border: 1px solid v.$color-primary;
+  border-radius: 999px;
+  background: v.$color-bg;
+  color: v.$color-primary;
+  font-size: 0.9rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+
+  &:hover {
+    background: v.$color-primary;
+    color: v.$color-bg;
+  }
+}
+
+.bookshelf__login-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: none;
+
+  &:not([hidden]) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.bookshelf__login-modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.bookshelf__login-modal-content {
+  position: relative;
+  width: 90%;
+  max-width: 360px;
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: (v.$spacing-unit * 3);
+  background: v.$color-bg;
+  border-radius: 12px;
+}
+
+.bookshelf__login-modal-title {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.bookshelf__login-modal-close {
+  position: absolute;
+  top: v.$spacing-unit;
+  right: v.$spacing-unit;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 50%;
+  background: v.$color-bg-alt;
+  cursor: pointer;
+}
+
 .bookshelf__modal {
   position: fixed;
   inset: 0;
