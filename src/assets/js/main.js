@@ -16,10 +16,9 @@ document.addEventListener('DOMContentLoaded', () => {
   initTipsList();
   initWorksheetGenerator();
   initBookshelf();
-  initBookshelfLogin();
   initFaq();
   initNewsletter();
-  initTestimonialsSignup();
+  initAuthModal();
   initScrollToTop();
   initSocialFixedButtons();
   initStickyHeader();
@@ -336,41 +335,151 @@ function initNewsletter() {
   });
 }
 
-function initBookshelfLogin() {
-  const modal = document.querySelector('[data-login-modal]');
+function initAuthModal() {
+  const modal = document.querySelector('[data-auth-modal]');
   if (!modal) return;
 
-  document.querySelectorAll('[data-login-modal-open]').forEach((btn) => {
-    btn.addEventListener('click', () => { modal.hidden = false; });
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const panels = Array.from(modal.querySelectorAll('[data-auth-panel]'));
+  const brands = Array.from(modal.querySelectorAll('[data-auth-brand]'));
+
+  function showPanel(view) {
+    panels.forEach((panel) => {
+      panel.hidden = panel.dataset.authPanel !== view;
+    });
+    const brandView = view === 'signup' ? 'signup' : 'login';
+    brands.forEach((brand) => {
+      brand.hidden = brand.dataset.authBrand !== brandView;
+    });
+    if (view === 'login' || view === 'reset') {
+      const emailInput = modal.querySelector(`[data-auth-panel="${view}"] input[type="email"]`);
+      if (emailInput) requestAnimationFrame(() => emailInput.focus());
+    }
+  }
+
+  function resetAuthUI() {
+    modal.querySelectorAll('[data-auth-form]').forEach((form) => {
+      form.reset();
+      form.hidden = false;
+      form.querySelectorAll('[data-auth-error]').forEach((el) => {
+        el.hidden = true;
+        el.textContent = '';
+      });
+      form.querySelectorAll('.auth-modal__field').forEach((field) => field.classList.remove('is-invalid'));
+      form.querySelectorAll('[data-auth-field="password"]').forEach((input) => { input.type = 'password'; });
+      const submitBtn = form.querySelector('.auth-modal__submit');
+      if (submitBtn) {
+        submitBtn.classList.remove('is-loading');
+        submitBtn.disabled = false;
+      }
+    });
+    modal.querySelectorAll('[data-auth-password-toggle]').forEach((btn) => {
+      btn.textContent = '👁️';
+      btn.setAttribute('aria-label', 'Hiện mật khẩu');
+    });
+    modal.querySelectorAll('[data-auth-success]').forEach((el) => { el.hidden = true; });
+  }
+
+  function openModal(view) {
+    resetAuthUI();
+    modal.hidden = false;
+    document.documentElement.classList.add('no-scroll');
+    showPanel(view === 'login' ? 'login' : 'signup');
+  }
+
+  function closeModal() {
+    modal.hidden = true;
+    document.documentElement.classList.remove('no-scroll');
+  }
+
+  document.querySelectorAll('[data-auth-modal-open]').forEach((btn) => {
+    btn.addEventListener('click', () => openModal(btn.dataset.authModalOpen));
   });
 
-  modal.querySelectorAll('[data-login-modal-close]').forEach((el) => {
-    el.addEventListener('click', () => { modal.hidden = true; });
+  modal.querySelectorAll('[data-auth-modal-close]').forEach((el) => {
+    el.addEventListener('click', closeModal);
+  });
+
+  modal.querySelectorAll('[data-auth-switch]').forEach((btn) => {
+    btn.addEventListener('click', () => showPanel(btn.dataset.authSwitch));
   });
 
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && !modal.hidden) {
-      modal.hidden = true;
+    if (event.key === 'Escape' && !modal.hidden) closeModal();
+  });
+
+  modal.querySelectorAll('[data-auth-password-toggle]').forEach((toggle) => {
+    toggle.addEventListener('click', () => {
+      const input = toggle.previousElementSibling;
+      const showing = input.type === 'text';
+      input.type = showing ? 'password' : 'text';
+      toggle.textContent = showing ? '👁️' : '🙈';
+      toggle.setAttribute('aria-label', showing ? 'Hiện mật khẩu' : 'Ẩn mật khẩu');
+    });
+  });
+
+  function setFieldError(form, name, message) {
+    const input = form.querySelector(`[data-auth-field="${name}"]`);
+    const field = input ? input.closest('.auth-modal__field') : null;
+    const errorEl = form.querySelector(`[data-auth-error="${name}"]`);
+    if (!field || !errorEl) return;
+    field.classList.toggle('is-invalid', Boolean(message));
+    errorEl.textContent = message || '';
+    errorEl.hidden = !message;
+  }
+
+  function validateForm(form) {
+    let firstInvalid = null;
+
+    if (form.dataset.authForm === 'signup') {
+      const nameInput = form.querySelector('[data-auth-field="fullname"]');
+      if (!nameInput.value.trim()) {
+        setFieldError(form, 'fullname', 'Vui lòng nhập họ và tên.');
+        firstInvalid = firstInvalid || nameInput;
+      } else {
+        setFieldError(form, 'fullname', '');
+      }
     }
-  });
-}
 
-function initTestimonialsSignup() {
-  const modal = document.querySelector('[data-signup-modal]');
-  if (!modal) return;
-
-  document.querySelectorAll('[data-signup-modal-open]').forEach((btn) => {
-    btn.addEventListener('click', () => { modal.hidden = false; });
-  });
-
-  modal.querySelectorAll('[data-signup-modal-close]').forEach((el) => {
-    el.addEventListener('click', () => { modal.hidden = true; });
-  });
-
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && !modal.hidden) {
-      modal.hidden = true;
+    const emailInput = form.querySelector('[data-auth-field="email"]');
+    if (!EMAIL_RE.test(emailInput.value.trim())) {
+      setFieldError(form, 'email', 'Email không hợp lệ.');
+      firstInvalid = firstInvalid || emailInput;
+    } else {
+      setFieldError(form, 'email', '');
     }
+
+    if (form.dataset.authForm !== 'reset') {
+      const passwordInput = form.querySelector('[data-auth-field="password"]');
+      if (passwordInput.value.length < 6) {
+        setFieldError(form, 'password', 'Mật khẩu phải có ít nhất 6 ký tự.');
+        firstInvalid = firstInvalid || passwordInput;
+      } else {
+        setFieldError(form, 'password', '');
+      }
+    }
+
+    if (firstInvalid) firstInvalid.focus();
+    return !firstInvalid;
+  }
+
+  modal.querySelectorAll('[data-auth-form]').forEach((form) => {
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (!validateForm(form)) return;
+
+      const submitBtn = form.querySelector('.auth-modal__submit');
+      submitBtn.classList.add('is-loading');
+      submitBtn.disabled = true;
+
+      setTimeout(() => {
+        submitBtn.classList.remove('is-loading');
+        submitBtn.disabled = false;
+        const successEl = modal.querySelector(`[data-auth-success="${form.dataset.authForm}"]`);
+        form.hidden = true;
+        if (successEl) successEl.hidden = false;
+      }, 900);
+    });
   });
 }
 

@@ -185,53 +185,6 @@
   }
 }
 
-.testimonials__signup-modal {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  display: none;
-
-  &:not([hidden]) {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-}
-
-.testimonials__signup-modal-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-}
-
-.testimonials__signup-modal-content {
-  position: relative;
-  width: 90%;
-  max-width: 420px;
-  max-height: 85vh;
-  overflow-y: auto;
-  padding: v.$spacing-unit * 3;
-  background: v.$color-bg;
-  border-radius: 12px;
-}
-
-.testimonials__signup-modal-title {
-  margin: 0;
-  font-size: 1.1rem;
-}
-
-.testimonials__signup-modal-close {
-  position: absolute;
-  top: v.$spacing-unit;
-  right: v.$spacing-unit;
-  width: 28px;
-  height: 28px;
-  border: none;
-  border-radius: 50%;
-  background: v.$color-bg-alt;
-  cursor: pointer;
-}
-
 .testimonials__card--kids {
   align-items: center;
   text-align: center;

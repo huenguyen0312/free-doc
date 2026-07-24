@@ -2,8 +2,8 @@
   <div class="site-header__topbar">
     <div class="site-header__topbar-inner">
       <div class="site-header__auth">
-        <button type="button" class="site-header__auth-btn site-header__auth-btn--login" data-login-modal-open>Đăng nhập</button>
-        <button type="button" class="site-header__auth-btn site-header__auth-btn--register" data-signup-modal-open>Đăng ký</button>
+        <button type="button" class="site-header__auth-btn site-header__auth-btn--login" data-auth-modal-open="login">Đăng nhập</button>
+        <button type="button" class="site-header__auth-btn site-header__auth-btn--register" data-auth-modal-open="signup">Đăng ký</button>
       </div>
     </div>
   </div>
@@ -71,8 +71,8 @@
         </ul>
 
         <div class="site-header__auth site-header__auth--nav">
-          <button type="button" class="site-header__auth-btn site-header__auth-btn--login" data-login-modal-open>Đăng nhập</button>
-          <button type="button" class="site-header__auth-btn site-header__auth-btn--register" data-signup-modal-open>Đăng ký</button>
+          <button type="button" class="site-header__auth-btn site-header__auth-btn--login" data-auth-modal-open="login">Đăng nhập</button>
+          <button type="button" class="site-header__auth-btn site-header__auth-btn--register" data-auth-modal-open="signup">Đăng ký</button>
         </div>
       </nav>
 
@@ -94,3 +94,191 @@
     </div>
   </div>
 </header>
+
+<!-- Modal Đăng ký / Đăng nhập dùng chung toàn site (demo phía client, chưa nối backend thật) -->
+<div class="auth-modal" data-auth-modal hidden>
+  <div class="auth-modal__overlay" data-auth-modal-close></div>
+  <div class="auth-modal__dialog" role="dialog" aria-modal="true" aria-label="Đăng ký hoặc đăng nhập">
+    <button type="button" class="auth-modal__close" data-auth-modal-close aria-label="Đóng">✕</button>
+
+    <div class="auth-modal__grid">
+      <div class="auth-modal__brand-col">
+        <div class="auth-modal__brand" data-auth-brand="signup">
+          <p class="auth-modal__brand-title">🎁 Tham gia cộng đồng<br>10.000+ Phụ huynh &amp; Giáo viên</p>
+
+          <p class="auth-modal__brand-subtitle">✨ Quyền lợi tài khoản:</p>
+          <ul class="auth-modal__benefits">
+            <li>💾 Lưu trữ kho bài tập đã tạo không giới hạn.</li>
+            <li>🏫 Chèn tên bé / tên lớp học lên file PDF tự động.</li>
+            <li>⚡ Tải PDF chuẩn A4 siêu tốc chỉ với 1-click.</li>
+          </ul>
+
+          <div class="auth-modal__illustration" aria-hidden="true">
+            <span>👩‍🏫</span>
+            <span>📖</span>
+            <span>🧒</span>
+          </div>
+        </div>
+
+        <div class="auth-modal__brand" data-auth-brand="login" hidden>
+          <p class="auth-modal__brand-title">👋 Mừng bạn trở lại!</p>
+
+          <p class="auth-modal__brand-subtitle">Đăng nhập để tiếp tục:</p>
+          <ul class="auth-modal__benefits">
+            <li>📂 Truy cập kho bài tập đã lưu.</li>
+            <li>⬇️ Tải file PDF không giới hạn.</li>
+            <li>📚 Xem các cuốn sách đã lưu.</li>
+          </ul>
+
+          <div class="auth-modal__illustration" aria-hidden="true">
+            <span>👋</span>
+            <span>📂</span>
+            <span>😊</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="auth-modal__panels">
+        <div class="auth-modal__panel" data-auth-panel="signup">
+          <h3 class="auth-modal__title">Đăng ký tài khoản</h3>
+          <p class="auth-modal__switch">
+            Đã có tài khoản?
+            <button type="button" class="auth-modal__switch-link" data-auth-switch="login">Đăng nhập</button>
+          </p>
+
+          <div class="auth-modal__social">
+            <button type="button" class="auth-modal__social-btn">
+              <span class="auth-modal__social-icon auth-modal__social-icon--google" aria-hidden="true">G</span>
+              Đăng ký bằng Google
+            </button>
+            <button type="button" class="auth-modal__social-btn">
+              <span class="auth-modal__social-icon auth-modal__social-icon--facebook" aria-hidden="true">f</span>
+              Đăng ký bằng Facebook
+            </button>
+          </div>
+
+          <div class="auth-modal__divider"><span>Hoặc với Email</span></div>
+
+          <form class="auth-modal__form" data-auth-form="signup" novalidate>
+            <div class="auth-modal__field">
+              <span class="auth-modal__label">1. Bạn là:</span>
+              <div class="auth-modal__segmented">
+                <label class="auth-modal__segmented-option">
+                  <input type="radio" name="auth-signup-role" value="parent" checked>
+                  <span>Phụ huynh</span>
+                </label>
+                <label class="auth-modal__segmented-option">
+                  <input type="radio" name="auth-signup-role" value="teacher">
+                  <span>Giáo viên</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="auth-modal__field">
+              <label class="auth-modal__label" for="auth-signup-name">2. Họ và tên</label>
+              <input type="text" id="auth-signup-name" name="fullname" class="auth-modal__input" placeholder="Ví dụ: Cô Thu Trang / Mẹ bé Bắp" autocomplete="name" data-auth-field="fullname">
+              <p class="auth-modal__error" data-auth-error="fullname" hidden></p>
+            </div>
+
+            <div class="auth-modal__field">
+              <label class="auth-modal__label" for="auth-signup-email">3. Email</label>
+              <input type="email" id="auth-signup-email" name="email" class="auth-modal__input" placeholder="name@example.com" autocomplete="email" data-auth-field="email">
+              <p class="auth-modal__error" data-auth-error="email" hidden></p>
+            </div>
+
+            <div class="auth-modal__field">
+              <label class="auth-modal__label" for="auth-signup-password">4. Mật khẩu</label>
+              <div class="auth-modal__password">
+                <input type="password" id="auth-signup-password" name="password" class="auth-modal__input" placeholder="Nhập mật khẩu" autocomplete="new-password" data-auth-field="password">
+                <button type="button" class="auth-modal__password-toggle" data-auth-password-toggle aria-label="Hiện mật khẩu">👁️</button>
+              </div>
+              <p class="auth-modal__error" data-auth-error="password" hidden></p>
+            </div>
+
+            <button type="submit" class="auth-modal__submit">Tạo tài khoản miễn phí</button>
+          </form>
+
+          <div class="auth-modal__success" data-auth-success="signup" hidden>
+            <p>🎉 Tạo tài khoản thành công! Chào mừng bạn đến với FreeDoc.</p>
+          </div>
+        </div>
+
+        <div class="auth-modal__panel" data-auth-panel="login" hidden>
+          <h3 class="auth-modal__title">Đăng nhập</h3>
+          <p class="auth-modal__switch">
+            Chưa có tài khoản?
+            <button type="button" class="auth-modal__switch-link" data-auth-switch="signup">Đăng ký ngay</button>
+          </p>
+
+          <div class="auth-modal__social">
+            <button type="button" class="auth-modal__social-btn">
+              <span class="auth-modal__social-icon auth-modal__social-icon--google" aria-hidden="true">G</span>
+              Đăng nhập bằng Google
+            </button>
+            <button type="button" class="auth-modal__social-btn">
+              <span class="auth-modal__social-icon auth-modal__social-icon--facebook" aria-hidden="true">f</span>
+              Đăng nhập bằng Facebook
+            </button>
+          </div>
+
+          <div class="auth-modal__divider"><span>Hoặc với Email</span></div>
+
+          <form class="auth-modal__form" data-auth-form="login" novalidate>
+            <div class="auth-modal__field">
+              <label class="auth-modal__label" for="auth-login-email">Email</label>
+              <input type="email" id="auth-login-email" name="email" class="auth-modal__input" placeholder="name@example.com" autocomplete="email" data-auth-field="email">
+              <p class="auth-modal__error" data-auth-error="email" hidden></p>
+            </div>
+
+            <div class="auth-modal__field">
+              <label class="auth-modal__label" for="auth-login-password">Mật khẩu</label>
+              <div class="auth-modal__password">
+                <input type="password" id="auth-login-password" name="password" class="auth-modal__input" placeholder="Nhập mật khẩu" autocomplete="current-password" data-auth-field="password">
+                <button type="button" class="auth-modal__password-toggle" data-auth-password-toggle aria-label="Hiện mật khẩu">👁️</button>
+              </div>
+              <p class="auth-modal__error" data-auth-error="password" hidden></p>
+            </div>
+
+            <div class="auth-modal__utility">
+              <label class="auth-modal__remember">
+                <input type="checkbox" name="remember" checked>
+                <span>Ghi nhớ đăng nhập</span>
+              </label>
+              <button type="button" class="auth-modal__forgot-link" data-auth-switch="reset">Quên mật khẩu?</button>
+            </div>
+
+            <button type="submit" class="auth-modal__submit">Đăng nhập</button>
+          </form>
+
+          <div class="auth-modal__success" data-auth-success="login" hidden>
+            <p>🎉 Đăng nhập thành công! Rất vui được gặp lại bạn.</p>
+          </div>
+        </div>
+
+        <div class="auth-modal__panel" data-auth-panel="reset" hidden>
+          <h3 class="auth-modal__title">Khôi phục mật khẩu</h3>
+          <p class="auth-modal__switch">
+            Nhớ mật khẩu rồi?
+            <button type="button" class="auth-modal__switch-link" data-auth-switch="login">Quay lại đăng nhập</button>
+          </p>
+
+          <p class="auth-modal__reset-desc">Nhập email đã đăng ký, chúng tôi sẽ gửi cho bạn một liên kết để đặt lại mật khẩu.</p>
+
+          <form class="auth-modal__form" data-auth-form="reset" novalidate>
+            <div class="auth-modal__field">
+              <label class="auth-modal__label" for="auth-reset-email">Email</label>
+              <input type="email" id="auth-reset-email" name="email" class="auth-modal__input" placeholder="name@example.com" autocomplete="email" data-auth-field="email">
+              <p class="auth-modal__error" data-auth-error="email" hidden></p>
+            </div>
+
+            <button type="submit" class="auth-modal__submit">Gửi liên kết khôi phục</button>
+          </form>
+
+          <div class="auth-modal__success" data-auth-success="reset" hidden>
+            <p>📧 Đã gửi email khôi phục! Vui lòng kiểm tra hộp thư của bạn.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

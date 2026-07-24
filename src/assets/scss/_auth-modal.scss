@@ -1,0 +1,440 @@
+@use 'variables' as v;
+
+.auth-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: none;
+
+  &:not([hidden]) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: v.$spacing-unit * 2;
+  }
+}
+
+.auth-modal__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.auth-modal__dialog {
+  position: relative;
+  width: 100%;
+  max-width: 760px;
+  max-height: 92vh;
+  overflow-y: auto;
+  background: v.$color-bg;
+  border-radius: 16px;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.2);
+}
+
+.auth-modal__close {
+  position: absolute;
+  top: v.$spacing-unit * 1.5;
+  right: v.$spacing-unit * 1.5;
+  z-index: 1;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+}
+
+.auth-modal__grid {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+
+  @media (max-width: 700px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.auth-modal__brand-col {
+  padding: (v.$spacing-unit * 4) (v.$spacing-unit * 3);
+  background: linear-gradient(160deg, v.$color-age-tieuhoc-bg, v.$color-bg-alt);
+  border-radius: 16px 0 0 16px;
+  display: flex;
+  flex-direction: column;
+
+  @media (max-width: 700px) {
+    border-radius: 16px 16px 0 0;
+    padding: (v.$spacing-unit * 3) (v.$spacing-unit * 3) (v.$spacing-unit * 2);
+  }
+}
+
+.auth-modal__brand {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+.auth-modal__brand-title {
+  margin: 0 0 (v.$spacing-unit * 3);
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: v.$color-text;
+}
+
+.auth-modal__brand-subtitle {
+  margin: 0 0 (v.$spacing-unit);
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: v.$color-text;
+}
+
+.auth-modal__benefits {
+  margin: 0 0 (v.$spacing-unit * 3);
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: v.$spacing-unit * 1.25;
+
+  li {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: v.$color-text-light;
+  }
+}
+
+.auth-modal__illustration {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: v.$spacing-unit * 2;
+  padding: v.$spacing-unit * 3;
+  background: v.$color-bg;
+  border-radius: 12px;
+  font-size: 2rem;
+
+  @media (max-width: 700px) {
+    display: none;
+  }
+}
+
+.auth-modal__panels {
+  padding: (v.$spacing-unit * 4) (v.$spacing-unit * 3.5);
+
+  @media (max-width: 700px) {
+    padding: (v.$spacing-unit * 3);
+  }
+}
+
+.auth-modal__panel[hidden] {
+  display: none;
+}
+
+.auth-modal__title {
+  margin: 0 0 (v.$spacing-unit * 0.5);
+  font-size: 1.3rem;
+}
+
+.auth-modal__switch {
+  margin: 0 0 (v.$spacing-unit * 2.5);
+  color: v.$color-text-light;
+  font-size: 0.85rem;
+}
+
+.auth-modal__switch-link {
+  padding: 0;
+  border: none;
+  background: none;
+  color: v.$color-primary;
+  font: inherit;
+  font-weight: bold;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.auth-modal__social {
+  display: flex;
+  flex-direction: column;
+  gap: v.$spacing-unit;
+  margin: 0 0 (v.$spacing-unit * 2.5);
+}
+
+.auth-modal__social-btn {
+  display: flex;
+  align-items: center;
+  gap: v.$spacing-unit * 1.5;
+  padding: (v.$spacing-unit * 1.25) (v.$spacing-unit * 2);
+  border: 1px solid v.$color-border;
+  border-radius: 10px;
+  background: v.$color-bg;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: v.$color-text;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+
+  &:hover {
+    background: v.$color-bg-alt;
+    border-color: v.$color-text-light;
+  }
+}
+
+.auth-modal__social-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.auth-modal__social-icon--google {
+  background: #ea4335;
+}
+
+.auth-modal__social-icon--facebook {
+  background: #1877f2;
+}
+
+.auth-modal__divider {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 0 (v.$spacing-unit * 2.5);
+  color: v.$color-text-light;
+  font-size: 0.8rem;
+
+  &::before,
+  &::after {
+    content: '';
+    flex: 1 1 auto;
+    height: 1px;
+    background: v.$color-border;
+  }
+
+  span {
+    padding: 0 v.$spacing-unit;
+    white-space: nowrap;
+  }
+}
+
+.auth-modal__form {
+  display: flex;
+  flex-direction: column;
+  gap: v.$spacing-unit * 2;
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+.auth-modal__field {
+  display: flex;
+  flex-direction: column;
+  gap: v.$spacing-unit * 0.75;
+}
+
+.auth-modal__label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: v.$color-text;
+}
+
+.auth-modal__input {
+  width: 100%;
+  padding: (v.$spacing-unit * 1.25) (v.$spacing-unit * 1.5);
+  border: 1px solid v.$color-border;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 0.95rem;
+  color: v.$color-text;
+
+  &:focus {
+    outline: none;
+    border-color: v.$color-primary;
+  }
+}
+
+.auth-modal__field.is-invalid .auth-modal__input {
+  border-color: #d92d20;
+}
+
+.auth-modal__error {
+  margin: 0;
+  color: #d92d20;
+  font-size: 0.78rem;
+}
+
+.auth-modal__segmented {
+  display: flex;
+  gap: v.$spacing-unit;
+}
+
+.auth-modal__segmented-option {
+  flex: 1 1 0;
+  position: relative;
+  cursor: pointer;
+
+  input {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+  }
+
+  span {
+    display: block;
+    text-align: center;
+    padding: (v.$spacing-unit * 1) (v.$spacing-unit * 1.5);
+    border: 1px solid v.$color-border;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    color: v.$color-text;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+  }
+
+  input:checked + span {
+    background: v.$color-primary;
+    border-color: v.$color-primary;
+    color: v.$color-bg;
+    font-weight: bold;
+  }
+
+  input:focus-visible + span {
+    outline: 2px solid v.$color-primary;
+    outline-offset: 2px;
+  }
+}
+
+.auth-modal__utility {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: v.$spacing-unit;
+  flex-wrap: wrap;
+  font-size: 0.82rem;
+}
+
+.auth-modal__remember {
+  display: flex;
+  align-items: center;
+  gap: v.$spacing-unit * 0.75;
+  color: v.$color-text-light;
+  cursor: pointer;
+
+  input {
+    accent-color: v.$color-primary;
+  }
+}
+
+.auth-modal__forgot-link {
+  padding: 0;
+  border: none;
+  background: none;
+  color: v.$color-primary;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.auth-modal__reset-desc {
+  margin: 0 0 (v.$spacing-unit * 2.5);
+  color: v.$color-text-light;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.auth-modal__password {
+  position: relative;
+
+  .auth-modal__input {
+    padding-right: v.$spacing-unit * 4.5;
+  }
+}
+
+.auth-modal__password-toggle {
+  position: absolute;
+  top: 50%;
+  right: v.$spacing-unit * 0.5;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 50%;
+  background: none;
+  font-size: 1rem;
+  cursor: pointer;
+
+  &:hover {
+    background: v.$color-bg-alt;
+  }
+}
+
+.auth-modal__submit {
+  position: relative;
+  padding: v.$spacing-unit * 1.5;
+  border: none;
+  border-radius: 999px;
+  background: v.$color-primary;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover {
+    background: v.$color-text;
+  }
+
+  &:disabled {
+    cursor: default;
+  }
+
+  &.is-loading {
+    color: transparent;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 18px;
+      height: 18px;
+      margin: -9px 0 0 -9px;
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: auth-modal-spin 0.6s linear infinite;
+    }
+  }
+}
+
+@keyframes auth-modal-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.auth-modal__success {
+  text-align: center;
+  padding: v.$spacing-unit * 3 0;
+  font-weight: 600;
+}
